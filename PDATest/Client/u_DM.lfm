@@ -1,0 +1,29 @@
+object DMFrm: TDMFrm
+  OnCreate = DataModuleCreate
+  OldCreateOrder = False
+  Height = 214
+  HorizontalOffset = 244
+  VerticalOffset = 204
+  Width = 235
+  object SQLite3Connection1: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = True
+    LogEvents = []
+    Options = []
+    left = 55
+    top = 37
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Params = <>
+    left = 49
+    top = 106
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Action = caNone
+    left = 119
+    top = 104
+  end
+end

@@ -1,0 +1,318 @@
+object MainFrm: TMainFrm
+  Left = 311
+  Height = 325
+  Top = 115
+  Width = 234
+  Caption = '整车出入厂门管理'
+  ClientHeight = 325
+  ClientWidth = 234
+  OnClose = FormClose
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  LCLVersion = '0.9.31'
+  object pnl_Main: TPanel
+    Left = 0
+    Height = 274
+    Top = 31
+    Width = 234
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 274
+    ClientWidth = 234
+    TabOrder = 0
+    object rg_Direction: TRadioGroup
+      Left = 0
+      Height = 37
+      Top = 171
+      Width = 234
+      Align = alTop
+      AutoFill = True
+      Caption = '方向'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 2
+      ClientHeight = 19
+      ClientWidth = 230
+      Columns = 2
+      ItemIndex = 0
+      Items.Strings = (
+        '出'
+        '入'
+      )
+      TabOrder = 0
+    end
+    object gb_Car: TGroupBox
+      Left = 0
+      Height = 109
+      Top = 62
+      Width = 234
+      Align = alTop
+      Caption = '车辆'
+      ClientHeight = 91
+      ClientWidth = 230
+      TabOrder = 1
+      object edt_CarUL: TEdit
+        Left = 40
+        Height = 20
+        Top = -3
+        Width = 150
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object btn_ul: TButton
+        Left = 193
+        Height = 22
+        Top = -5
+        Width = 24
+        Caption = 'F2'
+        OnClick = btn_ulClick
+        TabOrder = 1
+      end
+      object edt_CarVIN: TEdit
+        Left = 40
+        Height = 20
+        Top = 20
+        Width = 150
+        AutoSize = False
+        OnEnter = edt_CarVINEnter
+        OnExit = edt_CarVINExit
+        OnKeyDown = edt_CarVINKeyDown
+        TabOrder = 2
+      end
+      object btn_cb: TButton
+        Left = 193
+        Height = 22
+        Top = 19
+        Width = 24
+        Caption = 'F3'
+        OnClick = btn_cbClick
+        TabOrder = 3
+      end
+      object Label3: TLabel
+        Left = 9
+        Height = 13
+        Top = 1
+        Width = 56
+        AutoSize = False
+        Caption = 'RFID'
+        ParentColor = False
+      end
+      object Label4: TLabel
+        Left = 9
+        Height = 13
+        Top = 23
+        Width = 39
+        AutoSize = False
+        Caption = '条码'
+        ParentColor = False
+      end
+      object Label5: TLabel
+        Left = 8
+        Height = 13
+        Top = 48
+        Width = 81
+        AutoSize = False
+        Caption = '发动机号'
+        ParentColor = False
+      end
+      object Label6: TLabel
+        Left = 8
+        Height = 13
+        Top = 71
+        Width = 78
+        AutoSize = False
+        Caption = '整车项目号'
+        ParentColor = False
+      end
+      object edt_EngineNum: TEdit
+        Left = 73
+        Height = 20
+        Top = 44
+        Width = 144
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 4
+      end
+      object edt_ProjectNum: TEdit
+        Left = 73
+        Height = 20
+        Top = 67
+        Width = 144
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 5
+      end
+    end
+    object gb_driver: TGroupBox
+      Left = 0
+      Height = 62
+      Top = 0
+      Width = 234
+      Align = alTop
+      Caption = '驾驶员'
+      ClientHeight = 44
+      ClientWidth = 230
+      TabOrder = 2
+      object edt_DriverIC: TEdit
+        Left = 40
+        Height = 20
+        Top = -1
+        Width = 150
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 0
+      end
+      object btn_ic: TButton
+        Left = 193
+        Height = 22
+        Top = -1
+        Width = 24
+        Caption = 'F1'
+        OnClick = btn_icClick
+        TabOrder = 1
+      end
+      object Label1: TLabel
+        Left = 8
+        Height = 13
+        Top = 22
+        Width = 38
+        AutoSize = False
+        Caption = '姓名'
+        ParentColor = False
+      end
+      object Label2: TLabel
+        Left = 8
+        Height = 13
+        Top = 1
+        Width = 49
+        AutoSize = False
+        Caption = '卡号'
+        ParentColor = False
+      end
+      object edt_DriverName: TEdit
+        Left = 40
+        Height = 20
+        Top = 20
+        Width = 150
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 2
+      end
+    end
+    object btn_OK: TButton
+      Left = 32
+      Height = 25
+      Top = 225
+      Width = 75
+      Caption = '登 记'
+      OnClick = btn_OKClick
+      TabOrder = 3
+    end
+    object btn_Reset: TButton
+      Left = 128
+      Height = 25
+      Top = 225
+      Width = 75
+      Caption = '清 除'
+      OnClick = btn_ResetClick
+      TabOrder = 4
+    end
+  end
+  object sb: TStatusBar
+    Left = 0
+    Height = 20
+    Top = 305
+    Width = 234
+    Panels = <    
+      item
+        Alignment = taCenter
+        Bevel = pbNone
+        Text = '服务器'
+        Width = 60
+      end    
+      item
+        Width = 80
+      end    
+      item
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+  object Pnl_Top: TPanel
+    Left = 0
+    Height = 31
+    Top = 0
+    Width = 234
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 31
+    ClientWidth = 234
+    TabOrder = 2
+    object lbl_caption: TLabel
+      Left = 55
+      Height = 16
+      Top = 8
+      Width = 136
+      AutoSize = False
+      Caption = '整车出入厂门管理'
+      Font.CharSet = GB2312_CHARSET
+      Font.Color = clBlue
+      Font.Height = -14
+      Font.Name = '宋体'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+    end
+    object img_close: TImage
+      Left = 200
+      Height = 16
+      Top = 6
+      Width = 16
+      OnClick = img_closeClick
+      Picture.Data = {
+        1754506F727461626C654E6574776F726B477261706869633A02000089504E47
+        0D0A1A0A0000000D49484452000000100000001008060000001FF3FF61000000
+        0467414D410000AFC837058AE90000001974455874536F667477617265004164
+        6F626520496D616765526561647971C9653C000001CC4944415478DAA453BF4B
+        425114FE14214248A8C5A02D0CDA940C8A20DE13C4D5C9A1968620FC075CD32D
+        FC0F82D6965A6CA81041DF64438A52D0A0548B830D3604FE7AFE789D73DE5534
+        68A90BDFBBE79EEF3BE79E73EF7D0ECBB2F09FE192EF4998BF49C229412718BF
+        E83542819012FD79CE4E301E8D24D81989609CCDB240775EE4E7928C8F4312AC
+        34BC119C94C4C9C6703894600C06E099D605F3685F9B04B3CDBE1F1A49E2E033
+        E81EEE4AF6C570D88E70BBD1CD64A0DA8170D128D06ECBA29BCB09B778F96048
+        0503D33408FAD7ED2DD0EB01AD1638807C058604938F39D6B09663541BD48269
+        62E9BA6CD0AC7FDEDFD3165DA0D1C0522C26609B7DCCB14669314D30E8F765B1
+        7CF36C90AD7F64B340A703D46A36C8661F73AC998D71A916A6A73DB53D1EA0D9
+        B46DAF774E33AB9BABE07D6F5523BBB0168F036F6F76150CB2D9C71C6B6663E4
+        16EADB2BD347E24B24807C5EC87AA924B32F18B4B70D85504FA727B763F81E5B
+        98DC82C6A72DC1777772DA2FC5E2E4B475B6E57688638DBA1DFB9D70054F9B0B
+        9675756659073B025E1334E614AF8946F1AC953571D24265C3254F39E0F7A352
+        AD4A8964CF3D65F24B8B339A54A0364C4A82F2BAE34F3FD3D6ABAAE03FE35B80
+        01005EE540E3B80BD3E70000000049454E44AE426082
+      }
+    end
+  end
+end
