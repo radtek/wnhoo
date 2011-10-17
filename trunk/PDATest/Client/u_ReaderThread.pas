@@ -139,12 +139,15 @@ var
   TagType:TTagType;
   UIDStr: string;
   K: Integer;
+  Pre_ReaderCMD:TReaderCMD;
 begin
   Result:=False;
+  //保存最新命令，如果有新命令插入就中止
+  Pre_ReaderCMD:=FReaderCMD;
   try
     Init_RF_ISO14443A_Mode();
     K := 0;
-    while (not Terminated) do
+    while ((not Terminated) and (FReaderCMD=Pre_ReaderCMD)) do
     begin
       UIDStr:='';
       TagType:=None;
@@ -171,13 +174,16 @@ Const
 var
   Buf: PByte;
   rt, K: Integer;
+  Pre_ReaderCMD:TReaderCMD;
 begin
   Result:=False;
+  //保存最新命令，如果有新命令插入就中止
+  Pre_ReaderCMD:=FReaderCMD;
   Buf := GetMem(BufLen);
   try
     Barcode1D_init();
     K := 0;
-    while (not Terminated) do
+    while ((not Terminated) and (FReaderCMD=Pre_ReaderCMD)) do
     begin
       FillChar(Buf^, BufLen, 0);
       rt := Barcode1D_scan(Buf);

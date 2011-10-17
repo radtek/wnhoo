@@ -47,12 +47,11 @@
         <Filename Value="PDAClient.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="PDAClient"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="36" Y="9"/>
-        <UsageCount Value="193"/>
+        <UsageCount Value="195"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
@@ -63,9 +62,9 @@
         <UnitName Value="u_ReaderThread"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="41"/>
-        <CursorPos X="17" Y="32"/>
-        <UsageCount Value="193"/>
+        <TopLine Value="54"/>
+        <CursorPos X="18" Y="187"/>
+        <UsageCount Value="195"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
@@ -180,10 +179,12 @@
         <Filename Value="u_DevAPI.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="u_DevAPI"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="128"/>
-        <CursorPos X="35" Y="140"/>
-        <UsageCount Value="187"/>
+        <TopLine Value="1"/>
+        <CursorPos X="4" Y="11"/>
+        <UsageCount Value="189"/>
+        <Loaded Value="True"/>
       </Unit16>
       <Unit17>
         <Filename Value="C:\lazarus\fpc\2.4.2\source\rtl\win\crt.pp"/>
@@ -342,9 +343,9 @@
         <UnitName Value="u_Func"/>
         <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="22"/>
-        <CursorPos X="1" Y="29"/>
-        <UsageCount Value="168"/>
+        <TopLine Value="244"/>
+        <CursorPos X="10" Y="245"/>
+        <UsageCount Value="170"/>
         <Loaded Value="True"/>
       </Unit37>
       <Unit38>
@@ -459,7 +460,7 @@
         <WindowIndex Value="0"/>
         <TopLine Value="22"/>
         <CursorPos X="52" Y="23"/>
-        <UsageCount Value="149"/>
+        <UsageCount Value="151"/>
       </Unit51>
       <Unit52>
         <Filename Value="C:\lazarus\components\sqldb\registersqldb.pas"/>
@@ -677,11 +678,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="197"/>
-        <CursorPos X="1" Y="205"/>
-        <UsageCount Value="91"/>
+        <TopLine Value="127"/>
+        <CursorPos X="45" Y="209"/>
+        <UsageCount Value="93"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit80>
@@ -711,12 +713,10 @@
       <Unit84>
         <Filename Value="C:\pp\packages\fcl-base\src\syncobjs.pp"/>
         <UnitName Value="syncobjs"/>
-        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="152"/>
+        <TopLine Value="146"/>
         <CursorPos X="3" Y="162"/>
         <UsageCount Value="16"/>
-        <Loaded Value="True"/>
       </Unit84>
       <Unit85>
         <Filename Value="E:\ConsumeIC\源代码\plugs\IC3Server\TestG32\PosG32.pas"/>
@@ -789,12 +789,10 @@
       </Unit93>
       <Unit94>
         <Filename Value="C:\pp\rtl\wince\wininc\coredll.inc"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="2755"/>
         <CursorPos X="11" Y="2769"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit94>
       <Unit95>
         <Filename Value="C:\pp\rtl\win\sysosh.inc"/>
@@ -812,7 +810,7 @@
         <UsageCount Value="9"/>
       </Unit96>
     </Units>
-    <JumpHistory Count="13" HistoryIndex="12">
+    <JumpHistory Count="19" HistoryIndex="18">
       <Position1>
         <Filename Value="u_ReaderThread.pas"/>
         <Caret Line="8" Column="75" TopLine="1"/>
@@ -865,6 +863,30 @@
         <Filename Value="u_ReaderThread.pas"/>
         <Caret Line="60" Column="11" TopLine="40"/>
       </Position13>
+      <Position14>
+        <Filename Value="u_ReaderThread.pas"/>
+        <Caret Line="137" Column="55" TopLine="136"/>
+      </Position14>
+      <Position15>
+        <Filename Value="u_Func.pas"/>
+        <Caret Line="317" Column="20" TopLine="294"/>
+      </Position15>
+      <Position16>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="197" Column="32" TopLine="164"/>
+      </Position16>
+      <Position17>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="147" Column="5" TopLine="145"/>
+      </Position17>
+      <Position18>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="138" Column="5" TopLine="136"/>
+      </Position18>
+      <Position19>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="219" Column="17" TopLine="201"/>
+      </Position19>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -897,6 +919,7 @@
     <Other>
       <Verbosity>
         <ShoLineNum Value="True"/>
+        <ShowHintsForUnusedUnitsInMainSrc Value="True"/>
       </Verbosity>
       <CompilerMessages>
         <IgnoredMessages idx5057="True"/>

@@ -215,6 +215,10 @@ procedure TMainFrm.ShortcutEvent(var Msg: TLMKey; var Handled: Boolean);
 begin
   Handled := True;
   case Msg.CharCode of
+    VK_F4:begin
+        //中止
+        Rdt.ReaderCMD:=RC_None;
+    end;
     VK_F3:btn_cb.Click;
     VK_F2:btn_ul.Click;
     VK_F1:btn_ic.Click;
