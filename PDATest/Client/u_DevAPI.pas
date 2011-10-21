@@ -121,6 +121,31 @@ begin
   Result := (RF_ISO14443A_request_Ex(1, pszData) = 0);
 end;
 
+// 读取指定块的所有数据
+function ReadUL01Data(var UID:String):Boolean;
+Const
+  DATALEN=16;
+var
+  blk:array[0..1,0..DATALEN-1] of Byte;
+  i,j:integer;
+begin
+  UID:='';
+  Result:=False;
+  try
+    for i:=0 to 1 do
+    begin
+      Fillchar(blk[i],DATALEN,0);
+      if RF_ISO14443A_read(i, blk[i])<>0 then Exit;
+      for j:=0 to 3 do
+        UID:=UID+InttoHex(blk[i][j],2);
+    end;
+    Result:=True;
+  except
+    ;
+  end;
+end;
+
+
 function getRFID(var TagType:TTagType;var UIDStr: string): Boolean;
 var
   pszData: PByte;
@@ -146,7 +171,12 @@ begin
     case ATAQ[0] of
       $44: begin
           if (ATAQ[1] = $00) then
+          begin
             TagType := ultra_light;
+            //读取 0 1 块全部数据
+            UIDStr:='';
+            if not ReadUL01Data(UIDStr) then exit;
+          end;
           if (ATAQ[1] = $03) then
             TagType := Mifare_DESFire;
         end;
