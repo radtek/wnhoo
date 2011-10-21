@@ -160,7 +160,7 @@ begin
           break;
         end;
       inc(k);
-      if k > 30 then break;
+      if k > 50 then break;
       SleepEv(200);
     end;
   finally
