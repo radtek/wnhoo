@@ -96,7 +96,9 @@ function Init_RF_ISO14443A_Mode(): Boolean;
 begin
   Result := RF_ISO14443A_init();
   if Result then
+  begin
     Result := RF_ModeSwitch(ISO14443A) = 0;
+  end;
 end;
 
 // halt 标签休眠
@@ -126,19 +128,17 @@ function ReadUL01Data(var UID:String):Boolean;
 Const
   DATALEN=16;
 var
-  blk:array[0..1,0..DATALEN-1] of Byte;
-  i,j:integer;
+  blk0:array[0..DATALEN] of Byte;
+  j:integer;
 begin
   UID:='';
   Result:=False;
   try
-    for i:=0 to 1 do
-    begin
-      Fillchar(blk[i],DATALEN,0);
-      if RF_ISO14443A_read(i, blk[i])<>0 then Exit;
-      for j:=0 to 3 do
-        UID:=UID+InttoHex(blk[i][j],2);
-    end;
+    Fillchar(blk0,DATALEN+1,0);
+    //第一个字节是长度固定$10，然后是16Byte,UL卡的连续四块。
+    if RF_ISO14443A_read(0, blk0)<>0 then Exit;
+    for j:=1 to 8 do
+       UID:=UID+InttoHex(blk0[j],2);
     Result:=True;
   except
     ;
@@ -158,7 +158,7 @@ begin
   try
     FillChar(pszData^, 255, 0);
     //电子标签  寻卡操作 look for cards
-    if (RF_ISO14443A_request_Ex(1, pszData) <> 0) then exit;
+    if (not ReadID(pszData)) then exit;
     //寻卡成功  返回数组 0字节数据长度 1，2字节ATQA 3字节UID长度 4字节后为UID信息
     DLen := pszData[0];
     Move(pszData[1], ATAQ[0], 2);

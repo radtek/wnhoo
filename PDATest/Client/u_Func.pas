@@ -249,27 +249,30 @@ var
   K: Integer;
 begin
   Result:=False;
-  try
-    Init_RF_ISO14443A_Mode();
-    K := 0;
-    while True do
+  K := 0;
+  while True do
+  begin
+    if not Init_RF_ISO14443A_Mode() then
     begin
+      ShowMessage('初始化RFID失败！');
+      Exit;
+    end;
+    try
       UIDStr:='';
       TagType:=None;
       if getRFID(TagType, UIDStr) then
-        if TagType = Mifare_One_S50 then
-        begin
-          RFValue:= UIDStr;
-          PlayOK();
-          Result:=True;
-          break;
-        end;
+         if TagType = Mifare_One_S50 then
+         begin
+           RFValue:= UIDStr;
+           PlayOK();
+           Result:=True;
+           break;
+         end;
       inc(k);
-      if k > 50 then break;
-      sleep(200);
+    finally
+      Free_RF_ISO14443A_Mode();
     end;
-  finally
-    Free_RF_ISO14443A_Mode();
+    if k > 50 then break;
   end;
 end;
 

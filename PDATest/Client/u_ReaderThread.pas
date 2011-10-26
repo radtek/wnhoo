@@ -144,11 +144,14 @@ begin
   Result:=False;
   //保存最新命令，如果有新命令插入就中止
   Pre_ReaderCMD:=FReaderCMD;
-  try
-    Init_RF_ISO14443A_Mode();
-    K := 0;
-    while ((not Terminated) and (FReaderCMD=Pre_ReaderCMD)) do
+  K := 0;
+  while ((not Terminated) and (FReaderCMD=Pre_ReaderCMD)) do
+  begin
+    if not Init_RF_ISO14443A_Mode() then
     begin
+      Exit;
+    end;
+    try
       UIDStr:='';
       TagType:=None;
       if getRFID(TagType, UIDStr) then
@@ -160,11 +163,10 @@ begin
           break;
         end;
       inc(k);
-      if k > 50 then break;
-      SleepEv(200);
+    finally
+      Free_RF_ISO14443A_Mode();
     end;
-  finally
-    Free_RF_ISO14443A_Mode();
+    if k > 50 then break;
   end;
 end;
 
@@ -195,8 +197,7 @@ begin
         break;
       end;
       inc(k);
-      if k > 50 then break;
-      SleepEv(100);
+      if k > 30 then break;
     end;
   finally
     FreeMem(Buf, BufLen);

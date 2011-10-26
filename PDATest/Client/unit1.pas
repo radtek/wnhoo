@@ -27,15 +27,12 @@ type
     edt_ProjectNum: TEdit;
     gb_Car: TGroupBox;
     gb_driver: TGroupBox;
-    img_close: TImage;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
-    lbl_caption: TLabel;
-    Pnl_Top: TPanel;
     pnl_Main: TPanel;
     rg_Direction: TRadioGroup;
     sb: TStatusBar;
@@ -50,7 +47,6 @@ type
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure img_closeClick(Sender: TObject);
     procedure ShortcutEvent(var Msg: TLMKey; var Handled: Boolean);
   private
     hTaskBar: THANDLE;
@@ -176,11 +172,11 @@ begin
   _ClearCar();
   OldShortcutEvent:=Application.OnShortcut;
   Application.OnShortcut := @ShortcutEvent;
-  hTaskBar := findwindow('HHTaskBar', '');
-  ShowWindow(hTaskBar, SW_HIDE); //Hide任务栏
+  //hTaskBar := findwindow('HHTaskBar', '');
+  //ShowWindow(hTaskBar, SW_HIDE); //Hide任务栏
 
   width:=Screen.Width;
-  height:=Screen.Height;
+  //height:=Screen.Height;
 
   StatusBar.Panels[1].Text:='正常';
   StatusBar.Panels[2].Text:=UTF8EnCode(U_Guard.UserName);
@@ -189,17 +185,12 @@ begin
   Rdt:=TReaderThread.Create(false);
 end;
 
-procedure TMainFrm.img_closeClick(Sender: TObject);
-begin
-  Close;
-end;
-
 procedure TMainFrm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   //关闭软键盘
   SipShowIM(SIPF_OFF);
   //退出显示任务栏
-  ShowWindow(hTaskBar, SW_SHOW);
+  //ShowWindow(hTaskBar, SW_SHOW);
   //退出Reader线程
   Rdt.Terminate;
   Rdt.SetEvent();

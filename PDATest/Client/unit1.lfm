@@ -1,10 +1,11 @@
 object MainFrm: TMainFrm
   Left = 311
-  Height = 325
+  Height = 268
   Top = 115
   Width = 234
+  BorderStyle = bsDialog
   Caption = '整车出入厂门管理'
-  ClientHeight = 325
+  ClientHeight = 268
   ClientWidth = 234
   OnClose = FormClose
   OnCreate = FormCreate
@@ -12,12 +13,12 @@ object MainFrm: TMainFrm
   LCLVersion = '0.9.31'
   object pnl_Main: TPanel
     Left = 0
-    Height = 274
-    Top = 31
+    Height = 248
+    Top = 0
     Width = 234
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 274
+    ClientHeight = 248
     ClientWidth = 234
     TabOrder = 0
     object rg_Direction: TRadioGroup
@@ -223,7 +224,7 @@ object MainFrm: TMainFrm
     object btn_OK: TButton
       Left = 32
       Height = 25
-      Top = 225
+      Top = 216
       Width = 75
       Caption = '登 记'
       OnClick = btn_OKClick
@@ -232,7 +233,7 @@ object MainFrm: TMainFrm
     object btn_Reset: TButton
       Left = 128
       Height = 25
-      Top = 225
+      Top = 216
       Width = 75
       Caption = '清 除'
       OnClick = btn_ResetClick
@@ -242,7 +243,7 @@ object MainFrm: TMainFrm
   object sb: TStatusBar
     Left = 0
     Height = 20
-    Top = 305
+    Top = 248
     Width = 234
     Panels = <    
       item
@@ -258,61 +259,5 @@ object MainFrm: TMainFrm
         Width = 50
       end>
     SimplePanel = False
-  end
-  object Pnl_Top: TPanel
-    Left = 0
-    Height = 31
-    Top = 0
-    Width = 234
-    Align = alTop
-    BevelOuter = bvNone
-    ClientHeight = 31
-    ClientWidth = 234
-    TabOrder = 2
-    object lbl_caption: TLabel
-      Left = 55
-      Height = 16
-      Top = 8
-      Width = 136
-      AutoSize = False
-      Caption = '整车出入厂门管理'
-      Font.CharSet = GB2312_CHARSET
-      Font.Color = clBlue
-      Font.Height = -14
-      Font.Name = '宋体'
-      Font.Pitch = fpVariable
-      Font.Quality = fqDraft
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
-    end
-    object img_close: TImage
-      Left = 200
-      Height = 16
-      Top = 6
-      Width = 16
-      OnClick = img_closeClick
-      Picture.Data = {
-        1754506F727461626C654E6574776F726B477261706869633A02000089504E47
-        0D0A1A0A0000000D49484452000000100000001008060000001FF3FF61000000
-        0467414D410000AFC837058AE90000001974455874536F667477617265004164
-        6F626520496D616765526561647971C9653C000001CC4944415478DAA453BF4B
-        425114FE14214248A8C5A02D0CDA940C8A20DE13C4D5C9A1968620FC075CD32D
-        FC0F82D6965A6CA81041DF64438A52D0A0548B830D3604FE7AFE789D73DE5534
-        68A90BDFBBE79EEF3BE79E73EF7D0ECBB2F09FE192EF4998BF49C229412718BF
-        E83542819012FD79CE4E301E8D24D81989609CCDB240775EE4E7928C8F4312AC
-        34BC119C94C4C9C6703894600C06E099D605F3685F9B04B3CDBE1F1A49E2E033
-        E81EEE4AF6C570D88E70BBD1CD64A0DA8170D128D06ECBA29BCB09B778F96048
-        0503D33408FAD7ED2DD0EB01AD1638807C058604938F39D6B09663541BD48269
-        62E9BA6CD0AC7FDEDFD3165DA0D1C0522C26609B7DCCB14669314D30E8F765B1
-        7CF36C90AD7F64B340A703D46A36C8661F73AC998D71A916A6A73DB53D1EA0D9
-        B46DAF774E33AB9BABE07D6F5523BBB0168F036F6F76150CB2D9C71C6B6663E4
-        16EADB2BD347E24B24807C5EC87AA924B32F18B4B70D85504FA727B763F81E5B
-        98DC82C6A72DC1777772DA2FC5E2E4B475B6E57688638DBA1DFB9D70054F9B0B
-        9675756659073B025E1334E614AF8946F1AC953571D24265C3254F39E0F7A352
-        AD4A8964CF3D65F24B8B339A54A0364C4A82F2BAE34F3FD3D6ABAAE03FE35B80
-        01005EE540E3B80BD3E70000000049454E44AE426082
-      }
-    end
   end
 end
