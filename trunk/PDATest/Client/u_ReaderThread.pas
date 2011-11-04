@@ -158,7 +158,7 @@ begin
         if TagType = TagTypeFlag then
         begin
           RFValue:= UIDStr;
-          PlayOK();
+          PlayWav(WT_OK);
           Result:=True;
           break;
         end;
@@ -192,7 +192,7 @@ begin
       if rt > 0 then
       begin
         B1DValue:= StrPas(PChar(Buf));
-        PlayOK();
+        PlayWav(WT_OK);
         Result:=True;
         break;
       end;
