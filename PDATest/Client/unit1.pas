@@ -86,6 +86,7 @@ begin
           ShowErrMsg();
           Exit;
      end;
+     PlayWav(WT_GO);
      //登记成功，服务器修正登记时间
      ShowMessage('登记成功！');
      //清除
