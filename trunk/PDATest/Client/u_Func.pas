@@ -24,7 +24,7 @@ const
   SIPF_LOCKED =	$00000004;
 
 Type
-  TPlayWavType=(WT_None,WT_OK,WT_GO,WT_ERR);
+  TPlayWavType=(WT_None,WT_OK,WT_GO,WT_ERROR);
 
 //电源状态
 function SetSystemPowerState(psState: PWideChar; StateFlags: DWORD; Options: DWORD): DWORD;
@@ -102,7 +102,7 @@ begin
   Case WT of
        WT_OK:WavFile:='ok.wav';
        WT_GO:WavFile:='go.wav';
-       WT_ERR:WavFile:='err.wav';
+       WT_ERROR:WavFile:='err.wav';
   end;
   if WavFile<>'' then
      PlaySoundW(PWideChar(UTF8Decode(ExpandFileName(Application.location + WavFile)))
@@ -161,6 +161,7 @@ procedure ShowErrMsg();
 var
   ErrMsg:String;
 begin
+  PlayWav(WT_ERROR);
   ErrMsg:=GetErrCodeStr(Pc.LastErrCode);
   if Pc.LastErrCode=NormalErrCode then
      ErrMsg:=ErrMsg+Pc.NormalErr.Msg;
@@ -203,7 +204,6 @@ begin
   //通讯，后台获取
   if not Pc.GetCarInfo(U_Car) then
   begin
-    PlayWav(WT_ERR);
     ShowErrMsg();
     _ClearCar();
     exit;
