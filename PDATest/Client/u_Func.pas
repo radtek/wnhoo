@@ -23,6 +23,9 @@ const
   SIPF_DOCKED =	$00000002;
   SIPF_LOCKED =	$00000004;
 
+Type
+  TPlayWavType=(WT_None,WT_OK,WT_GO,WT_ERR);
+
 //电源状态
 function SetSystemPowerState(psState: PWideChar; StateFlags: DWORD; Options: DWORD): DWORD;
 stdcall; external KernelDLL name 'SetSystemPowerState';
@@ -31,8 +34,8 @@ stdcall; external KernelDLL name 'SetSystemPowerState';
 //aygshell 单元，SHSipPreference(handle,SIP_UP);  也可以，此单元很多CE专用函数
 
 function SipShowIM(IPStatus:DWORD):Integer; external KernelDLL name 'SipShowIM';
-//播放OK音乐
-procedure PlayOK();
+//播放音乐
+procedure PlayWav(const WT:TPlayWavType);
 //载入配置
 function LoadCfgFile():boolean;
 //读取保安卡
@@ -91,9 +94,18 @@ begin
 end;
 }
 
-procedure PlayOK();
+procedure PlayWav(const WT:TPlayWavType);
+var
+  WavFile:String;
 begin
-  PlaySoundW(PWideChar(UTF8Decode(ExpandFileName(Application.location + 'ok.wav')))
+  WavFile:='';
+  Case WT of
+       WT_OK:WavFile:='ok.wav';
+       WT_GO:WavFile:='go.wav';
+       WT_ERR:WavFile:='err.wav';
+  end;
+  if WavFile<>'' then
+     PlaySoundW(PWideChar(UTF8Decode(ExpandFileName(Application.location + WavFile)))
           , 0, SND_FILENAME or SND_ASYNC);
 end;
 
@@ -191,6 +203,7 @@ begin
   //通讯，后台获取
   if not Pc.GetCarInfo(U_Car) then
   begin
+    PlayWav(WT_ERR);
     ShowErrMsg();
     _ClearCar();
     exit;
@@ -264,7 +277,7 @@ begin
          if TagType = Mifare_One_S50 then
          begin
            RFValue:= UIDStr;
-           PlayOK();
+           PlayWav(WT_OK);
            Result:=True;
            break;
          end;
