@@ -16,9 +16,10 @@ type
   TMainFrm = class(TForm)
     btn_cb: TButton;
     btn_ic: TButton;
-    btn_ul: TButton;
     btn_OK: TButton;
     btn_Reset: TButton;
+    btn_ul: TButton;
+    edt_Msg: TEdit;
     edt_CarUL: TEdit;
     edt_CarVIN: TEdit;
     edt_DriverIC: TEdit;
@@ -33,6 +34,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
+    pnl_top: TPanel;
     pnl_Main: TPanel;
     rg_Direction: TRadioGroup;
     sb: TStatusBar;
@@ -88,10 +90,12 @@ begin
      end;
      PlayWav(WT_GO);
      //登记成功，服务器修正登记时间
-     ShowMessage('登记成功！');
+     //ShowMessage('登记成功！');
+     edtMsg.Text:='登记成功！';
      //清除
      _ClearDriver();
      _ClearCar();
+     rg_Direction.ItemIndex:=0;
   finally
      TButton(sender).Enabled:=True;
   end;
@@ -101,6 +105,7 @@ procedure TMainFrm.btn_ResetClick(Sender: TObject);
 begin
   _ClearDriver();
   _ClearCar();
+  edt_msg.Clear;
 end;
 
 procedure TMainFrm.edt_CarVINKeyDown(Sender: TObject; var Key: Word;
@@ -167,6 +172,7 @@ begin
   edtDriverName:=edt_DriverName;
   edtEngineNum:=edt_EngineNum;
   edtProjectNum:=edt_ProjectNum;
+  edtMsg:=edt_msg;
 
   DoubleBuffered := True;
   _ClearDriver();
@@ -181,6 +187,9 @@ begin
 
   StatusBar.Panels[1].Text:='正常';
   StatusBar.Panels[2].Text:=UTF8EnCode(U_Guard.UserName);
+  StatusBar.Panels[3].Text:=InttoStr(PDANum);
+
+  edt_msg.Text:='操作信息提示区';
   //记录登陆日志
   SaveLoginLog(1);
   Rdt:=TReaderThread.Create(false);
@@ -214,6 +223,7 @@ begin
     VK_F3:btn_cb.Click;
     VK_F2:btn_ul.Click;
     VK_F1:btn_ic.Click;
+    VK_F5:btn_ok.Click;
   else
     Handled := False;
   end;
