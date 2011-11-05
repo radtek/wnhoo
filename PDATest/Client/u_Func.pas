@@ -43,7 +43,7 @@ function LoadCfgFile():boolean;
 //检测连接状态
 procedure _CheckSvrConn();
 //显示错误提示
-procedure ShowErrMsg();
+procedure ShowErrMsg(const IsShow:Boolean=false);
 //清除驾驶员信息
 procedure _ClearDriver();
 //查询驾驶员信息
@@ -69,6 +69,7 @@ var
   edtDriverName: TEdit;
   edtEngineNum: TEdit;
   edtProjectNum: TEdit;
+  edtMsg:TEdit;
 
   SvrIP:String;
   SvrPort:Word;
@@ -157,7 +158,7 @@ begin
   end;
 end;
 
-procedure ShowErrMsg();
+procedure ShowErrMsg(const IsShow:Boolean=false);
 var
   ErrMsg:String;
 begin
@@ -165,7 +166,10 @@ begin
   ErrMsg:=GetErrCodeStr(Pc.LastErrCode);
   if Pc.LastErrCode=NormalErrCode then
      ErrMsg:=ErrMsg+Pc.NormalErr.Msg;
-  ShowMessage(utf8Encode(ErrMsg));
+  if IsShow then
+     ShowMessage(utf8Encode(ErrMsg))
+  else
+     edtMsg.Text:=utf8Encode(ErrMsg);
 end;
 
 procedure _ClearDriver();
@@ -344,7 +348,7 @@ begin
     U_Guard.FullCardNum:=InttoStr(GuardCardNum);
     if not Pc.GetGuardInfo(U_Guard) then
     begin
-      ShowErrMsg();
+      ShowErrMsg(True);
       Exit;
     end;
     Result:=True;
