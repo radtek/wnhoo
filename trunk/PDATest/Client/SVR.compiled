@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <CONFIG>
-  <Compiler Date="1061972519" Value="C:\pp\bin\i386-win32\fpc.exe"/>
-  <Params Value=" -MDelphi -Scghi -O1 -Twince -Parm -Xs -vewnhi -l -FuF:\wnhoo\PDATest\Client\ -FEF:\wnhoo\PDATest\Client\bin/ -osvr.dll SVR.lpr"/>
+  <Compiler Date="1064269226" Value="C:\codetyphon\fpc\bin\i386-win32\fpc.exe"/>
+  <Params Value=" -MDelphi -Scghi -O1 -Twince -Parm -Xs -vewnhi -l -FuE:\wnhoo\PDATest\Client\ -FEE:\wnhoo\PDATest\Client\bin/ -osvr.dll SVR.lpr"/>
 </CONFIG>
