@@ -9,7 +9,7 @@ interface
 
 uses
 
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, IdHTTP, BASEXMLAPI,u_ICBCXMLAPI;
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, IdHTTP, BASEXMLAPI, u_ICBCXMLAPI;
 
 type
 
@@ -33,8 +33,8 @@ type
   public
     function Sign(const DataStr: string; var rtDataStr: string): Boolean;
     function verify_sign(const DataStr: string; var rtDataStr: string): Boolean;
-    function QueryRequest(const pub: TPubRec; const reqData: String;
-      var rtDataStr: String): Boolean;
+    function QueryRequest(const pub: TPubRec; const reqData: string;
+      var rtDataStr: string): Boolean;
     property HTTPS_URL: string read FHTTPS_URL write FHTTPS_URL;
     property SIGN_URL: string read FSIGN_URL write FSIGN_URL;
   end;
@@ -73,16 +73,17 @@ end;
 
 procedure TSign.ParserXML;
 begin
+  inherited;
   FillChar(FSR, Sizeof(TSignRec), 0);
   //错误代码
-  FSR.RtCode := FormatXMLDOMNodeValue(SelectSingleNode('/html/head/result'));
+  FSR.RtCode := GetSingleNodeValue('/html/head/result');
   //错误提示
-  FSR.RtStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/head/title'));
+  FSR.RtStr := GetSingleNodeValue('/html/head/title');
   //数据
   if FSR.RtCode = '0' then
-    FSR.DataStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/body/sign'))
+    FSR.DataStr := GetSingleNodeValue('/html/body/sign')
   else
-    FSR.DataStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/body'));
+    FSR.DataStr := GetSingleNodeValue('/html/body');
 end;
 
 { TVerifySignXML }
@@ -97,23 +98,24 @@ end;
 
 procedure TVerifySign.ParserXML;
 begin
+  inherited;
   FillChar(FVSR, Sizeof(TVerifySignRec), 0);
   //错误代码
-  FVSR.RtCode := FormatXMLDOMNodeValue(SelectSingleNode('/html/head/result'));
+  FVSR.RtCode := GetSingleNodeValue('/html/head/result');
   //错误提示
-  FVSR.RtStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/head/title'));
+  FVSR.RtStr := GetSingleNodeValue('/html/head/title');
   //数据
   if FVSR.RtCode = '0' then
-    FVSR.DataStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/body/sic'))
+    FVSR.DataStr := GetSingleNodeValue('/html/body/sic')
   else
-    FVSR.DataStr := FormatXMLDOMNodeValue(SelectSingleNode('/html/body'));
+    FVSR.DataStr := GetSingleNodeValue('/html/body');
 
   //还有很多结果数据，见NC安装目录手册说明
 end;
 
 { TNCSvr }
 
-procedure TNCSvr.SetHttpParams(Const http:TIdHttp);
+procedure TNCSvr.SetHttpParams(const http: TIdHttp);
 begin
   http.Request.Clear;
   http.Request.Clear;
@@ -134,10 +136,10 @@ end;
 function TNCSvr.Sign(const DataStr: string; var rtDataStr: string): Boolean;
 var
   DataSm: TStringStream;
-  http:TIdHTTP;
+  http: TIdHTTP;
 begin
   Result := False;
-  http:=TIdHTTP.Create(self);
+  http := TIdHTTP.Create(self);
   DataSm := TStringStream.Create(DataStr);
   try
     DataSm.Position := 0;
@@ -162,10 +164,10 @@ end;
 function TNCSvr.verify_sign(const DataStr: string; var rtDataStr: string): Boolean;
 var
   DataSm: TStringStream;
-  http:TIdHTTP;
+  http: TIdHTTP;
 begin
   Result := False;
-  http:=TIdHTTP.Create(self);
+  http := TIdHTTP.Create(self);
   DataSm := TStringStream.Create(DataStr);
   try
     DataSm.Position := 0;
@@ -187,16 +189,16 @@ begin
   end;
 end;
 
-function TNCSvr.QueryRequest(const pub:TPubRec;const reqData:String;var rtDataStr:String):Boolean;
+function TNCSvr.QueryRequest(const pub: TPubRec; const reqData: string; var rtDataStr: string): Boolean;
 var
   Params: TStrings;
-  HTTPS_URL_Send,RtHtmlSrc: string;
+  HTTPS_URL_Send, RtHtmlSrc: string;
   Pe: Integer;
   Pd: Integer;
   DataLen: Integer;
-  http : TIdHTTP;
+  http: TIdHTTP;
 begin
-  Result:=False;
+  Result := False;
   http := TIdHTTP.Create(self);
   Params := TStringList.Create;
   try
@@ -205,7 +207,7 @@ begin
     //xml包中的证书ID、PackageID的值三者相一致。
     HTTPS_URL_Send := Format(
       '%s/servlet/ICBCCMPAPIReqServlet?userID=%s&PackageID=%s&SendTime=%s',
-      [FHTTPS_URL,pub.ID,pub.fSeqno, FormatDateTime('YYYYMMDDhhnnsszzz', Now)]  );
+      [FHTTPS_URL, pub.ID, pub.fSeqno, FormatDateTime('YYYYMMDDhhnnsszzz', Now)]);
     //////////////////////请求数据格式//////////////////////////////////////////
     //版本号（区分版本时间，暂定0.0.0.1)
     Params.Add('Version=0.0.0.1');
@@ -243,7 +245,7 @@ begin
       if Pd > 0 then
       begin
         rtDataStr := Copy(RtHtmlSrc, Pd + 8, DataLen);
-        Result:=True;
+        Result := True;
       end
       else
       begin

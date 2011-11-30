@@ -8,18 +8,25 @@ unit BASEXMLAPI;
 interface
 
 uses
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants,MSXML;
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, MSXML;
 
 type
   TBASEXMLAPI = class(TObject)
   private
-    function GetIXMLDOMNode: IXMLDOMNode;
+
   protected
     FXD: TXMLDocument;
-    function SelectSingleNode(const queryString: String):IXMLDOMNode;
+    function SelectSingleNode(const queryString: string): IXMLDOMNode; overload;
+    function SelectSingleNode(const ParentNode: IDOMNode; const queryString: string): IXMLDOMNode; overload;
+    //
+    function SelectNodes(const queryString: string): IXMLDOMNodeList; overload;
+    function SelectNodes(const ParentNode: IDOMNode; const queryString: string): IXMLDOMNodeList; overload;
+    //
+    function GetSingleNodeValue(const queryString: string): string; overload;
+    function GetSingleNodeValue(const ParentNode: IDOMNode; const queryString: string): string; overload;
     //XML节点选择
-    function SelectXMLNode(const ParentNode: IXMLNode; const NodeListStr: string): IXMLNode; overload;
-    function SelectXMLNode(const NodeListStr: string): IXMLNode; overload;
+    function SelectXMLSingleNode(const ParentNode: IXMLNode; const NodeListStr: string): IXMLNode; overload;
+    function SelectXMLSingleNode(const NodeListStr: string): IXMLNode; overload;
     //XML 节点创建
     function CreateXMLNode(const ParentNode: IXMLNode;
       const NodeListStr: string): IXMLNode; overload;
@@ -29,20 +36,21 @@ type
     //载入节点信息，子类实现
     procedure ParserXML(); virtual;
   public
-    constructor Create(AOwner: TComponent) ; virtual;
-    destructor Destroy;override;
+    constructor Create(AOwner: TComponent); virtual;
+    destructor Destroy; override;
     //载入并解析
-    function LoadXMLFile(const XmlFile:String): Boolean;
+    function LoadXMLFile(const XmlFile: string): Boolean;
     //设置，并解析
-    function SetXML(const Xml:String): Boolean;
-    function GetXML():String;
+    function SetXML(const Xml: string): Boolean;
+    function GetXML(): string;
   end;
 
 //数据格式化
 function FormatCDATAValue(const str: string): string;
 function FormatXMLNodeValue(const Node: IXMLNode): string;
 function FormatXMLDOMNodeValue(const Node: IXMLDOMNode): string;
-
+//DOMNode -> XMLDOMNode
+function GetIXMLDOMNode(const DOMNode: IDOMNode): IXMLDOMNode;
 implementation
 
 function FormatCDATAValue(const str: string): string;
@@ -51,24 +59,37 @@ begin
 end;
 
 function FormatXMLNodeValue(const Node: IXMLNode): string;
+var
+  DomNode: IXMLDOMNode;
 begin
   Result := '';
   if not assigned(Node) then Exit;
   if not Node.HasChildNodes then Exit;
-  Result :=Node.Text;
+  DomNode := (Node as IXMLDOMNodeRef).GetXMLDOMNode;
+  if not Assigned(DomNode) then Exit;
+  Result := DomNode.Text;
 end;
 
 function FormatXMLDOMNodeValue(const Node: IXMLDOMNode): string;
 begin
   Result := '';
   if not assigned(Node) then Exit;
-  Result :=Node.text;
+  Result := Node.text;
+end;
+
+function GetIXMLDOMNode(const DOMNode: IDOMNode): IXMLDOMNode;
+begin
+  Result := (DOMNode as IXMLDOMNodeRef).GetXMLDOMNode;
+end;
+
+{ TBASEXMLAPI }
+function TBASEXMLAPI.SelectXMLSingleNode(const NodeListStr: string): IXMLNode;
+begin
+  Result := SelectXMLSingleNode(FXD.Node, NodeListStr);
 end;
 
 
-{ TBASEXMLAPI }
-
-function TBASEXMLAPI.SelectXMLNode(const ParentNode: IXMLNode; const NodeListStr: string): IXMLNode;
+function TBASEXMLAPI.SelectXMLSingleNode(const ParentNode: IXMLNode; const NodeListStr: string): IXMLNode;
 var
   TmpNode: IXMLNode;
   NodeNameList: TStringList;
@@ -94,24 +115,48 @@ begin
   end;
 end;
 
-function TBASEXMLAPI.SelectSingleNode(const queryString: String): IXMLDOMNode;
+function TBASEXMLAPI.GetSingleNodeValue(const queryString: string): string;
 begin
-  Result:=GetIXMLDOMNode.selectSingleNode(queryString);
+  Result := GetSingleNodeValue(nil, queryString);
 end;
 
-function TBASEXMLAPI.SelectXMLNode(const NodeListStr: string): IXMLNode;
+function TBASEXMLAPI.GetSingleNodeValue(const ParentNode: IDOMNode; const queryString: string): string;
+var
+  DomNode: IXMLDOMNode;
 begin
-  Result := SelectXMLNode(FXD.Node, NodeListStr);
+  DomNode := SelectSingleNode(ParentNode, queryString);
+  Result := FormatXMLDOMNodeValue(DomNode);
 end;
 
-function   TBASEXMLAPI.GetIXMLDOMNode():IXMLDOMNode;
+function TBASEXMLAPI.SelectNodes(const ParentNode: IDOMNode; const queryString: string): IXMLDOMNodeList;
 begin
-   Result:=(FXD.DocumentElement.DOMNode   as   IXMLDOMNodeRef).GetXMLDOMNode;
+  if Assigned(ParentNode) then
+    Result := GetIXMLDOMNode(ParentNode).selectNodes(queryString)
+  else
+    Result := GetIXMLDOMNode(FXD.DocumentElement.DOMNode).selectNodes(queryString);
 end;
 
-function TBASEXMLAPI.GetXML: String;
+function TBASEXMLAPI.SelectNodes(const queryString: string): IXMLDOMNodeList;
 begin
-  Result:=FXD.XML.Text;
+  Result := SelectNodes(nil, queryString);
+end;
+
+function TBASEXMLAPI.SelectSingleNode(const ParentNode: IDOMNode; const queryString: string): IXMLDOMNode;
+begin
+  if Assigned(ParentNode) then
+    Result := GetIXMLDOMNode(ParentNode).selectSingleNode(queryString)
+  else
+    Result := GetIXMLDOMNode(FXD.DocumentElement.DOMNode).selectSingleNode(queryString);
+end;
+
+function TBASEXMLAPI.SelectSingleNode(const queryString: string): IXMLDOMNode;
+begin
+  Result := SelectSingleNode(nil, queryString);
+end;
+
+function TBASEXMLAPI.GetXML: string;
+begin
+  Result := FXD.XML.Text;
 end;
 
 function TBASEXMLAPI.CreateXMLNode(const ParentNode: IXMLNode; const NodeListStr: string): IXMLNode;
@@ -143,7 +188,7 @@ end;
 
 function TBASEXMLAPI.CreateXMLNode(const NodeListStr: string): IXMLNode;
 begin
-  Result := SelectXMLNode(FXD.Node, NodeListStr);
+  Result := CreateXMLNode(FXD.Node, NodeListStr);
 end;
 
 procedure TBASEXMLAPI.SetXMLNodeValue(const NodeListStr, Value: string);
@@ -170,7 +215,7 @@ begin
   FXD.Free;
 end;
 
-function TBASEXMLAPI.LoadXMLFile(const XmlFile:String): Boolean;
+function TBASEXMLAPI.LoadXMLFile(const XmlFile: string): Boolean;
 var
   xmlFileList: TStringList;
   Stream: TMemoryStream;
@@ -184,7 +229,7 @@ begin
       xmlFileList.LoadFromFile(XmlFile);
       xmlFileList.SaveToStream(Stream);
       Stream.Position := 0;
-      FXD.Active:=False;
+      FXD.Active := False;
       FXD.LoadFromStream(Stream);
       FXD.Active := True;
       //子类实现解析方法
@@ -204,7 +249,7 @@ begin
 
 end;
 
-function TBASEXMLAPI.SetXML(const Xml:String): Boolean;
+function TBASEXMLAPI.SetXML(const Xml: string): Boolean;
 var
   Stream: TStringStream;
 begin
@@ -213,7 +258,7 @@ begin
   try
     try
       Stream.Position := 0;
-      FXD.Active:=False;
+      FXD.Active := False;
       FXD.LoadFromStream(Stream);
       FXD.Active := True;
       //子类实现解析方法

@@ -9,11 +9,7 @@ interface
 
 uses
 
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, BASEXMLAPI;
-
-const
-  PUBSTR='pub';
-  INSTR='in';
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, msxml, Variants, BASEXMLAPI;
 
 type
 
@@ -25,7 +21,11 @@ type
     TranDate: string[8]; //	交易日期	必输项	字符	8	ERP系统产生的交易日期，格式是yyyyMMdd
     TranTime: string[12]; //	交易时间	必输项	字符	12	ERP系统产生的交易时间，格式如hhmmssaaabbb，精确到微秒；
     fSeqno: string[35]; //	指令包序列号	必输项	字符	35	ERP系统产生的指令包序列号，一个集团永远不能重复；
+    //返回用
+    RetCode: string[5]; //	交易返回码	否	字符	5
+    RetMsg: string[100]; //	交易返回描述	否	字符	100
   end;
+
 
   //查询历史明细
   TQueryHistoryDetailsRec = record
@@ -107,6 +107,13 @@ type
     NextTag: string[60]; //	查询下页标识	选输项	字符	60	查询首页上送空；其他页需与银行返回包提供的一致
     ReqReserved1: string[100]; //	请求备用字段1	选输项	字符	100	备用，目前无意义
     ReqReserved2: string[100]; //	请求备用字段2	选输项	字符	100	备用，目前无意义
+    //返回用
+    rd: array of record
+      AreaCode: string[4]; //	地区号	否	字符	4
+      NetName: string[40]; //	网点名称	否	字符	40
+      RepReserved3: string[100]; //	响应备用字段3	否	字符	100	备用，目前无意义
+      RepReserved4: string[100]; //	响应备用字段4	否	字符	100	备用，目前无意义
+    end;
   end;
 
   //行名行号信息下载
@@ -117,27 +124,39 @@ type
     ReqReserved2: string[100]; //	请求备用字段2	可选项	字符	100	备用，目前无意义
   end;
 
-  TICBCXMLAPI = class(TBASEXMLAPI)
+  TICBCRequestAPI = class(TBASEXMLAPI)
   private
     FCMS, Feb: IXMLNode;
-    _in,_pub: IXMLNode;
+    _in, _pub: IXMLNode;
   public
     constructor Create(AOwner: TComponent); override;
     //公共头
-    procedure addPub(const pub: TPubRec);
+    procedure setPub(const pub: TPubRec);
     //查询历史明细
-    procedure addQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
+    procedure setQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
     //多账户余额查询
-    procedure addQueryAccValue(const indata: TQueryAccValueRec);
+    procedure setQueryAccValue(const indata: TQueryAccValueRec);
     //查询网点信息
-    procedure addQueryNetNodeRec(const indata: TQueryNetNodeRec);
+    procedure setQueryNetNodeRec(const indata: TQueryNetNodeRec);
+  end;
+
+  TICBCResponseAPI = class(TBASEXMLAPI)
+  private
+    FCMS, Feb: IXMLNode;
+    _out, _pub: IXMLNode;
+    FPubRec: TPubRec;
+  protected
+    procedure ParserXML(); override;
+  public
+    function getQueryNetNodeRec: TQueryNetNodeRec;
+    property Pub: TPubRec read FPubRec;
   end;
 
 implementation
 
 { TICBCXMLAPI }
 
-constructor TICBCXMLAPI.Create(AOwner: TComponent);
+constructor TICBCRequestAPI.Create(AOwner: TComponent);
 begin
   inherited;
   FXD.Active := True;
@@ -150,19 +169,13 @@ begin
   FXD.DocumentElement := FCMS;
   Feb := FCMS.AddChild('eb');
 
-  _pub := Feb.AddChild(PUBSTR);
-  _in := Feb.AddChild(INSTR);
+  _pub := Feb.AddChild('pub');
+  _in := Feb.AddChild('in');
 end;
 
-procedure TICBCXMLAPI.addQueryNetNodeRec(const indata: TQueryNetNodeRec);
+procedure TICBCRequestAPI.setPub(const pub: TPubRec);
 begin
-  _in.AddChild('NextTag').Text := indata.NextTag;
-  _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
-  _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
-end;
-
-procedure TICBCXMLAPI.addPub(const pub: TPubRec);
-begin
+  _pub.ChildNodes.Clear;
   _pub.AddChild('TransCode').Text := pub.TransCode;
   _pub.AddChild('CIS').Text := pub.CIS;
   _pub.AddChild('BankCode').Text := pub.BankCode;
@@ -172,8 +185,17 @@ begin
   _pub.AddChild('fSeqno').Text := pub.fSeqno;
 end;
 
-procedure TICBCXMLAPI.addQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
+procedure TICBCRequestAPI.setQueryNetNodeRec(const indata: TQueryNetNodeRec);
 begin
+  _in.ChildNodes.Clear;
+  _in.AddChild('NextTag').Text := indata.NextTag;
+  _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
+  _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
+end;
+
+procedure TICBCRequestAPI.setQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
+begin
+  _in.ChildNodes.Clear;
   _in.AddChild('AccNo').Text := indata.AccNo;
   _in.AddChild('BeginDate').Text := indata.BeginDate;
   _in.AddChild('EndDate').Text := indata.EndDate;
@@ -184,11 +206,12 @@ begin
   _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
 end;
 
-procedure TICBCXMLAPI.addQueryAccValue(const indata: TQueryAccValueRec);
+procedure TICBCRequestAPI.setQueryAccValue(const indata: TQueryAccValueRec);
 var
   rd: IXMLNode;
   I: Integer;
 begin
+  _in.ChildNodes.Clear;
   _in.AddChild('TotalNum').Text := indata.TotalNum;
   _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
   _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
@@ -200,6 +223,66 @@ begin
     rd.AddChild('CurrType').Text := indata.rd[i].CurrType;
     rd.AddChild('ReqReserved3').Text := indata.rd[i].ReqReserved3;
     rd.AddChild('ReqReserved4').Text := indata.rd[i].ReqReserved4;
+  end;
+end;
+
+{ TICBCResponseAPI }
+
+procedure TICBCResponseAPI.ParserXML;
+begin
+  inherited;
+  FillChar(FPubRec, SizeOf(TPubRec), 0);
+  FCMS := SelectXMLSingleNode('CMS');
+  Feb := SelectXMLSingleNode(FCMS, 'eb');
+  _pub := SelectXMLSingleNode(Feb, 'pub');
+  _out := SelectXMLSingleNode(Feb, 'out');
+  if Assigned(_pub) then
+  begin
+    FPubRec.TransCode := GetSingleNodeValue(_pub.DOMNode, 'TransCode');
+    FPubRec.CIS := GetSingleNodeValue(_pub.DOMNode, 'CIS');
+    FPubRec.BankCode := GetSingleNodeValue(_pub.DOMNode, 'BankCode');
+    FPubRec.ID := GetSingleNodeValue(_pub.DOMNode, 'ID');
+    FPubRec.TranDate := GetSingleNodeValue(_pub.DOMNode, 'TranDate');
+    FPubRec.TranTime := GetSingleNodeValue(_pub.DOMNode, 'TranTime');
+    FPubRec.fSeqno := GetSingleNodeValue(_pub.DOMNode, 'fSeqno');
+    FPubRec.RetCode := GetSingleNodeValue(_pub.DOMNode, 'RetCode');
+    FPubRec.RetMsg := GetSingleNodeValue(_pub.DOMNode, 'RetMsg');
+  end;
+end;
+
+function TICBCResponseAPI.getQueryNetNodeRec(): TQueryNetNodeRec;
+var
+  I: integer;
+  OutCList: IDOMNodeList;
+  RDList: TList;
+  RDC: IDOMNode;
+begin
+  FillChar(Result, SizeOf(TQueryNetNodeRec), 0);
+  if not Assigned(_out) then Exit;
+  Result.NextTag := GetSingleNodeValue(_out.DOMNode, 'NextTag');
+  Result.ReqReserved1 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved1');
+  Result.ReqReserved2 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved2');
+  //RD
+  OutCList := _out.DOMNode.childNodes;
+  RDList := TList.Create;
+  try
+    for I := 0 to OutCList.length - 1 do
+    begin
+      RDC := OutCList.item[I];
+      if RDC.nodeName = 'rd' then
+        RDList.Add(Pointer(RDC));
+    end;
+    SetLength(Result.rd, RDList.Count);
+    for I := 0 to RDList.Count - 1 do
+    begin
+      RDC := IDOMNode(RDList.Items[I]);
+      Result.rd[I].AreaCode := GetSingleNodeValue(RDC, 'AreaCode');
+      Result.rd[I].NetName := GetSingleNodeValue(RDC, 'NetName');
+      Result.rd[I].RepReserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
+      Result.rd[I].RepReserved3 := GetSingleNodeValue(RDC, 'RepReserved4');
+    end;
+  finally
+    RDList.Free;
   end;
 end;
 

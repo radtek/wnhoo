@@ -36,7 +36,7 @@ object Form1: TForm1
       Top = 10
       Width = 75
       Height = 25
-      Caption = #26597#35810#31867#25351#20196
+      Caption = #26597#35810#31867
       TabOrder = 1
       OnClick = Button4Click
     end
