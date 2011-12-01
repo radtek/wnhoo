@@ -126,18 +126,6 @@ object Form1: TForm1
       end
     end
   end
-  object IdHTTP1: TIdHTTP
-    AllowCookies = True
-    ProxyParams.BasicAuthentication = False
-    ProxyParams.ProxyPort = 0
-    Request.ContentLength = -1
-    Request.Accept = 'text/html, */*'
-    Request.BasicAuthentication = False
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    HTTPOptions = [hoForceEncodeParams]
-    Left = 104
-    Top = 112
-  end
   object IdAntiFreeze1: TIdAntiFreeze
     Left = 56
     Top = 104
@@ -149,7 +137,7 @@ object Form1: TForm1
   end
   object IdDecoderMIME1: TIdDecoderMIME
     FillChar = '='
-    Left = 416
-    Top = 232
+    Left = 288
+    Top = 136
   end
 end

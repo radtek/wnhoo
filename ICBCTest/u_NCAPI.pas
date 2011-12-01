@@ -9,7 +9,7 @@ interface
 
 uses
 
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, IdHTTP, BASEXMLAPI, u_ICBCXMLAPI;
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, IdHTTP, BASEXMLAPI, u_ICBCRec;
 
 type
 

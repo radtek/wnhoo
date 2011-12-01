@@ -4,13 +4,12 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, IdAntiFreezeBase, IdAntiFreeze, IdBaseComponent,
-  IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, ExtCtrls, IdCoder,
-  IdCoder3to4, IdCoderMIME, BASEXMLAPI, u_NCAPI, u_ICBCXMLAPI, ComCtrls;
+  Dialogs, StdCtrls, IdAntiFreezeBase, IdAntiFreeze, ExtCtrls, IdCoder,
+  IdCoder3to4, IdCoderMIME, BASEXMLAPI, u_NCAPI, u_ICBCXMLAPI,u_ICBCRec, ComCtrls,
+  IdBaseComponent;
 
 type
   TForm1 = class(TForm)
-    IdHTTP1: TIdHTTP;
     IdAntiFreeze1: TIdAntiFreeze;
     Panel1: TPanel;
     Button2: TButton;
@@ -103,13 +102,14 @@ var
 begin
 
   FillChar(pub,SizeOf(TPubRec),0);
-  pub.TransCode := 'NETINF';
+  //pub.TransCode := 'NETINF';
+  pub.TransCode := 'QACCBAL';
   pub.CIS := '120990000076433';
   pub.BankCode := '102';
   pub.ID := 'js01.y.1209';
   pub.TranDate := FormatDateTime('YYYYMMDD', Now);
   pub.TranTime := FormatDateTime('hhnnsszzz001', Now);
-  pub.fSeqno := '1234560011';
+  pub.fSeqno := '1234561111';
 
   FillChar(qhd, SizeOf(TQueryHistoryDetailsRec), 0);
   qhd.AccNo := '1209230309049304635';
@@ -117,18 +117,18 @@ begin
   qhd.EndDate := '20111231';
   qhd.MinAmt := '';
 
-  qav.TotalNum := '5';
+  qav.TotalNum := '1';
   qav.ReqReserved1 := '';
   qav.ReqReserved2 := '';
-  {SetLength(qav.rd, StrToInt(qav.TotalNum));
+  SetLength(qav.rd, StrToInt(qav.TotalNum));
   for I := Low(qav.rd) to High(qav.rd) do
   begin
     qav.rd[i].iSeqno := IntToStr(I);
-    qav.rd[i].AccNo := '111';
+    qav.rd[i].AccNo := '6222031202799000087';
     qav.rd[i].CurrType := '';
     qav.rd[i].ReqReserved3 := '';
     qav.rd[i].ReqReserved4 := '';
-  end;}
+  end;
 
   FillChar(qnn,SizeOf(TQueryNetNodeRec),0);
   qnn.NextTag := '';
@@ -138,7 +138,7 @@ begin
   //«Î«ÛXML≤ø∑÷
   FICBCRsq.setPub(pub);
   //FICBCRsq.setQueryHistoryDetails(qhd);
-  //FICBCRsq.setQueryAccValue(qav);
+  FICBCRsq.setQueryAccValue(qav);
   //FICBCRsq.setQueryNetNodeRec(qnn);
   mmo_xmlcmd.Lines.Add(FICBCRsq.GetXML);
   //BASE64±‡¬Î
@@ -149,7 +149,7 @@ begin
     FICBCRsp.SetXML(IdDecoderMIME1.DecodeString(rtDataStr));
     ShowMessage(FICBCRsp.Pub.RetMsg);
 
-    ShowMessage(FICBCRsp.getQueryNetNodeRec().rd[0].AreaCode);
+    //ShowMessage(FICBCRsp.getQueryNetNodeRec().rd[0].AreaCode);
   end;
   mmo_cmdrt.Lines.Add(rtDataStr);
   ShowMessage(IdDecoderMIME1.DecodeString(rtDataStr));
