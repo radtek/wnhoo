@@ -46,14 +46,6 @@ var
 implementation
 
 {$R *.dfm}
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
- FICBCRsq.Free;
-  FSign.Free;
-  FVerifySign.Free;
-  FICBCRsp.Free;
-end;
-
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FNC:=TNCSvr.Create(self);
@@ -61,12 +53,18 @@ begin
   FNC.SIGN_URL:= 'http://192.168.1.188:449';
   //安全http协议服务器
   FNC.HTTPS_URL := 'http://192.168.1.188:448';
-
   FSign := TSign.create(Self);
-
   FVerifySign := TVerifySign.Create(Self);
   FICBCRsq:=TICBCRequestAPI.Create(Self);
   FICBCRsp:=TICBCResponseAPI.Create(self);
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FICBCRsq.Free;
+  FSign.Free;
+  FVerifySign.Free;
+  FICBCRsp.Free;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
