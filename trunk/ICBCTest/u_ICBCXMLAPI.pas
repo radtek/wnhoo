@@ -12,6 +12,7 @@ uses
   SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, msxml, Variants, BASEXMLAPI,u_ICBCRec;
 
 type
+  
   TICBCRequestAPI = class(TBASEXMLAPI)
   private
     FCMS, Feb: IXMLNode;
