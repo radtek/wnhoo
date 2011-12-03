@@ -9,10 +9,10 @@ interface
 
 uses
 
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, msxml, Variants, BASEXMLAPI,u_ICBCRec;
+  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, msxml, Variants, BASEXMLAPI, u_ICBCRec;
 
 type
-  
+
   TICBCRequestAPI = class(TBASEXMLAPI)
   private
     FCMS, Feb: IXMLNode;
@@ -38,6 +38,8 @@ type
     procedure ParserXML(); override;
   public
     function getQueryNetNodeRec: TQueryNetNodeRec;
+    function getQueryAccValue: TQueryAccValueRec;
+    function getQueryHistoryDetails: TQueryHistoryDetailsRec;
     property Pub: TPubRec read FPubRec;
   end;
 
@@ -110,8 +112,8 @@ begin
     rd.AddChild('iSeqno').Text := indata.rd[i].iSeqno;
     rd.AddChild('AccNo').Text := indata.rd[i].AccNo;
     rd.AddChild('CurrType').Text := indata.rd[i].CurrType;
-    rd.AddChild('ReqReserved3').Text := indata.rd[i].ReqReserved3;
-    rd.AddChild('ReqReserved4').Text := indata.rd[i].ReqReserved4;
+    rd.AddChild('ReqReserved3').Text := indata.rd[i]._Reserved3;
+    rd.AddChild('ReqReserved4').Text := indata.rd[i]._Reserved4;
   end;
 end;
 
@@ -167,13 +169,128 @@ begin
       RDC := IDOMNode(RDList.Items[I]);
       Result.rd[I].AreaCode := GetSingleNodeValue(RDC, 'AreaCode');
       Result.rd[I].NetName := GetSingleNodeValue(RDC, 'NetName');
-      Result.rd[I].RepReserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
-      Result.rd[I].RepReserved3 := GetSingleNodeValue(RDC, 'RepReserved4');
+      Result.rd[I]._Reserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
+      Result.rd[I]._Reserved4 := GetSingleNodeValue(RDC, 'RepReserved4');
     end;
   finally
     RDList.Free;
   end;
 end;
 
+function TICBCResponseAPI.getQueryAccValue(): TQueryAccValueRec;
+var
+  I: integer;
+  OutCList: IDOMNodeList;
+  RDList: TList;
+  RDC: IDOMNode;
+begin
+  FillChar(Result, SizeOf(TQueryAccValueRec), 0);
+  if not Assigned(_out) then Exit;
+  Result.TotalNum := GetSingleNodeValue(_out.DOMNode, 'TotalNum');
+  Result.ReqReserved1 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved1');
+  Result.ReqReserved2 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved2');
+  //RD
+  OutCList := _out.DOMNode.childNodes;
+  RDList := TList.Create;
+  try
+    for I := 0 to OutCList.length - 1 do
+    begin
+      RDC := OutCList.item[I];
+      if RDC.nodeName = 'rd' then
+        RDList.Add(Pointer(RDC));
+    end;
+    SetLength(Result.rd, RDList.Count);
+    for I := 0 to RDList.Count - 1 do
+    begin
+      RDC := IDOMNode(RDList.Items[I]);
+      Result.rd[I].iSeqno := GetSingleNodeValue(RDC, 'iSeqno');
+      Result.rd[I].AccNo := GetSingleNodeValue(RDC, 'AccNo');
+      Result.rd[I].CurrType := GetSingleNodeValue(RDC, 'CurrType');
+
+      Result.rd[I].CashExf := GetSingleNodeValue(RDC, 'CashExf');
+      Result.rd[I].AcctProperty := GetSingleNodeValue(RDC, 'AcctProperty');
+      Result.rd[I].AccBalance := GetSingleNodeValue(RDC, 'AccBalance');
+      Result.rd[I].Balance := GetSingleNodeValue(RDC, 'Balance');
+      Result.rd[I].UsableBalance := GetSingleNodeValue(RDC, 'UsableBalance');
+      Result.rd[I].FrzAmt := GetSingleNodeValue(RDC, 'FrzAmt');
+      Result.rd[I].QueryTime := GetSingleNodeValue(RDC, 'QueryTime');
+      Result.rd[I].iRetCode := GetSingleNodeValue(RDC, 'iRetCode');
+      Result.rd[I].iRetMsg := GetSingleNodeValue(RDC, 'iRetMsg');
+
+      Result.rd[I]._Reserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
+      Result.rd[I]._Reserved4 := GetSingleNodeValue(RDC, 'RepReserved4');
+    end;
+  finally
+    RDList.Free;
+  end;
+end;
+
+function TICBCResponseAPI.getQueryHistoryDetails(): TQueryHistoryDetailsRec;
+var
+  I: integer;
+  OutCList: IDOMNodeList;
+  RDList: TList;
+  RDC: IDOMNode;
+begin
+  FillChar(Result, SizeOf(TQueryHistoryDetailsRec), 0);
+  if not Assigned(_out) then Exit;
+  Result.AccNo := GetSingleNodeValue(_out.DOMNode, 'AccNo');
+
+  Result.AccName := GetSingleNodeValue(_out.DOMNode, 'AccName');
+  Result.CurrType := GetSingleNodeValue(_out.DOMNode, 'CurrType');
+
+  Result.BeginDate := GetSingleNodeValue(_out.DOMNode, 'BeginDate');
+  Result.EndDate := GetSingleNodeValue(_out.DOMNode, 'EndDate');
+  Result.MinAmt := GetSingleNodeValue(_out.DOMNode, 'MinAmt');
+  Result.MaxAmt := GetSingleNodeValue(_out.DOMNode, 'MaxAmt');
+  Result.NextTag := GetSingleNodeValue(_out.DOMNode, 'NextTag');
+
+  Result.TotalNum := GetSingleNodeValue(_out.DOMNode, 'TotalNum');
+
+  Result.ReqReserved1 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved1');
+  Result.ReqReserved2 := GetSingleNodeValue(_out.DOMNode, 'ReqReserved2');
+  //RD
+  OutCList := _out.DOMNode.childNodes;
+  RDList := TList.Create;
+  try
+    for I := 0 to OutCList.length - 1 do
+    begin
+      RDC := OutCList.item[I];
+      if RDC.nodeName = 'rd' then
+        RDList.Add(Pointer(RDC));
+    end;
+    SetLength(Result.rd, RDList.Count);
+    for I := 0 to RDList.Count - 1 do
+    begin
+      RDC := IDOMNode(RDList.Items[I]);
+      Result.rd[I].Drcrf := GetSingleNodeValue(RDC, 'Drcrf');
+      Result.rd[I].VouhNo := GetSingleNodeValue(RDC, 'VouhNo');
+      Result.rd[I].DebitAmount := GetSingleNodeValue(RDC, 'DebitAmount');
+      Result.rd[I].CreditAmount := GetSingleNodeValue(RDC, 'CreditAmount');
+      Result.rd[I].Balance := GetSingleNodeValue(RDC, 'Balance');
+      Result.rd[I].RecipBkNo := GetSingleNodeValue(RDC, 'RecipBkNo');
+      Result.rd[I].RecipBkName := GetSingleNodeValue(RDC, 'RecipBkName');
+      Result.rd[I].RecipAccNo := GetSingleNodeValue(RDC, 'RecipAccNo');
+      Result.rd[I].RecipName := GetSingleNodeValue(RDC, 'RecipName');
+      Result.rd[I].Summary := GetSingleNodeValue(RDC, 'Summary');
+      Result.rd[I].UseCN := GetSingleNodeValue(RDC, 'UseCN');
+
+      Result.rd[I].PostScript := GetSingleNodeValue(RDC, 'PostScript');
+      Result.rd[I].BusCode := GetSingleNodeValue(RDC, 'BusCode');
+      Result.rd[I].Date := GetSingleNodeValue(RDC, 'Date');
+      Result.rd[I].Time := GetSingleNodeValue(RDC, 'Time');
+      Result.rd[I].Ref := GetSingleNodeValue(RDC, 'Ref');
+      Result.rd[I].Oref := GetSingleNodeValue(RDC, 'Oref');
+      Result.rd[I].EnSummary := GetSingleNodeValue(RDC, 'EnSummary');
+      Result.rd[I].BusType := GetSingleNodeValue(RDC, 'BusType');
+      Result.rd[I].VouhType := GetSingleNodeValue(RDC, 'VouhType');
+      Result.rd[I].AddInfo := GetSingleNodeValue(RDC, 'AddInfo');
+      Result.rd[I]._Reserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
+      Result.rd[I]._Reserved4 := GetSingleNodeValue(RDC, 'RepReserved4');
+    end;
+  finally
+    RDList.Free;
+  end;
+end;
 end.
 

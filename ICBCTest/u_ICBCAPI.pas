@@ -21,12 +21,21 @@ type
     FVerifySign: TVerifySign;
     FICBCRsq: TICBCRequestAPI;
     FICBCRspon: TICBCResponseAPI;
-    function QueryAccValue(const Pub: TPubRec;
-      var qav: TQueryAccValueRec): Boolean;
 
+    FCIS, FBankCode, FID: string;
+    function getPubRec(const TransCode, fSeqno: string): TPubRec;
   public
+    function QueryAccValue(const fSeqno: string; var qav: TQueryAccValueRec;
+      var rtDataStr: string): Boolean;
+    function QueryHistoryDetails(const fSeqno: string;
+      var qhd: TQueryHistoryDetailsRec; var rtDataStr: string): Boolean;
+      
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+
+    property CIS: string read FCIS write FCIS;
+    property BankCode: string read FBankCode write FBankCode;
+    property ID: string read FID write FID;
   end;
 
 implementation
@@ -59,19 +68,36 @@ begin
   inherited;
 end;
 
-function TICBCAPI.QueryAccValue(const Pub: TPubRec; var qav: TQueryAccValueRec): Boolean;
-var
-  rtDataStr, rtDataBase64Str: string;
+function TICBCAPI.getPubRec(const TransCode, fSeqno: string): TPubRec;
 begin
+  FillChar(Result, SizeOf(TPubRec), 0);
+  Result.TransCode := TransCode;
+  Result.CIS := FCIS;
+  Result.BankCode := FBankCode;
+  Result.ID := FID;
+  Result.TranDate := FormatDateTime('YYYYMMDD', Now);
+ //去掉微秒
+  Result.TranTime := FormatDateTime('hhnnsszzz', Now);
+  Result.fSeqno := fSeqno;
+end;
+
+function TICBCAPI.QueryAccValue(const fSeqno: string; var qav: TQueryAccValueRec;
+  var rtDataStr: string): Boolean;
+var
+  rtDataBase64Str: string;
+  pub: TPubRec;
+begin
+  Result := False;
   rtDataStr := '';
   rtDataBase64Str := '';
   //请求XML部分
-  FICBCRsq.setPub(Pub);
+  pub := getPubRec('QACCBAL', fSeqno);
+  FICBCRsq.setPub(pub);
   FICBCRsq.setQueryAccValue(qav);
   //GP BASE64编码 ,直接明文
   if not FNC.QueryRequest(Pub, FICBCRsq.GetXML, rtDataBase64Str) then
   begin
-    //errcode
+    //errorCode
     rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
     Exit;
   end;
@@ -79,14 +105,52 @@ begin
   rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
   //解析
   FICBCRspon.SetXML(rtDataStr);
-  if FICBCRspon.Pub.RetCode <> '0' then
+  Pub := FICBCRspon.Pub;
+  if Pub.RetCode <> '0' then
   begin
-       //错误返回
-       Exit;
+    rtDataStr := Pub.RetMsg;
+    Exit;
   end;
   //返回结果
+  qav := FICBCRspon.getQueryAccValue();
+  Result := True;
 end;
 
+
+function TICBCAPI.QueryHistoryDetails(const fSeqno: string; var qhd: TQueryHistoryDetailsRec;
+  var rtDataStr: string): Boolean;
+var
+  rtDataBase64Str: string;
+  pub: TPubRec;
+begin
+  Result := False;
+  rtDataStr := '';
+  rtDataBase64Str := '';
+  //请求XML部分
+  pub := getPubRec('QHISD', fSeqno);
+  FICBCRsq.setPub(pub);
+  FICBCRsq.setQueryHistoryDetails(qhd);
+  //GP BASE64编码 ,直接明文
+  if not FNC.QueryRequest(Pub, FICBCRsq.GetXML, rtDataBase64Str) then
+  begin
+    //errorCode
+    rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+    Exit;
+  end;
+  //解码
+  rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+  //解析
+  FICBCRspon.SetXML(rtDataStr);
+  Pub := FICBCRspon.Pub;
+  if Pub.RetCode <> '0' then
+  begin
+    rtDataStr := Pub.RetMsg;
+    Exit;
+  end;
+  //返回结果
+  qhd := FICBCRspon.getQueryHistoryDetails();
+  Result := True;
+end;
 
 end.
 

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, IdAntiFreezeBase, IdAntiFreeze, ExtCtrls,
-   u_ICBCAPI, u_ICBCRec, ComCtrls,
+  u_ICBCAPI, u_ICBCRec, ComCtrls,
   IdBaseComponent;
 
 type
@@ -23,10 +23,12 @@ type
     Button4: TButton;
     TabSheet4: TTabSheet;
     Memo1: TMemo;
+    Button1: TButton;
     procedure Button4Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button1Click(Sender: TObject);
   private
     FICBC: TICBCAPI;
     { Private declarations }
@@ -40,6 +42,40 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  qhd: TQueryHistoryDetailsRec;
+  I: Integer;
+  rtDataStr: string;
+begin
+  FillChar(qhd,SizeOf(TQueryHistoryDetailsRec),0);
+  qhd.AccNo := '1209230309049304635';
+  qhd.BeginDate:='20011111';
+  qhd.EndDate:='20121231';
+  qhd.MinAmt:='0';
+  qhd.MaxAmt:='1000000';
+  qhd.NextTag:='';
+  qhd.ReqReserved1:='';
+  qhd.ReqReserved2:='';
+
+  if not FICBC.QueryHistoryDetails('1234561112', qhd, rtDataStr) then
+  begin
+    ShowMessage('标准错误:' + rtDataStr);
+    Exit;
+  end;
+
+  mmo_cmdrt.Lines.Add('正常数据:');
+  mmo_cmdrt.Lines.Add(rtDataStr);
+
+  for I := Low(qhd.rd) to High(qhd.rd) do
+  begin
+    mmo_cmdrt.Lines.Add('=====================================');
+    mmo_cmdrt.Lines.Add(qhd.rd[i].Drcrf);
+
+  end;
+end;
+
 
 procedure TForm1.Button2Click(Sender: TObject);
  {var
@@ -64,30 +100,12 @@ begin
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
-{var
-  pub: TPubRec;
-  qhd: TQueryHistoryDetailsRec;
+var
   qav: TQueryAccValueRec;
-  qnn: TQueryNetNodeRec;
   I: Integer;
-  xmlCmdBase64,rtDataStr:String; }
+  rtDataStr: string;
 begin
-  {FillChar(pub,SizeOf(TPubRec),0);
-  pub.TransCode := 'NETINF';
-  //pub.TransCode := 'QACCBAL';
-  pub.CIS := '120990000076433';
-  pub.BankCode := '102';
-  pub.ID := 'js01.y.1209';
-  pub.TranDate := FormatDateTime('YYYYMMDD', Now);
-  pub.TranTime := FormatDateTime('hhnnsszzz001', Now);
-  pub.fSeqno := '1234561111';
-
-  FillChar(qhd, SizeOf(TQueryHistoryDetailsRec), 0);
-  qhd.AccNo := '1209230309049304635';
-  qhd.BeginDate := '20011201';
-  qhd.EndDate := '20111231';
-  qhd.MinAmt := '';
-
+  FillChar(qav,SizeOf(TQueryAccValueRec),0);
   qav.TotalNum := '1';
   qav.ReqReserved1 := '';
   qav.ReqReserved2 := '';
@@ -95,39 +113,41 @@ begin
   for I := Low(qav.rd) to High(qav.rd) do
   begin
     qav.rd[i].iSeqno := IntToStr(I);
-    qav.rd[i].AccNo :='1209230309049304635';// '6222031202799000087';
+    qav.rd[i].AccNo := '1209230309049304635'; // '6222031202799000087';
     qav.rd[i].CurrType := '';
-    qav.rd[i].ReqReserved3 := '';
-    qav.rd[i].ReqReserved4 := '';
+    qav.rd[i]._Reserved3 := '';
+    qav.rd[i]._Reserved4 := '';
   end;
 
-  FillChar(qnn,SizeOf(TQueryNetNodeRec),0);
-  qnn.NextTag := '';
-  qnn.ReqReserved1 := '';
-  qnn.ReqReserved2 := '';
-
-  //请求XML部分
-  FICBCRsq.setPub(pub);
-  //FICBCRsq.setQueryHistoryDetails(qhd);
-  //FICBCRsq.setQueryAccValue(qav);
-  FICBCRsq.setQueryNetNodeRec(qnn);
-  mmo_xmlcmd.Lines.Add(FICBCRsq.GetXML);
-  //GP BASE64编码 ,直接明文
-  xmlCmdBase64:=FICBCRsq.GetXML;// IdEncoderMIME1.Encode(FICBCRsq.GetXML);
-  if FNC.QueryRequest(pub,xmlCmdBase64,rtDataStr) then
+  if not FICBC.QueryAccValue('1234561111', qav, rtDataStr) then
   begin
-    mmo_cmdrt.Lines.Add('正常数据:');
-    mmo_cmdrt.Lines.Add(IdDecoderMIME1.DecodeString(rtDataStr));
-    FICBCRsp.SetXML(IdDecoderMIME1.DecodeString(rtDataStr));
-  ShowMessage(FICBCRsp.Pub.RetMsg);
-    if FICBCRsp.Pub.RetCode='0' then
-    begin
-
-    //ShowMessage(FICBCRsp.getQueryNetNodeRec().rd[0].AreaCode);
-    end;
+    ShowMessage('标准错误:' + rtDataStr);
+    Exit;
   end;
+
+  mmo_cmdrt.Lines.Add('正常数据:');
   mmo_cmdrt.Lines.Add(rtDataStr);
-  ShowMessage(IdDecoderMIME1.DecodeString(rtDataStr));}
+
+  for I := Low(qav.rd) to High(qav.rd) do
+  begin
+    mmo_cmdrt.Lines.Add('=====================================');
+    mmo_cmdrt.Lines.Add(qav.rd[i].iSeqno);
+    mmo_cmdrt.Lines.Add(qav.rd[i].AccNo);
+    mmo_cmdrt.Lines.Add(qav.rd[i].CurrType);
+
+    mmo_cmdrt.Lines.Add(qav.rd[I].CashExf);
+    mmo_cmdrt.Lines.Add(qav.rd[I].AcctProperty);
+    mmo_cmdrt.Lines.Add(qav.rd[I].AccBalance);
+    mmo_cmdrt.Lines.Add(qav.rd[I].Balance);
+    mmo_cmdrt.Lines.Add(qav.rd[I].UsableBalance);
+    mmo_cmdrt.Lines.Add(qav.rd[I].FrzAmt);
+    mmo_cmdrt.Lines.Add(qav.rd[I].QueryTime);
+    mmo_cmdrt.Lines.Add(qav.rd[I].iRetCode);
+    mmo_cmdrt.Lines.Add(qav.rd[I].iRetMsg);
+
+    mmo_cmdrt.Lines.Add(qav.rd[i]._Reserved3);
+    mmo_cmdrt.Lines.Add(qav.rd[i]._Reserved4);
+  end;
 end;
 
 
@@ -140,6 +160,9 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FICBC := TICBCAPI.Create(self);
+  FICBC.CIS := '120990000076433';
+  FICBC.BankCode := '102';
+  FICBC.ID := 'js01.y.1209';
 end;
 
 end.
