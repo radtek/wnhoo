@@ -36,9 +36,18 @@ object Form1: TForm1
       Top = 10
       Width = 75
       Height = 25
-      Caption = #26597#35810#31867
+      Caption = #26597#35810#21345#20313
       TabOrder = 1
       OnClick = Button4Click
+    end
+    object Button1: TButton
+      Left = 208
+      Top = 10
+      Width = 97
+      Height = 25
+      Caption = #26597#35810#21382#21490#32426#24405
+      TabOrder = 2
+      OnClick = Button1Click
     end
   end
   object PageControl1: TPageControl

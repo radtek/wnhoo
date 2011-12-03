@@ -1,6 +1,9 @@
 program Project1;
 
+{.$DEFINE FullDebugMode}
+
 uses
+  FastMM4,
   Forms,
   Unit1 in 'Unit1.pas' {Form1};
 
