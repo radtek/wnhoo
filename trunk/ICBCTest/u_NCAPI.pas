@@ -33,7 +33,7 @@ type
   public
     function Sign(const DataStr: string; var rtDataStr: string): Boolean;
     function verify_sign(const DataStr: string; var rtDataStr: string): Boolean;
-    function QueryRequest(const pub: TPubRec; const reqData: string;
+    function Request(const pub: TPubRec; const reqData: string;
       var rtDataStr: string): Boolean;
     property HTTPS_URL: string read FHTTPS_URL write FHTTPS_URL;
     property SIGN_URL: string read FSIGN_URL write FSIGN_URL;
@@ -189,7 +189,7 @@ begin
   end;
 end;
 
-function TNCSvr.QueryRequest(const pub: TPubRec; const reqData: string; var rtDataStr: string): Boolean;
+function TNCSvr.Request(const pub: TPubRec; const reqData: string; var rtDataStr: string): Boolean;
 var
   Params: TStrings;
   HTTPS_URL_Send, RtHtmlSrc: string;
@@ -224,7 +224,7 @@ begin
     Params.Add(Format('PackageID=%s', [pub.fSeqno]));
     //客户的证书公钥信息（进行BASE64编码；NC客户送空)
     Params.Add(Format('Cert=%s', ['']));
-    //客户的xml请求数据  BASE64
+    //客户的xml请求数据
     Params.Add(Format('reqData=%s', [reqData]));
 
     //统一设置参数

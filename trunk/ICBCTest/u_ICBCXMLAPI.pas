@@ -27,6 +27,8 @@ type
     procedure setQueryAccValue(const indata: TQueryAccValueRec);
     //查询网点信息
     procedure setQueryNetNodeRec(const indata: TQueryNetNodeRec);
+    //支付指令提交
+    procedure setPayEntRec(const indata: TPayEntRec);
   end;
 
   TICBCResponseAPI = class(TBASEXMLAPI)
@@ -62,6 +64,62 @@ begin
 
   _pub := Feb.AddChild('pub');
   _in := Feb.AddChild('in');
+end;
+
+procedure TICBCRequestAPI.setPayEntRec(const indata: TPayEntRec);
+var
+  rd: IXMLNode;
+  I: Integer;
+begin
+  _in.ChildNodes.Clear;
+  _in.AddChild('OnlBatF').Text := indata.OnlBatF;
+  _in.AddChild('SettleMode').Text := indata.SettleMode;
+  _in.AddChild('TotalNum').Text := indata.TotalNum;
+  _in.AddChild('TotalAmt').Text := indata.TotalAmt;
+  _in.AddChild('SignTime').Text := indata.SignTime;
+  _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
+  _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
+  for I := Low(indata.rd) to High(indata.rd) do
+  begin
+    rd := _in.AddChild('rd');
+    rd.AddChild('iSeqno').Text := indata.rd[i].iSeqno;
+    rd.AddChild('ReimburseNo').Text := indata.rd[i].ReimburseNo;
+    rd.AddChild('ReimburseNum').Text := indata.rd[i].ReimburseNum;
+    rd.AddChild('StartDate').Text := indata.rd[i].StartDate;
+    rd.AddChild('StartTime').Text := indata.rd[i].StartTime;
+    rd.AddChild('PayType').Text := indata.rd[i].PayType;
+    rd.AddChild('PayAccNo').Text := indata.rd[i].PayAccNo;
+    rd.AddChild('PayAccNameCN').Text := indata.rd[i].PayAccNameCN;
+    rd.AddChild('PayAccNameEN').Text := indata.rd[i].PayAccNameEN;
+    rd.AddChild('RecAccNo').Text := indata.rd[i].RecAccNo;
+    rd.AddChild('RecAccNameCN').Text := indata.rd[i].RecAccNameCN;
+    rd.AddChild('RecAccNameEN').Text := indata.rd[i].RecAccNameEN;
+    rd.AddChild('SysIOFlg').Text := indata.rd[i].SysIOFlg;
+    rd.AddChild('IsSameCity').Text := indata.rd[i].IsSameCity;
+    rd.AddChild('Prop').Text := indata.rd[i].Prop;
+    rd.AddChild('RecICBCCode').Text := indata.rd[i].RecICBCCode;
+    rd.AddChild('RecCityName').Text := indata.rd[i].RecCityName;
+    rd.AddChild('RecBankNo').Text := indata.rd[i].RecBankNo;
+    rd.AddChild('RecBankName').Text := indata.rd[i].RecBankName;
+    rd.AddChild('CurrType').Text := indata.rd[i].CurrType;
+    rd.AddChild('PayAmt').Text := indata.rd[i].PayAmt;
+    rd.AddChild('UseCode').Text := indata.rd[i].UseCode;
+    rd.AddChild('UseCN').Text := indata.rd[i].UseCN;
+    rd.AddChild('EnSummary').Text := indata.rd[i].EnSummary;
+    rd.AddChild('PostScript').Text := indata.rd[i].PostScript;
+    rd.AddChild('Summary').Text := indata.rd[i].Summary;
+    rd.AddChild('Ref').Text := indata.rd[i].Ref;
+    rd.AddChild('Oref').Text := indata.rd[i].Oref;
+    rd.AddChild('ERPSqn').Text := indata.rd[i].ERPSqn;
+    rd.AddChild('BusCode').Text := indata.rd[i].BusCode;
+    rd.AddChild('ERPcheckno').Text := indata.rd[i].ERPcheckno;
+    rd.AddChild('CrvouhType').Text := indata.rd[i].CrvouhType;
+    rd.AddChild('CrvouhName').Text := indata.rd[i].CrvouhName;
+    rd.AddChild('CrvouhNo').Text := indata.rd[i].CrvouhNo;
+
+    rd.AddChild('ReqReserved3').Text := indata.rd[i]._Reserved3;
+    rd.AddChild('ReqReserved4').Text := indata.rd[i]._Reserved4;
+  end;
 end;
 
 procedure TICBCRequestAPI.setPub(const pub: TPubRec);
@@ -129,7 +187,7 @@ begin
   _out := SelectXMLSingleNode(Feb, 'out');
   if Assigned(_pub) then
   begin
-    FPubRec.TransCode := GetSingleNodeValue(_pub.DOMNode, 'TransCode');
+    StrPCopy(FPubRec.TransCode,GetSingleNodeValue(_pub.DOMNode, 'TransCode'));
     FPubRec.CIS := GetSingleNodeValue(_pub.DOMNode, 'CIS');
     FPubRec.BankCode := GetSingleNodeValue(_pub.DOMNode, 'BankCode');
     FPubRec.ID := GetSingleNodeValue(_pub.DOMNode, 'ID');

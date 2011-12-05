@@ -135,6 +135,24 @@ object Form1: TForm1
       end
     end
   end
+  object Button3: TButton
+    Left = 311
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = #25903#20184#25351#20196
+    TabOrder = 2
+    OnClick = Button3Click
+  end
+  object Button5: TButton
+    Left = 392
+    Top = 8
+    Width = 75
+    Height = 25
+    Caption = 'Button5'
+    TabOrder = 3
+    OnClick = Button5Click
+  end
   object IdAntiFreeze1: TIdAntiFreeze
     Left = 56
     Top = 104
