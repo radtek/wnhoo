@@ -24,11 +24,15 @@ type
     TabSheet4: TTabSheet;
     Memo1: TMemo;
     Button1: TButton;
+    Button3: TButton;
+    Button5: TButton;
     procedure Button4Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     FICBC: TICBCAPI;
     { Private declarations }
@@ -49,15 +53,15 @@ var
   I: Integer;
   rtDataStr: string;
 begin
-  FillChar(qhd,SizeOf(TQueryHistoryDetailsRec),0);
+  FillChar(qhd, SizeOf(TQueryHistoryDetailsRec), 0);
   qhd.AccNo := '1209230309049304635';
-  qhd.BeginDate:='20011111';
-  qhd.EndDate:='20121231';
-  qhd.MinAmt:='0';
-  qhd.MaxAmt:='1000000';
-  qhd.NextTag:='';
-  qhd.ReqReserved1:='';
-  qhd.ReqReserved2:='';
+  qhd.BeginDate := '20011111';
+  qhd.EndDate := '20121231';
+  qhd.MinAmt := '0';
+  qhd.MaxAmt := '1000000';
+  qhd.NextTag := '';
+  qhd.ReqReserved1 := '';
+  qhd.ReqReserved2 := '';
 
   if not FICBC.QueryHistoryDetails('1234561112', qhd, rtDataStr) then
   begin
@@ -99,13 +103,52 @@ begin
   mmo_rtdata.Lines.Add(FVerifySign.GetText);}
 end;
 
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  pe: TPayEntRec;
+  I, K: Integer;
+  rtDataStr: string;
+begin
+  FillChar(pe, SizeOf(TPayEntRec), 0);
+  pe.OnlBatF := '1'; //联机
+  pe.SettleMode := '0'; //逐笔记账
+  K := 1;
+  pe.TotalNum := IntToStr(K); //
+  pe.TotalAmt := '100'; //
+  pe.SignTime := FormatDateTime('YYYYMMDDhhnnsszzz', Now);
+  SetLength(pe.rd, 1);
+  for I := 0 to K - 1 do
+  begin
+    FillChar(pe.rd[I],SizeOf(pe.rd[I]),0);
+    pe.rd[I].iSeqno := IntToStr(I);
+    pe.rd[I].PayType := '1'; //加急
+    pe.rd[I].PayAccNo := '1209230309049304635';
+    pe.rd[I].PayAccNameCN := '借赵我赵老名对般拉';
+    pe.rd[I].RecAccNo := '6222031202799000087';
+    pe.rd[I].RecAccNameCN := '三套B';
+    pe.rd[I].SysIOFlg := '1';
+    pe.rd[I].RecBankName := '工商银行';
+    pe.rd[I].CurrType := '001';
+    pe.rd[I].PayAmt := '100';
+  end;
+  if not FICBC.PayEnt('1234561113', pe, rtDataStr) then
+  begin
+    ShowMessage('标准错误:' + rtDataStr);
+    Exit;
+  end;
+
+  mmo_cmdrt.Lines.Add('正常数据:');
+  mmo_cmdrt.Lines.Add(rtDataStr);
+end;
+
+
 procedure TForm1.Button4Click(Sender: TObject);
 var
   qav: TQueryAccValueRec;
   I: Integer;
   rtDataStr: string;
 begin
-  FillChar(qav,SizeOf(TQueryAccValueRec),0);
+  FillChar(qav, SizeOf(TQueryAccValueRec), 0);
   qav.TotalNum := '1';
   qav.ReqReserved1 := '';
   qav.ReqReserved2 := '';
@@ -151,6 +194,41 @@ begin
 end;
 
 
+
+procedure TForm1.Button5Click(Sender: TObject);
+Type
+  TQueryNetNodeRec =  packed record
+    NextTag: string[60];
+    ReqReserved1: string[100];
+    ReqReserved2: string[100];
+    rd: array of packed record
+      AreaCode: string[4];
+      NetName: string[40];
+      _Reserved3: string[100];
+      _Reserved4: string[100];
+    end;
+  end;
+var
+  NI:TQueryNetNodeRec;
+  ac:array[0..10] of char;
+  Str:string;
+begin
+  Memo1.Lines.Add(Format('%d',[SizeOf(NI)]));
+  Memo1.Lines.Add(Format('%d',[SizeOf(TQueryNetNodeRec)]));
+  Memo1.Lines.Add('=================' );
+  SetLength(NI.rd,2);
+  Memo1.Lines.Add(Format('%d',[SizeOf(NI)]));
+  Memo1.Lines.Add(Format('%d',[SizeOf(TQueryNetNodeRec)]));
+  Memo1.Lines.Add('=================' );
+  Memo1.Lines.Add(Format('%d',[SizeOf(NI.rd[0])]));
+
+    Memo1.Lines.Add('=================' );
+  Memo1.Lines.Add(Format('%d',[SizeOf(ac)]));
+  Str:='123451234512345';
+  FillChar(ac,SizeOf(ac),0);
+  StrPLCopy(ac,Str,9);
+  Memo1.Lines.Add(StrPas(PChar(Str)));
+end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin

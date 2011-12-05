@@ -5,8 +5,8 @@ interface
 type
 
   //公共头
-  TPubRec = record
-    TransCode: string[10]; //	交易代码	必输项	字符	10	PAYENT
+  TPubRec = packed record
+    TransCode: array[0..10] of Char; //	交易代码	必输项	字符	10	PAYENT
     CIS: string[60]; //	集团CIS号	必输项	字符	60	客户注册时的归属编码
     BankCode: string[3]; //	归属银行编号	必输项	字符	3	客户注册时的归属单位
     ID: string[40]; //	证书ID	必输项	字符	40	无证书客户可上送空
@@ -23,7 +23,7 @@ type
   end;
 
   //查询历史明细
-  TQueryHistoryDetailsRec = record
+  TQueryHistoryDetailsRec = packed record
     AccNo: string[19]; //	查询账号	必输项	数字	19
     //返回专用..................................................................
     AccName: string[80]; //	户名	否	字符	80
@@ -40,7 +40,7 @@ type
     ReqReserved1: string[3]; //	请求包备用字段1	选输项	数字	3	行别,集团有他行帐号时为必输
     ReqReserved2: string[100]; //	请求包备用字段2	选输项	字符	100	备用，目前无意义
     //返回专用..................................................................
-    rd: array of record
+    rd: array of packed record
       Drcrf: string[1]; //	借贷标志	否	数字	1	1:借 2:贷
       VouhNo: string[9]; //	凭证号	否	字符	9
       DebitAmount: string[18]; //	借方发生额	否	数字	18	以币种的最小单位为单位
@@ -70,13 +70,13 @@ type
   end;
 
   //多账户余额查询
-  TQueryAccValueRec = record
+  TQueryAccValueRec = packed record
     //发送专用..................................................................
     TotalNum: string[6]; //	总笔数	必输项	数字	6	需要查询明细的笔数
     ReqReserved1: string[100]; //	请求包备用字段1	选输项	字符	100	备用，目前无意义
     ReqReserved2: string[100]; //	请求包备用字段2	选输项	字符	100	备用，目前无意义
     //..........................................................................
-    rd: array of record
+    rd: array of packed record
       iSeqno: string[35]; //	指令顺序号	必输项	字符	35	不能为空，并且不能重复
       AccNo: string[19]; //	帐号	必输项	数字	19
       CurrType: string[3]; //	币种	选输项	字符	3	工行币种代码,不输入则自动取帐号币种
@@ -99,7 +99,7 @@ type
   end;
 
   //支付指令提交
-  TInOutCMDRec = record
+  TPayEntRec = packed record
     OnlBatF: string[1]; //	联机批量标志	选输项	数字	1	1：联机
     SettleMode: string[1]; //	入账方式	必输项	数字	1	2：并笔入账 0：逐笔记账
     TotalNum: string[6]; //	总笔数	必输项	数字	6	指令包内的指令笔数
@@ -109,7 +109,7 @@ type
     //..........................................................................
     ReqReserved1: string[100]; //	请求备用字段1	选输项	字符	100	备用，目前无意义
     ReqReserved2: string[100]; //	请求备用字段2	选输项	字符	100	备用，目前无意义
-    rd: array of record
+    rd: array of packed record
       iSeqno: string[35]; //	指令顺序号	必输项	字符	35	每笔指令的序号，本包内不重复。（工行只检查包内不重复，不同的包，工行不做指令顺序号重复性的检查。）
       //返回专用................................................................
       OrderNo: string[6]; //	平台交易序号	否	字符	6	银行产生的批次内的小序号
@@ -172,12 +172,12 @@ type
   end;
 
   //网点信息下载
-  TQueryNetNodeRec = record
+  TQueryNetNodeRec =  packed record
     NextTag: string[60]; //	查询下页标识	选输项	字符	60	查询首页上送空；其他页需与银行返回包提供的一致
     ReqReserved1: string[100]; //	请求备用字段1	选输项	字符	100	备用，目前无意义
     ReqReserved2: string[100]; //	请求备用字段2	选输项	字符	100	备用，目前无意义
     //返回专用..................................................................
-    rd: array of record
+    rd: array of packed record
       AreaCode: string[4]; //	地区号	否	字符	4
       NetName: string[40]; //	网点名称	否	字符	40
       _Reserved3: string[100]; //	响应备用字段3	否	字符	100	备用，目前无意义
