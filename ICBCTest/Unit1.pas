@@ -130,8 +130,10 @@ begin
     pe.rd[I].RecBankName := '工商银行';
     pe.rd[I].CurrType := '001';
     pe.rd[I].PayAmt := '100';
+    //对私情况下,用途和备注不能同时为空
+    pe.rd[I].UseCN:='一卡通预存';
   end;
-  if not FICBC.PayEnt('1234561113', pe, rtDataStr) then
+  if not FICBC.PayEnt('1234561116', pe, rtDataStr) then
   begin
     ShowMessage('标准错误:' + rtDataStr);
     Exit;
@@ -140,7 +142,6 @@ begin
   mmo_cmdrt.Lines.Add('正常数据:');
   mmo_cmdrt.Lines.Add(rtDataStr);
 end;
-
 
 procedure TForm1.Button4Click(Sender: TObject);
 var
@@ -153,6 +154,7 @@ begin
   qav.ReqReserved1 := '';
   qav.ReqReserved2 := '';
   SetLength(qav.rd, StrToInt(qav.TotalNum));
+
   for I := Low(qav.rd) to High(qav.rd) do
   begin
     qav.rd[i].iSeqno := IntToStr(I);
@@ -192,8 +194,6 @@ begin
     mmo_cmdrt.Lines.Add(qav.rd[i]._Reserved4);
   end;
 end;
-
-
 
 procedure TForm1.Button5Click(Sender: TObject);
 Type

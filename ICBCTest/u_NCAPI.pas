@@ -125,7 +125,8 @@ begin
   http.Request.Pragma := 'no-cache';
   http.Request.CacheControl := 'no-cache';
   //超时
-  http.ReadTimeout := 9000;
+  http.ReadTimeout := 30000;
+  http.ConnectTimeout:=30000;
   //使用 1.1 协议
   http.HTTPOptions := http.HTTPOptions + [hoKeepOrigProtocol]; //关键这行
   http.ProtocolVersion := pv1_1;
