@@ -55,8 +55,8 @@ var
 begin
   FillChar(qhd, SizeOf(TQueryHistoryDetailsRec), 0);
   qhd.AccNo := '1209230309049304635';
-  qhd.BeginDate := '20011111';
-  qhd.EndDate := '20121231';
+  qhd.BeginDate := '20111201';
+  qhd.EndDate := '20121206';
   qhd.MinAmt := '0';
   qhd.MaxAmt := '1000000';
   qhd.NextTag := '';
@@ -117,23 +117,27 @@ begin
   pe.TotalAmt := '100'; //
   pe.SignTime := FormatDateTime('YYYYMMDDhhnnsszzz', Now);
   SetLength(pe.rd, 1);
+  
   for I := 0 to K - 1 do
   begin
     FillChar(pe.rd[I],SizeOf(pe.rd[I]),0);
     pe.rd[I].iSeqno := IntToStr(I);
     pe.rd[I].PayType := '1'; //加急
+
     pe.rd[I].PayAccNo := '1209230309049304635';
     pe.rd[I].PayAccNameCN := '借赵我赵老名对般拉';
     pe.rd[I].RecAccNo := '6222031202799000087';
     pe.rd[I].RecAccNameCN := '三套B';
+
     pe.rd[I].SysIOFlg := '1';
     pe.rd[I].RecBankName := '工商银行';
     pe.rd[I].CurrType := '001';
     pe.rd[I].PayAmt := '100';
     //对私情况下,用途和备注不能同时为空
-    pe.rd[I].UseCN:='一卡通预存';
+    pe.rd[I].UseCN:='一卡通退款';
   end;
-  if not FICBC.PayEnt('1234561116', pe, rtDataStr) then
+  
+  if not FICBC.PayEnt('1234561119', pe, rtDataStr) then
   begin
     ShowMessage('标准错误:' + rtDataStr);
     Exit;

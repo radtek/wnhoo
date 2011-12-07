@@ -60,6 +60,10 @@ object Form1: TForm1
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #25351#20196
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mmo_xmlcmd: TMemo
         Left = 0
         Top = 0
@@ -79,6 +83,10 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #31614#21517'/'#39564#31614
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mmo_rtdata: TMemo
         Left = 0
         Top = 0
@@ -105,6 +113,10 @@ object Form1: TForm1
     object TabSheet4: TTabSheet
       Caption = 'TabSheet4'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Memo1: TMemo
         Left = 0
         Top = 0

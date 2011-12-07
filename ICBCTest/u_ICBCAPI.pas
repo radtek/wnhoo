@@ -55,9 +55,9 @@ begin
   rtxmlStr:='';
   FNC := TNCSvr.Create(Self);
   //签名端口
-  FNC.SIGN_URL := 'http://192.168.1.188:449';
+  FNC.SIGN_URL := 'http://192.168.1.189:449';
   //安全http协议服务器
-  FNC.HTTPS_URL := 'http://192.168.1.188:448';
+  FNC.HTTPS_URL := 'http://192.168.1.189:448';
   FSign := TSign.create(Self);
   try
     //签名
