@@ -23,6 +23,7 @@ type
     function getPubRec(const TransCode, fSeqno: string): TPubRec;
     function NCSvrRequest(const pub: TPubRec; const reqDataStr: string;
       const IsSign: Boolean; out rtDataBase64Str: string): Boolean;
+
   public
     function QueryAccValue(const fSeqno: string; var qav: TQueryAccValueRec;
       var rtDataStr: string): Boolean;
@@ -30,7 +31,10 @@ type
       var qhd: TQueryHistoryDetailsRec; var rtDataStr: string): Boolean;
     function PayEnt(const fSeqno: string; var pe: TPayEntRec;
       var rtDataStr: string): Boolean;
-
+    function PerDis(const fSeqno: string; var pd: TPerDisRec;
+      var rtDataStr: string): Boolean;
+    function QueryCurDayDetails(const fSeqno: string;
+      var qcd: TQueryCurDayDetailsRec; var rtDataStr: string): Boolean;
       
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -165,7 +169,7 @@ begin
   //请求XML部分
   pub := getPubRec('QHISD', fSeqno);
   FICBCRsq.setPub(pub);
-  FICBCRsq.setQueryHistoryDetails(qhd);
+  FICBCRsq.setQueryHistoryDetailsRec(qhd);
   //GP BASE64编码 ,直接明文
   if not NCSvrRequest(Pub, FICBCRsq.GetXML, False, rtDataBase64Str) then
   begin
@@ -189,6 +193,42 @@ begin
 end;
 
 
+function TICBCAPI.QueryCurDayDetails(const fSeqno: string; var qcd: TQueryCurDayDetailsRec;
+  var rtDataStr: string): Boolean;
+var
+  rtDataBase64Str: string;
+  pub: TPubRec;
+begin
+  Result := False;
+  rtDataStr := '';
+  rtDataBase64Str := '';
+  //请求XML部分
+  pub := getPubRec('QPD', fSeqno);
+  FICBCRsq.setPub(pub);
+  FICBCRsq.setQueryCurDayDetailsRec(qcd);
+  //GP BASE64编码 ,直接明文
+  if not NCSvrRequest(Pub, FICBCRsq.GetXML, False, rtDataBase64Str) then
+  begin
+    //errorCode
+    rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+    Exit;
+  end;
+  //解码
+  rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+  //解析
+  FICBCRspon.SetXML(rtDataStr);
+  Pub := FICBCRspon.Pub;
+  if Pub.RetCode <> '0' then
+  begin
+    rtDataStr := Pub.RetMsg;
+    Exit;
+  end;
+  //返回结果
+  // qcd := FICBCRspon.getQueryHistoryDetails();
+  Result := True;
+end;
+
+
 function TICBCAPI.PayEnt(const fSeqno: string; var pe: TPayEntRec;
   var rtDataStr: string): Boolean;
 var
@@ -202,6 +242,41 @@ begin
   pub := getPubRec('PAYENT', fSeqno);
   FICBCRsq.setPub(pub);
   FICBCRsq.setPayEntRec(pe);
+  //GP BASE64编码 ,直接明文
+  if not NCSvrRequest(Pub, FICBCRsq.GetXML, True, rtDataBase64Str) then
+  begin
+    //errorCode
+    rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+    Exit;
+  end;
+  //解码
+  rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+  //解析
+  FICBCRspon.SetXML(rtDataStr);
+  Pub := FICBCRspon.Pub;
+  if Pub.RetCode <> '0' then
+  begin
+    rtDataStr := Pub.RetMsg;
+    Exit;
+  end;
+  //返回结果
+  //qhd := FICBCRspon.getQueryHistoryDetails();
+  Result := True;
+end;
+
+function TICBCAPI.PerDis(const fSeqno: string; var pd: TPerDisRec;
+  var rtDataStr: string): Boolean;
+var
+  rtDataBase64Str: string;
+  pub: TPubRec;
+begin
+  Result := False;
+  rtDataStr := '';
+  rtDataBase64Str := '';
+  //请求XML部分
+  pub := getPubRec('PERDIS', fSeqno);
+  FICBCRsq.setPub(pub);
+  FICBCRsq.setPerDisRec(pd);
   //GP BASE64编码 ,直接明文
   if not NCSvrRequest(Pub, FICBCRsq.GetXML, True, rtDataBase64Str) then
   begin

@@ -22,13 +22,17 @@ type
     //公共头
     procedure setPub(const pub: TPubRec);
     //查询历史明细
-    procedure setQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
+    procedure setQueryHistoryDetailsRec(const indata: TQueryHistoryDetailsRec);
+    //查询当日明细
+    procedure setQueryCurDayDetailsRec(const indata: TQueryCurDayDetailsRec);
     //多账户余额查询
     procedure setQueryAccValue(const indata: TQueryAccValueRec);
     //查询网点信息
     procedure setQueryNetNodeRec(const indata: TQueryNetNodeRec);
     //支付指令提交
     procedure setPayEntRec(const indata: TPayEntRec);
+    //支付指令提交
+    procedure setPerDisRec(const indata: TPerDisRec);
   end;
 
   TICBCResponseAPI = class(TBASEXMLAPI)
@@ -142,7 +146,7 @@ begin
   _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
 end;
 
-procedure TICBCRequestAPI.setQueryHistoryDetails(const indata: TQueryHistoryDetailsRec);
+procedure TICBCRequestAPI.setQueryHistoryDetailsRec(const indata: TQueryHistoryDetailsRec);
 begin
   _in.ChildNodes.Clear;
   _in.AddChild('AccNo').Text := indata.AccNo;
@@ -174,6 +178,70 @@ begin
     rd.AddChild('ReqReserved4').Text := indata.rd[i]._Reserved4;
   end;
 end;
+
+procedure TICBCRequestAPI.setQueryCurDayDetailsRec(
+  const indata: TQueryCurDayDetailsRec);
+begin
+  _in.ChildNodes.Clear;
+  _in.AddChild('AccNo').Text := indata.AccNo;
+  _in.AddChild('AreaCode').Text := indata.AreaCode;
+  _in.AddChild('MinAmt').Text := indata.MinAmt;
+  _in.AddChild('MaxAmt').Text := indata.MaxAmt;
+  _in.AddChild('BeginTime').Text := indata.BeginTime;
+  _in.AddChild('EndTime').Text := indata.EndTime;
+  _in.AddChild('NextTag').Text := indata.NextTag;
+  _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
+  _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
+end;
+
+
+procedure TICBCRequestAPI.setPerDisRec(const indata: TPerDisRec);
+var
+  rd: IXMLNode;
+  I: Integer;
+begin
+  _in.ChildNodes.Clear;
+  _in.AddChild('OnlBatF').Text := indata.OnlBatF;
+  _in.AddChild('SettleMode').Text := indata.SettleMode;
+  _in.AddChild('RecAccNo').Text :=indata.RecAccNo;
+  _in.AddChild('RecAccNameCN').Text :=indata.RecAccNameCN;
+  _in.AddChild('RecAccNameEN').Text :=indata.RecAccNameEN;
+  _in.AddChild('TotalNum').Text := indata.TotalNum;
+  _in.AddChild('TotalAmt').Text := indata.TotalAmt;
+  _in.AddChild('SignTime').Text := indata.SignTime;
+  _in.AddChild('ReqReserved1').Text := indata.ReqReserved1;
+  _in.AddChild('ReqReserved2').Text := indata.ReqReserved2;
+  for I := Low(indata.rd) to High(indata.rd) do
+  begin
+    rd := _in.AddChild('rd');
+    rd.AddChild('iSeqno').Text := indata.rd[i].iSeqno;
+    rd.AddChild('PayAccNo').Text := indata.rd[i].PayAccNo;
+    rd.AddChild('PayAccNameCN').Text := indata.rd[i].PayAccNameCN;
+    rd.AddChild('PayAccNameEN').Text := indata.rd[i].PayAccNameEN;
+    rd.AddChild('PayBranch').Text := indata.rd[i].PayBranch;
+    rd.AddChild('Portno').Text := indata.rd[i].Portno;
+    rd.AddChild('ContractNo').Text := indata.rd[i].ContractNo;
+    rd.AddChild('CurrType').Text := indata.rd[i].CurrType;
+    rd.AddChild('PayAmt').Text := indata.rd[i].PayAmt;
+    rd.AddChild('UseCode').Text := indata.rd[i].UseCode;
+    rd.AddChild('UseCN').Text := indata.rd[i].UseCN;
+    rd.AddChild('EnSummary').Text := indata.rd[i].EnSummary;
+    rd.AddChild('PostScript').Text := indata.rd[i].PostScript;
+    rd.AddChild('Summary').Text := indata.rd[i].Summary;
+    rd.AddChild('Ref').Text := indata.rd[i].Ref;
+    rd.AddChild('Oref').Text := indata.rd[i].Oref;
+    rd.AddChild('ERPSqn').Text := indata.rd[i].ERPSqn;
+    rd.AddChild('BusCode').Text := indata.rd[i].BusCode;
+    rd.AddChild('ERPcheckno').Text := indata.rd[i].ERPcheckno;
+    rd.AddChild('CrvouhType').Text := indata.rd[i].CrvouhType;
+    rd.AddChild('CrvouhName').Text := indata.rd[i].CrvouhName;
+    rd.AddChild('CrvouhNo').Text := indata.rd[i].CrvouhNo;
+
+    rd.AddChild('ReqReserved3').Text := indata.rd[i]._Reserved3;
+    rd.AddChild('ReqReserved4').Text := indata.rd[i]._Reserved4;
+  end;
+end;
+
 
 { TICBCResponseAPI }
 
@@ -350,5 +418,6 @@ begin
     RDList.Free;
   end;
 end;
+
 end.
 

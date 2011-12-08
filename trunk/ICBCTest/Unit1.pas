@@ -26,6 +26,8 @@ type
     Button1: TButton;
     Button3: TButton;
     Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
     procedure Button4Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -33,6 +35,8 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
   private
     FICBC: TICBCAPI;
     { Private declarations }
@@ -136,8 +140,8 @@ begin
     //对私情况下,用途和备注不能同时为空
     pe.rd[I].UseCN:='一卡通退款';
   end;
-  
-  if not FICBC.PayEnt('1234561119', pe, rtDataStr) then
+
+  if not FICBC.PayEnt('B000001', pe, rtDataStr) then
   begin
     ShowMessage('标准错误:' + rtDataStr);
     Exit;
@@ -246,6 +250,71 @@ begin
   FICBC.BankCode := '102';
   FICBC.ID := 'js01.y.1209';
 end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+var
+  pd: TPerDisRec;
+  I, K: Integer;
+  rtDataStr: string;
+begin
+  FillChar(pd, SizeOf(TPerDisRec), 0);
+  pd.OnlBatF := '1'; //联机
+  pd.SettleMode := '0'; //逐笔记账
+  pd.RecAccNo:='1209230309049304635';
+  pd.RecAccNameCN:='借赵我赵老名对般拉';
+  K := 1;
+  pd.TotalNum := IntToStr(K); //
+  pd.TotalAmt := '100'; //
+  pd.SignTime := FormatDateTime('YYYYMMDDhhnnsszzz', Now);
+  SetLength(pd.rd, 1);
+
+  for I := 0 to K - 1 do
+  begin
+    FillChar(pd.rd[I],SizeOf(pd.rd[I]),0);
+    pd.rd[I].iSeqno := IntToStr(I);
+    pd.rd[I].PayAccNo := '6222031202799000087';
+    pd.rd[I].PayAccNameCN := '三套B';
+    pd.rd[I].PayBranch:='工商银行';
+    //pd.rd[I].Portno//		缴费编号	必输项	字符	30
+    //pd.rd[I].ContractNo//		协议编号	必输项	字符	15
+    pd.rd[I].CurrType := '001';
+    pd.rd[I].PayAmt := '100';
+    //对私情况下,用途和备注不能同时为空
+    //pe.rd[I].UseCN:='一卡通退款';
+  end;
+
+  if not FICBC.PerDis('A000001', pd, rtDataStr) then
+  begin
+    ShowMessage('标准错误:' + rtDataStr);
+    Exit;
+  end;
+
+  mmo_cmdrt.Lines.Add('正常数据:');
+  mmo_cmdrt.Lines.Add(rtDataStr);
+end;
+procedure TForm1.Button7Click(Sender: TObject);
+var
+  qcd: TQueryCurDayDetailsRec;
+  rtDataStr: string;
+begin
+  //借赵我赵老名对般拉
+  FillChar(qcd, SizeOf(TQueryCurDayDetailsRec), 0);
+  qcd.AccNo := '1209230309049304635';
+  qcd.MinAmt := '0';
+  qcd.MaxAmt := '1000000';
+  qcd.NextTag := '';
+
+  if not FICBC.QueryCurDayDetails('Q000001', qcd, rtDataStr) then
+  begin
+    ShowMessage('标准错误:' + rtDataStr);
+    Exit;
+  end;
+
+  mmo_cmdrt.Lines.Add('正常数据:');
+  mmo_cmdrt.Lines.Add(rtDataStr);
+
+end;
+
 
 end.
 

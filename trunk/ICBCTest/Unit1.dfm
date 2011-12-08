@@ -41,13 +41,22 @@ object Form1: TForm1
       OnClick = Button4Click
     end
     object Button1: TButton
-      Left = 208
+      Left = 304
       Top = 10
       Width = 97
       Height = 25
       Caption = #26597#35810#21382#21490#32426#24405
       TabOrder = 2
       OnClick = Button1Click
+    end
+    object Button7: TButton
+      Left = 208
+      Top = 10
+      Width = 75
+      Height = 25
+      Caption = #24403#26085#26126#32454
+      TabOrder = 3
+      OnClick = Button7Click
     end
   end
   object PageControl1: TPageControl
@@ -60,10 +69,6 @@ object Form1: TForm1
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #25351#20196
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mmo_xmlcmd: TMemo
         Left = 0
         Top = 0
@@ -83,10 +88,6 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #31614#21517'/'#39564#31614
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mmo_rtdata: TMemo
         Left = 0
         Top = 0
@@ -113,10 +114,6 @@ object Form1: TForm1
     object TabSheet4: TTabSheet
       Caption = 'TabSheet4'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -148,7 +145,7 @@ object Form1: TForm1
     end
   end
   object Button3: TButton
-    Left = 311
+    Left = 416
     Top = 8
     Width = 75
     Height = 25
@@ -157,13 +154,22 @@ object Form1: TForm1
     OnClick = Button3Click
   end
   object Button5: TButton
-    Left = 392
-    Top = 8
+    Left = 632
+    Top = 10
     Width = 75
     Height = 25
     Caption = 'Button5'
     TabOrder = 3
     OnClick = Button5Click
+  end
+  object Button6: TButton
+    Left = 497
+    Top = 10
+    Width = 75
+    Height = 25
+    Caption = #25209#37327#25187#20010#20154
+    TabOrder = 4
+    OnClick = Button6Click
   end
   object IdAntiFreeze1: TIdAntiFreeze
     Left = 56
