@@ -275,15 +275,15 @@ begin
     pd.rd[I].PayAccNo := '6222031202799000087';
     pd.rd[I].PayAccNameCN := '三套B';
     pd.rd[I].PayBranch:='工商银行';
-    //pd.rd[I].Portno//		缴费编号	必输项	字符	30
-    //pd.rd[I].ContractNo//		协议编号	必输项	字符	15
+    pd.rd[I].Portno:='111';//		缴费编号	必输项	字符	30
+    pd.rd[I].ContractNo:='BDP300080432';//		协议编号	必输项	字符	15
     pd.rd[I].CurrType := '001';
     pd.rd[I].PayAmt := '100';
     //对私情况下,用途和备注不能同时为空
     //pe.rd[I].UseCN:='一卡通退款';
   end;
 
-  if not FICBC.PerDis('A000001', pd, rtDataStr) then
+  if not FICBC.PerDis('A000003', pd, rtDataStr) then
   begin
     ShowMessage('标准错误:' + rtDataStr);
     Exit;
