@@ -8,7 +8,7 @@ unit BASEXMLAPI;
 interface
 
 uses
-  SysUtils, Classes,  XMLDoc, Variants,xmldom, XMLIntf, msxmldom, MSXML;
+  SysUtils, Classes,  XMLDoc, Variants,xmldom, XMLIntf, msxmldom, MSXML,NativeXml;
 
 type
   TBASEXMLAPI = class(TObject)
