@@ -8,7 +8,7 @@ unit BASEXMLAPI;
 interface
 
 uses
-  SysUtils, Classes, xmldom, XMLIntf, msxmldom, XMLDoc, Variants, MSXML;
+  SysUtils, Classes,  XMLDoc, Variants,xmldom, XMLIntf, msxmldom, MSXML;
 
 type
   TBASEXMLAPI = class(TObject)
@@ -212,7 +212,8 @@ end;
 
 destructor TBASEXMLAPI.Destroy;
 begin
-  FXD.Free;
+  FreeAndNil(FXD);
+  //FXD.Free;
 end;
 
 function TBASEXMLAPI.LoadXMLFile(const XmlFile: string): Boolean;
