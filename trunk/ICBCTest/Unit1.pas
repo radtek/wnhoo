@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, IdAntiFreezeBase, IdAntiFreeze, ExtCtrls,
   u_ICBCAPI, u_ICBCRec, ComCtrls,
-  IdBaseComponent;
+  IdBaseComponent,ActiveX;
 
 type
   TForm1 = class(TForm)
@@ -314,6 +314,13 @@ begin
   mmo_cmdrt.Lines.Add(rtDataStr);
 
 end;
+
+initialization
+CoInitialize(nil);
+
+finalization
+CoUninitialize();
+
 
 
 end.
