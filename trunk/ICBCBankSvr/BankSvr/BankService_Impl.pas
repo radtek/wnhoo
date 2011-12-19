@@ -12,7 +12,7 @@ unit BankService_Impl;
 interface
 
 uses
-  {vcl:} Classes, SysUtils, 
+  {vcl:} Classes, SysUtils,
   {RemObjects:} uROXMLIntf, uROClientIntf, uROTypes, uROServer, uROServerIntf, uROSessions,
   {Generated:} BankSvrLib_Intf;
 
@@ -23,29 +23,30 @@ type
   protected
     { IBankService methods }
     function GetSvrDt: DateTime;
-    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
 implementation
 
 uses
-  {Generated:} BankSvrLib_Invk,u_Func;
+  {Generated:} BankSvrLib_Invk, u_Func;
 
-procedure Create_BankService(out anInstance : IUnknown);
+procedure Create_BankService(out anInstance: IUnknown);
 begin
   anInstance := TBankService.Create;
 end;
 
 { BankService }
+
 function TBankService.QueryAccValue_S(const fSeqno, AccNo0: AnsiString;
-  var rtMsg, rtStr: AnsiString): Boolean;
+  var rtCode, rtMsg, rtStr: AnsiString): Boolean;
 begin
-  Result:=U_ICBCCtl.QueryAccValue_S(fSeqno, AccNo0,rtMsg, rtStr);
+  Result := U_ICBCCtl.QueryAccValue_S(fSeqno, AccNo0, rtCode, rtMsg, rtStr);
 end;
 
 function TBankService.GetSvrDt: DateTime;
 begin
-  Result:=Now();
+  Result := Now();
 end;
 
 var
@@ -59,3 +60,4 @@ finalization
   fClassFactory := nil;
 
 end.
+

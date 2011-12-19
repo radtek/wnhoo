@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup>
+    <Projects Include="BankClientLib.dproj" />
     <Projects Include="BankSvr.dproj" />
     <Projects Include="BankSvrClient.dproj" />
   </ItemGroup>
@@ -11,7 +12,7 @@
     <Borland.Personality>Default.Personality</Borland.Personality>
     <Borland.ProjectType />
     <BorlandProject>
-  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+<BorlandProject xmlns=""><Default.Personality></Default.Personality></BorlandProject></BorlandProject>
   </ProjectExtensions>
   <Target Name="BankSvr">
     <MSBuild Projects="BankSvr.dproj" Targets="" />
@@ -31,14 +32,23 @@
   <Target Name="BankSvrClient:Make">
     <MSBuild Projects="BankSvrClient.dproj" Targets="Make" />
   </Target>
+  <Target Name="BankClientLib">
+    <MSBuild Projects="BankClientLib.dproj" Targets="" />
+  </Target>
+  <Target Name="BankClientLib:Clean">
+    <MSBuild Projects="BankClientLib.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="BankClientLib:Make">
+    <MSBuild Projects="BankClientLib.dproj" Targets="Make" />
+  </Target>
   <Target Name="Build">
-    <CallTarget Targets="BankSvr;BankSvrClient" />
+    <CallTarget Targets="BankSvr;BankSvrClient;BankClientLib" />
   </Target>
   <Target Name="Clean">
-    <CallTarget Targets="BankSvr:Clean;BankSvrClient:Clean" />
+    <CallTarget Targets="BankSvr:Clean;BankSvrClient:Clean;BankClientLib:Clean" />
   </Target>
   <Target Name="Make">
-    <CallTarget Targets="BankSvr:Make;BankSvrClient:Make" />
+    <CallTarget Targets="BankSvr:Make;BankSvrClient:Make;BankClientLib:Make" />
   </Target>
   <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
 </Project>

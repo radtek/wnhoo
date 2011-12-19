@@ -39,9 +39,9 @@ uses BankSvrLib_Intf;
 
 procedure TClientForm.Button1Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode,rtMsg, rtStr: string;
 begin
-  if (RORemoteService as  IBankService).QueryAccValue_S('Q00001', '1209230309049304635', rtMsg, rtStr) then
+  if (RORemoteService as  IBankService).QueryAccValue_S('Q00001', '1209230309049304635',rtCode, rtMsg, rtStr) then
     ShowMessage(rtStr)
   else
     ShowMessage(rtMsg);

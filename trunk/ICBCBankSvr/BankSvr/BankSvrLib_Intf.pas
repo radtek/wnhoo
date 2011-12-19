@@ -35,7 +35,7 @@ type
   IBankService = interface
     ['{1AA774B9-B606-4BF3-A278-A2BCFB5B2D86}']
     function GetSvrDt: DateTime;
-    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
   { CoBankService }
@@ -49,7 +49,7 @@ type
     function __GetInterfaceName:string; override;
 
     function GetSvrDt: DateTime;
-    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
 implementation
@@ -87,12 +87,13 @@ begin
   end
 end;
 
-function TBankService_Proxy.QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+function TBankService_Proxy.QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
 begin
   try
     __Message.InitializeRequestMessage(__TransportChannel, 'BankSvrLib', __InterfaceName, 'QueryAccValue_S');
     __Message.Write('fSeqno', TypeInfo(AnsiString), fSeqno, []);
     __Message.Write('AccNo0', TypeInfo(AnsiString), AccNo0, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
     __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
     __Message.Finalize;
@@ -100,6 +101,7 @@ begin
     __TransportChannel.Dispatch(__Message);
 
     __Message.Read('Result', TypeInfo(Boolean), result, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
     __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
   finally
