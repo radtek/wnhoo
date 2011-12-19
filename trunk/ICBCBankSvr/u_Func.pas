@@ -15,23 +15,28 @@ type
     destructor Destroy; override;
     {
     函数成功执行返回True,否则返回 False ,失败获取 rtMsg 可知错误描述
-    rtMsg 提示信息
-    rtStr 数据返回,采用"|"分割,每行最后都以 #13#10 作为行结束符,可以返回多条数据
+    rtCode 错误码,保留
+    rtMsg  提示信息
+    rtStr  数据返回,采用"|"分割,每行最后都以 #13#10 作为行结束符,可以返回多条数据
     }
     //查询帐户卡余(单)
-    function QueryAccValue_S(const fSeqno, AccNo0: string; var rtMsg, rtStr: string): Boolean;
+    function QueryAccValue_S(const fSeqno, AccNo0: string;
+      var rtCode, rtMsg, rtStr: string): Boolean;
     //查询当日交易记录(多)
-    function QueryCurDayDetails_M(const fSeqno, AccNo: string; var NextTag, rtMsg, rtStr: string): Boolean;
+    function QueryCurDayDetails_M(const fSeqno, AccNo: string;
+      var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
     //支付指令(单) 企业帐户->个人 ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
-    function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: string; var rtMsg, rtStr: string): Boolean;
+    function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: string;
+      var rtCode, rtMsg, rtStr: string): Boolean;
     //查询支付指令(单) 执行情况,只有交易通讯出现异常时候才查询的
-    function QueryPayEnt_S(const fSeqno, QryfSeqno: string; var rtMsg,
-      rtStr: string): Boolean;
+    function QueryPayEnt_S(const fSeqno, QryfSeqno: string;
+      var rtCode, rtMsg, rtStr: string): Boolean;
     //扣个人指令(单)  个人->企业帐户  ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
     function PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno, ContractNo, PayAmt, UseCN, PostScript, Summary: string;
-      var rtMsg, rtStr: string): Boolean;
+      var rtCode, rtMsg, rtStr: string): Boolean;
     //查询扣个人指令(单)执行情况,只有交易通讯出现异常时候才查询的
-    function QueryPerDis_S(const fSeqno, QryfSeqno: string; var rtMsg, rtStr: string): Boolean;
+    function QueryPerDis_S(const fSeqno, QryfSeqno: string;
+      var rtCode, rtMsg, rtStr: string): Boolean;
   end;
 
 var
@@ -66,7 +71,8 @@ end;
 
 { TICBCCtlAPI }
 
-function TICBCCtlAPI.QueryAccValue_S(const fSeqno, AccNo0: string; var rtMsg, rtStr: string): Boolean;
+function TICBCCtlAPI.QueryAccValue_S(const fSeqno, AccNo0: string;
+  var rtCode, rtMsg, rtStr: string): Boolean;
 var
   qav: TQueryAccValueRec;
   I: Integer;
@@ -115,7 +121,8 @@ begin
   end;
 end;
 
-function TICBCCtlAPI.QueryCurDayDetails_M(const fSeqno, AccNo: string; var NextTag, rtMsg, rtStr: string): Boolean;
+function TICBCCtlAPI.QueryCurDayDetails_M(const fSeqno, AccNo: string;
+  var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
 var
   qcd: TQueryCurDayDetailsRec;
   I: Integer;
@@ -187,7 +194,8 @@ begin
   inherited;
 end;
 
-function TICBCCtlAPI.PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: string; var rtMsg, rtStr: string): Boolean;
+function TICBCCtlAPI.PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: string;
+  var rtCode, rtMsg, rtStr: string): Boolean;
 var
   pe: TPayEntRec;
   I: Integer;
@@ -280,7 +288,8 @@ begin
   end;
 end;
 
-function TICBCCtlAPI.QueryPayEnt_S(const fSeqno, QryfSeqno: string; var rtMsg, rtStr: string): Boolean;
+function TICBCCtlAPI.QueryPayEnt_S(const fSeqno, QryfSeqno: string;
+  var rtCode, rtMsg, rtStr: string): Boolean;
 var
   qpe: TQueryPayEntRec;
   I: Integer;
@@ -359,7 +368,7 @@ end;
 
 
 function TICBCCtlAPI.PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno, ContractNo, PayAmt, UseCN, PostScript, Summary: string;
-  var rtMsg, rtStr: string): Boolean;
+  var rtCode, rtMsg, rtStr: string): Boolean;
 var
   pd: TPerDisRec;
   I: Integer;
@@ -437,7 +446,8 @@ begin
   end;
 end;
 
-function TICBCCtlAPI.QueryPerDis_S(const fSeqno, QryfSeqno: string; var rtMsg, rtStr: string): Boolean;
+function TICBCCtlAPI.QueryPerDis_S(const fSeqno, QryfSeqno: string;
+  var rtCode, rtMsg, rtStr: string): Boolean;
 var
   qpd: TQueryPerDisRec;
   I: Integer;
