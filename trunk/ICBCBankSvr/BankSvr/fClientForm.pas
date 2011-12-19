@@ -21,7 +21,7 @@ type
 
 var
   ClientForm: TClientForm;
-
+function GetSvrDt(var dtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 implementation
 
 {
@@ -39,13 +39,21 @@ uses BankSvrLib_Intf;
 
 procedure TClientForm.Button1Click(Sender: TObject);
 var
-  rtCode,rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
+  DtStr:PChar;
 begin
-  if (RORemoteService as  IBankService).QueryAccValue_S('Q00001', '1209230309049304635',rtCode, rtMsg, rtStr) then
+  if (RORemoteService as IBankService).QueryAccValue_S('Q00001', '1209230309049304635', rtCode, rtMsg, rtStr) then
     ShowMessage(rtStr)
   else
     ShowMessage(rtMsg);
+  GetMem(DtStr,100);
+  if GetSvrDt(DtStr) then
+  begin
+    ShowMessage(DtStr);
+  end;
+  FreeMem(DtStr);
 end;
 
 
 end.
+
