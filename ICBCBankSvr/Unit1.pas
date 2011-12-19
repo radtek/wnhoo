@@ -99,9 +99,9 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.QueryPayEnt_S('Q00008', 'PE00003', rtMsg, rtStr) then
+  if U_ICBCCtl.QueryPayEnt_S('Q00008', 'PE00003', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
@@ -109,9 +109,9 @@ end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.PayEnt_S('PE00003', '6222031202799000087', '三套B', '200', '一卡通退款', 'OneIC01', '一卡通相关业务', rtMsg, rtStr) then
+  if U_ICBCCtl.PayEnt_S('PE00003', '6222031202799000087', '三套B', '200', '一卡通退款', 'OneIC01', '一卡通相关业务', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
@@ -119,9 +119,9 @@ end;
 
 procedure TForm1.Button4Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.QueryAccValue_S('Q00001', '1209230309049304635', rtMsg, rtStr) then
+  if U_ICBCCtl.QueryAccValue_S('Q00001', '1209230309049304635', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
@@ -129,9 +129,9 @@ end;
 
 procedure TForm1.Button5Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.QueryPerDis_S('Q00008', 'PD00002', rtMsg, rtStr) then
+  if U_ICBCCtl.QueryPerDis_S('Q00008', 'PD00002', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
@@ -139,10 +139,10 @@ end;
 
 procedure TForm1.Button6Click(Sender: TObject);
 var
-  rtMsg, rtStr: string;
+  rtCode, rtMsg, rtStr: string;
 begin
   if U_ICBCCtl.PerDis_S('PD00008', '6222031202799000087', '三套B', '111', 'BDP300080432', '300', '一卡通预存', 'PS01', '实时充值',
-    rtMsg, rtStr) then
+    rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
@@ -150,13 +150,13 @@ end;
 
 procedure TForm1.Button7Click(Sender: TObject);
 var
-  rtMsg, rtStr, NextTag: string;
+  rtMsg, rtCode, rtStr, NextTag: string;
 begin
   //首次送空
   NextTag := '';
   while True do
   begin
-    if U_ICBCCtl.QueryCurDayDetails_M('Q00001', '1209230309049304635', NextTag, rtMsg, rtStr) then
+    if U_ICBCCtl.QueryCurDayDetails_M('Q00001', '1209230309049304635', NextTag, rtCode, rtMsg, rtStr) then
       WriteCmdRtLog(rtStr)
     else
       ShowMsg(rtMsg);
