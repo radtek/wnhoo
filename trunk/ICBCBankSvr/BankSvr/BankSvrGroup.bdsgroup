@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{6CD4B2FE-1F3B-4E0E-A205-EF6D168252E0}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    <Projects>
+      <Projects Name="BankSvr.exe">BankSvr.bdsproj</Projects>
+      <Projects Name="BankSvrClient.exe">BankSvrClient.bdsproj</Projects>
+      <Projects Name="Targets">BankSvr.exe BankSvrClient.exe</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>

@@ -1,0 +1,44 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{ee7107a6-e935-4c86-ae9f-d49d37b71450}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="BankSvr.dproj" />
+    <Projects Include="BankSvrClient.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="BankSvr">
+    <MSBuild Projects="BankSvr.dproj" Targets="" />
+  </Target>
+  <Target Name="BankSvr:Clean">
+    <MSBuild Projects="BankSvr.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="BankSvr:Make">
+    <MSBuild Projects="BankSvr.dproj" Targets="Make" />
+  </Target>
+  <Target Name="BankSvrClient">
+    <MSBuild Projects="BankSvrClient.dproj" Targets="" />
+  </Target>
+  <Target Name="BankSvrClient:Clean">
+    <MSBuild Projects="BankSvrClient.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="BankSvrClient:Make">
+    <MSBuild Projects="BankSvrClient.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="BankSvr;BankSvrClient" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="BankSvr:Clean;BankSvrClient:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="BankSvr:Make;BankSvrClient:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>
