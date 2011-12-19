@@ -1,30 +1,38 @@
 library BankClientLib;
 
-{ Important note about DLL memory management: ShareMem must be the
-  first unit in your library's USES clause AND your project's (select
-  Project-View Source) USES clause if your DLL exports any procedures or
-  functions that pass strings as parameters or function results. This
-  applies to all strings passed to and from your DLL--even those that
-  are nested in records and classes. ShareMem is the interface unit to
-  the BORLNDMM.DLL shared memory manager, which must be deployed along
-  with your DLL. To avoid using BORLNDMM.DLL, pass string information
-  using PChar or ShortString parameters. }
-
 uses
-  SysUtils,
-  Classes;
+  SysUtils,  Classes,uROClient, uROIndyTCPChannel,  uROBinMessage,BankSvrLib_Intf;
 
 {$R *.res}
 
-function InitParams(Const SvrIP:PChar;const SvrPort:Integer):Boolean;stdcall;
+function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall;
 begin
-   Result:=True;
+  Result := True;
 end;
 
-function GetSvrDt(var dtStr:String):Boolean;
+function GetSvrDt(var dtStr: PChar): Boolean;
+var
+  BS:IBankService;
+  RoIndyTcp:TROIndyTCPChannel;
+  ROBinMsg:TROBinMessage;
+  dt:TDateTime;
 begin
+  RoIndyTcp:=TROIndyTCPChannel.Create(nil);
+  ROBinMsg:=TROBinMessage.Create;
+
+  RoIndyTcp.Host:='127.0.0.1';
+  RoIndyTcp.Port:=10008;
+
+  BS:=CoBankService.Create(ROBinMsg,RoIndyTcp);
+
+  dt:=BS.GetSvrDt();
+  StrPCopy(dtStr,FormatDateTime('YYYY-MM-DD hh:nn:ss',Dt));
   Result:=True;
+
+  ROBinMsg.Free;
+  RoIndyTcp.Free;
 end;
+
 
 {
     函数成功执行返回True,否则返回 False ,失败获取 rtMsg 可知错误描述
@@ -91,7 +99,7 @@ begin
   Result := True;
 end;
 
-exports InitParams,GetSvrDt,QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
+exports InitParams, GetSvrDt, QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
 
 begin
 end.
