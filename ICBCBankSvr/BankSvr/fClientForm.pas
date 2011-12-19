@@ -22,6 +22,7 @@ type
 var
   ClientForm: TClientForm;
 function GetSvrDt(var dtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
+function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall;  External 'BankClientLib.dll';
 implementation
 
 {
@@ -41,12 +42,14 @@ procedure TClientForm.Button1Click(Sender: TObject);
 var
   rtCode, rtMsg, rtStr: string;
   DtStr:PChar;
+  aa:DWORD;
 begin
   if (RORemoteService as IBankService).QueryAccValue_S('Q00001', '1209230309049304635', rtCode, rtMsg, rtStr) then
     ShowMessage(rtStr)
   else
     ShowMessage(rtMsg);
   GetMem(DtStr,100);
+  InitParams('127.0.0.1',10008);
   if GetSvrDt(DtStr) then
   begin
     ShowMessage(DtStr);
