@@ -109,6 +109,7 @@ begin
       end;
     DLL_PROCESS_DETACH:
       begin
+        BS:=nil;
         ROBinMsg.Free;
         RoIndyTcp.Free;
       end;
