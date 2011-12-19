@@ -1,36 +1,29 @@
 library BankClientLib;
 
 uses
-  SysUtils,  Classes,uROClient, uROIndyTCPChannel,  uROBinMessage,BankSvrLib_Intf;
+  SysUtils, Windows, Classes, uROClient, uROIndyTCPChannel, uROBinMessage, BankSvrLib_Intf;
 
 {$R *.res}
 
+var
+  BS: IBankService;
+  RoIndyTcp: TROIndyTCPChannel;
+  ROBinMsg: TROBinMessage;
+
 function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall;
 begin
+  RoIndyTcp.Host := SvrIP;
+  RoIndyTcp.Port := SvrPort;
   Result := True;
 end;
 
 function GetSvrDt(var dtStr: PChar): Boolean;
 var
-  BS:IBankService;
-  RoIndyTcp:TROIndyTCPChannel;
-  ROBinMsg:TROBinMessage;
-  dt:TDateTime;
+  dt: TDateTime;
 begin
-  RoIndyTcp:=TROIndyTCPChannel.Create(nil);
-  ROBinMsg:=TROBinMessage.Create;
-
-  RoIndyTcp.Host:='127.0.0.1';
-  RoIndyTcp.Port:=10008;
-
-  BS:=CoBankService.Create(ROBinMsg,RoIndyTcp);
-
-  dt:=BS.GetSvrDt();
-  StrPCopy(dtStr,FormatDateTime('YYYY-MM-DD hh:nn:ss',Dt));
-  Result:=True;
-
-  ROBinMsg.Free;
-  RoIndyTcp.Free;
+  dt := BS.GetSvrDt();
+  StrPCopy(dtStr, FormatDateTime('YYYY-MM-DD hh:nn:ss', Dt));
+  Result := True;
 end;
 
 
@@ -99,8 +92,37 @@ begin
   Result := True;
 end;
 
+procedure DLLEntryPoint(dwReason: DWORD);
+begin
+  case dwReason of
+    DLL_THREAD_ATTACH:
+      ;
+    DLL_THREAD_DETACH:
+      ;
+    DLL_PROCESS_ATTACH:
+      begin
+        RoIndyTcp := TROIndyTCPChannel.Create(nil);
+        ROBinMsg := TROBinMessage.Create;
+        RoIndyTcp.Host := '127.0.0.1';
+        RoIndyTcp.Port := 8090;
+        BS := CoBankService.Create(ROBinMsg, RoIndyTcp);
+      end;
+    DLL_PROCESS_DETACH:
+      begin
+        ROBinMsg.Free;
+        RoIndyTcp.Free;
+      end;
+  else
+    ;
+  end;
+end;
+
+
 exports InitParams, GetSvrDt, QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
 
+
 begin
+  DllProc := @DLLEntryPoint;
+  DLLEntryPoint(DLL_PROCESS_ATTACH);
 end.
 
