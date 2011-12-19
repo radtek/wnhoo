@@ -20,6 +20,8 @@
 </Parameter>
 <Parameter Name="AccNo0" DataType="AnsiString" Flag="In" >
 </Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
 <Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
 </Parameter>
 <Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >

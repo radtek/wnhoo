@@ -59,10 +59,11 @@ begin
 end;
 
 procedure TBankService_Invoker.Invoke_QueryAccValue_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
-{ function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean; }
+{ function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean; }
 var
   fSeqno: AnsiString;
   AccNo0: AnsiString;
+  rtCode: AnsiString;
   rtMsg: AnsiString;
   rtStr: AnsiString;
   lResult: Boolean;
@@ -70,13 +71,15 @@ begin
   try
     __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
     __Message.Read('AccNo0', TypeInfo(AnsiString), AccNo0, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
     __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
 
-    lResult := (__Instance as IBankService).QueryAccValue_S(fSeqno, AccNo0, rtMsg, rtStr);
+    lResult := (__Instance as IBankService).QueryAccValue_S(fSeqno, AccNo0, rtCode, rtMsg, rtStr);
 
     __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryAccValue_SResponse');
     __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
     __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
     __Message.Finalize;

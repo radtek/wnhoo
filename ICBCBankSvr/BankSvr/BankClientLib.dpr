@@ -16,6 +16,16 @@ uses
 
 {$R *.res}
 
+function InitParams(Const SvrIP:PChar;const SvrPort:Integer):Boolean;stdcall;
+begin
+   Result:=True;
+end;
+
+function GetSvrDt(var dtStr:String):Boolean;
+begin
+  Result:=True;
+end;
+
 {
     函数成功执行返回True,否则返回 False ,失败获取 rtMsg 可知错误描述
     rtCode 错误码,保留
@@ -81,7 +91,7 @@ begin
   Result := True;
 end;
 
-exports QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
+exports InitParams,GetSvrDt,QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
 
 begin
 end.
