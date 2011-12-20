@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, u_Func, ComCtrls, ActiveX;
+  Dialogs, StdCtrls, ExtCtrls, u_Func, ComCtrls;
 
 type
   TForm1 = class(TForm)
@@ -163,14 +163,5 @@ begin
     if NextTag = '' then Break;
   end;
 end;
-
-initialization
-  CoInitialize(nil);
-
-finalization
-  CoUninitialize();
-
-
-
 end.
 
