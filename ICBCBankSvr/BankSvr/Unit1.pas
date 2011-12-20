@@ -7,7 +7,7 @@ uses
   uROClient, uROClientIntf, uROServer, uROBinMessage, uROIndyTCPServer;
 
 type
-  TService1 = class(TService)
+  TICBCService = class(TService)
     ROMessage: TROBinMessage;
     ROServer: TROIndyTCPServer;
     procedure ServiceStart(Sender: TService; var Started: Boolean);
@@ -24,7 +24,7 @@ type
   end;
 
 var
-  Service1: TService1;
+  ICBCService: TICBCService;
 
 implementation
 
@@ -34,42 +34,42 @@ uses u_Func;
 
 procedure ServiceController(CtrlCode: DWord); stdcall;
 begin
-  Service1.Controller(CtrlCode);
+  ICBCService.Controller(CtrlCode);
 end;
 
-function TService1.GetServiceController: TServiceController;
+function TICBCService.GetServiceController: TServiceController;
 begin
   Result := ServiceController;
 end;
 
-procedure TService1.ServiceStart(Sender: TService; var Started: Boolean);
+procedure TICBCService.ServiceStart(Sender: TService; var Started: Boolean);
 begin
   RoServer.Active := true;
 end;
 
-procedure TService1.ServiceStop(Sender: TService; var Stopped: Boolean);
+procedure TICBCService.ServiceStop(Sender: TService; var Stopped: Boolean);
 begin
   RoServer.Active := false;
 end;
 
-procedure TService1.ServicePause(Sender: TService; var Paused: Boolean);
+procedure TICBCService.ServicePause(Sender: TService; var Paused: Boolean);
 begin
   RoServer.Active := false;
 end;
 
-procedure TService1.ServiceContinue(Sender: TService; var Continued: Boolean);
+procedure TICBCService.ServiceContinue(Sender: TService; var Continued: Boolean);
 begin
   RoServer.Active := true;
 end;
 
-procedure TService1.ServiceCreate(Sender: TObject);
+procedure TICBCService.ServiceCreate(Sender: TObject);
 begin
   LoadCfg();
   RoServer.Port:=U_SvrPort;
   U_ICBCCtl := TICBCCtlAPI.Create(self);
 end;
 
-procedure TService1.ServiceDestroy(Sender: TObject);
+procedure TICBCService.ServiceDestroy(Sender: TObject);
 begin
   U_ICBCCtl.Free;
 end;

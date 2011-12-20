@@ -5,7 +5,7 @@ program BankSvr;
 uses
   uROComInit,
   SvcMgr,
-  Unit1 in 'Unit1.pas' {Service1: TService},
+  Unit1 in 'Unit1.pas' {ICBCService: TService},
   BankSvrLib_Intf in 'BankSvrLib_Intf.pas',
   BankSvrLib_Invk in 'BankSvrLib_Invk.pas',
   BankService_Impl in 'BankService_Impl.pas';
@@ -15,6 +15,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.CreateForm(TService1, Service1);
+  Application.CreateForm(TICBCService, ICBCService);
   Application.Run;
 end.

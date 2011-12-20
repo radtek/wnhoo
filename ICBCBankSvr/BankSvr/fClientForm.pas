@@ -42,7 +42,6 @@ procedure TClientForm.Button1Click(Sender: TObject);
 var
   rtCode, rtMsg, rtStr: string;
   DtStr:PChar;
-  aa:DWORD;
 begin
   if (RORemoteService as IBankService).QueryAccValue_S('Q00001', '1209230309049304635', rtCode, rtMsg, rtStr) then
     ShowMessage(rtStr)

@@ -1,4 +1,4 @@
-object Service1: TService1
+object ICBCService: TICBCService
   OldCreateOrder = False
   OnCreate = ServiceCreate
   OnDestroy = ServiceDestroy

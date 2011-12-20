@@ -10,6 +10,11 @@ var
   RoIndyTcp: TROIndyTCPChannel;
   ROBinMsg: TROBinMessage;
 
+{
+初始化参数
+SvrIP   前置服务IP地址
+SvrPort 前置服务的服务端口
+}
 function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall;
 begin
   RoIndyTcp.Host := SvrIP;
@@ -17,6 +22,10 @@ begin
   Result := True;
 end;
 
+{
+获取服务器时间
+dtStr   返回前置服务当前日期时间
+}
 function GetSvrDt(var dtStr: PChar): Boolean;
 var
   dt: TDateTime;
@@ -26,70 +35,148 @@ begin
   Result := True;
 end;
 
+{
+支付指令(单笔)
+fSeqno        指令序号,系统内唯一,自定义
+RecAccNo      收方帐号
+RecAccNameCN  收方姓名
+PayAmt        交易额,单位：分
+UseCN         用途
+PostScript    附言
+Summary       摘要
+
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
+function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt,
+  UseCN, PostScript, Summary: PChar; var rtCode, rtMsg, rtStr: PChar): Boolean;
+var
+  _rtCode, _rtMsg, _rtStr: string;
+begin
+  Result := BS.PayEnt_S(fSeqno, RecAccNo, RecAccNameCN, PayAmt,
+    UseCN, PostScript, Summary, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
+end;
 
 {
-    函数成功执行返回True,否则返回 False ,失败获取 rtMsg 可知错误描述
-    rtCode 错误码,保留
-    rtMsg  提示信息
-    rtStr  数据返回,采用"|"分割,每行最后都以 #13#10 作为行结束符,可以返回多条数据
+扣个人指令(单笔)
+fSeqno        指令序号,系统内唯一,自定义
+PayAccNo      付方帐号
+PayAccNameCN  付方姓名
+Portno        缴费编号
+ContractNo    协议编号
+PayAmt        交易额,单位：分
+UseCN         用途
+PostScript    附言
+Summary       摘要
+
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
 }
+function PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno,
+  ContractNo, PayAmt, UseCN, PostScript, Summary: PChar; var rtCode, rtMsg,
+  rtStr: PChar): Boolean;
+var
+  _rtCode, _rtMsg, _rtStr: string;
+begin
+  Result := BS.PerDis_S(fSeqno, PayAccNo, PayAccNameCN, Portno,
+    ContractNo, PayAmt, UseCN, PostScript, Summary, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
+end;
 
-//查询帐户卡余(单)
+{
+查询集团帐户卡余(单笔)
+fSeqno        指令序号,系统内唯一,自定义
+AccNo0        帐号
 
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
 function QueryAccValue_S(const fSeqno, AccNo0: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
+  var rtCode, rtMsg, rtStr: PChar): Boolean;
+var
+  _rtCode, _rtMsg, _rtStr: string;
 begin
-  rtStr := '0|1209230309049304635|001|0|0|47339538|47340838|47340838|0|20111207115116140591|0|||' + #13#10;
-  Result := True;
+  Result := BS.QueryAccValue_S(fSeqno, AccNo0, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
 end;
 
-//查询当日交易记录(多)
+{
+查询当日明细(多笔)
+fSeqno        指令序号,系统内唯一,自定义
+AccNo         帐号
 
+NextTag       下笔标志，首次送空字符，如果执行成功此标志不为空，可以继续查询
+                                      查询标志以上次返回为值，直至返回为空为止。
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
 function QueryCurDayDetails_M(const fSeqno, AccNo: PChar;
-  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
+  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean;
+var
+  _NextTag, _rtCode, _rtMsg, _rtStr: string;
 begin
-  rtStr := '2|0|300|2325120|6222031202799000087|三套B|实时充值|一卡通预存|PS01|||||6|000||2011-12-18-22.35.52.672188||' + #13#10 +
-    '2|0|300|2325120|6222031202799000087|三套B|实时充值|一卡通预存|PS01|||||6|000||2011-12-18-22.32.50.325419||' + #13#10 +
-    '2|0|300|2325120|6222031202799000087|三套B|实时充值|一卡通预存|PS01|||||6|000||2011-12-18-22.31.32.807060||' + #13#10 +
-    '2|0|300|2325120|6222031202799000087|三套B|实时充值|一卡通预存|PS01|||||6|000||2011-12-18-22.27.26.358088||' + #13#10 +
-    '2|0|300|2325120|6222031202799000087|三套B|实时充值|一卡通预存|PS01|||||6|000||2011-12-18-22.24.51.293923||';
-  Result := True;
+  Result := BS.QueryCurDayDetails_M(fSeqno, AccNo, _NextTag, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(NextTag, _NextTag);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
 end;
 
-//支付指令(单) 企业帐户->个人 ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
+{
+查询支付指令(单笔)
+fSeqno        指令序号,系统内唯一,自定义
+QryfSeqno     上次指令序号
 
-function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
-begin
-  rtStr := '';
-  Result := True;
-end;
-
-//查询支付指令(单) 执行情况,只有交易通讯出现异常时候才查询的
-
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
 function QueryPayEnt_S(const fSeqno, QryfSeqno: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
+  var rtCode, rtMsg, rtStr: PChar): Boolean;
+var
+  _rtCode, _rtMsg, _rtStr: string;
 begin
-  rtStr := '';
-  Result := True;
+  Result := BS.QueryPayEnt_S(fSeqno, QryfSeqno, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
 end;
 
-//扣个人指令(单)  个人->企业帐户  ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
+{
+查询扣个人指令(单笔)
+fSeqno        指令序号,系统内唯一,自定义
+QryfSeqno     上次指令序号
 
-function PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno, ContractNo, PayAmt, UseCN, PostScript, Summary: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
-begin
-  rtStr := '';
-  Result := True;
-end;
-
-//查询扣个人指令(单)执行情况,只有交易通讯出现异常时候才查询的
-
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
 function QueryPerDis_S(const fSeqno, QryfSeqno: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
+  var rtCode, rtMsg, rtStr: PChar): Boolean;
+var
+  _rtCode, _rtMsg, _rtStr: string;
 begin
-  rtStr := '';
-  Result := True;
+  Result := BS.QueryPayEnt_S(fSeqno, QryfSeqno, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
 end;
 
 procedure DLLEntryPoint(dwReason: DWORD);
@@ -109,7 +196,7 @@ begin
       end;
     DLL_PROCESS_DETACH:
       begin
-        BS:=nil;
+        BS := nil;
         ROBinMsg.Free;
         RoIndyTcp.Free;
       end;

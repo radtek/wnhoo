@@ -28,6 +28,112 @@
 </Parameter>
 </Parameters>
 </Operation>
+<Operation Name="QueryCurDayDetails_M" UID="{6D3636DC-6DA2-46F1-882E-502AF1071D21}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="AccNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="NextTag" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
+<Operation Name="PayEnt_S" UID="{87B21DD9-66B0-41EF-ADC3-6A8791D79FE9}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="RecAccNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="RecAccNameCN" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PayAmt" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="UseCN" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PostScript" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="Summary" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
+<Operation Name="QueryPayEnt_S" UID="{4878F5B3-C9F2-4D25-A164-B5FF504F2777}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="QryfSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
+<Operation Name="PerDis_S" UID="{815B2488-A49E-4DE0-99CF-2618C56D3CA9}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PayAccNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PayAccNameCN" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="Portno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="ContractNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PayAmt" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="UseCN" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="PostScript" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="Summary" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
+<Operation Name="QueryPerDis_S" UID="{2F17D347-E8C3-4726-9060-E89F7928946B}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="QryfSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
 </Operations>
 </Interface>
 </Interfaces>
