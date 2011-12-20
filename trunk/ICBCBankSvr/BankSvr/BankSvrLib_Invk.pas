@@ -26,6 +26,11 @@ type
   published
     procedure Invoke_GetSvrDt(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
     procedure Invoke_QueryAccValue_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_QueryCurDayDetails_M(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_PayEnt_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_QueryPayEnt_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_PerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_QueryPerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
   end;
 
 implementation
@@ -78,6 +83,196 @@ begin
     lResult := (__Instance as IBankService).QueryAccValue_S(fSeqno, AccNo0, rtCode, rtMsg, rtStr);
 
     __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryAccValue_SResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_QueryCurDayDetails_M(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function QueryCurDayDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; 
+                                  var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  AccNo: AnsiString;
+  NextTag: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('AccNo', TypeInfo(AnsiString), AccNo, []);
+    __Message.Read('NextTag', TypeInfo(AnsiString), NextTag, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).QueryCurDayDetails_M(fSeqno, AccNo, NextTag, rtCode, rtMsg, rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryCurDayDetails_MResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('NextTag', TypeInfo(AnsiString), NextTag, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_PayEnt_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function PayEnt_S(const fSeqno: AnsiString; const RecAccNo: AnsiString; const RecAccNameCN: AnsiString; const PayAmt: AnsiString; 
+                      const UseCN: AnsiString; const PostScript: AnsiString; const Summary: AnsiString; var rtCode: AnsiString; 
+                      var rtMsg: AnsiString; var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  RecAccNo: AnsiString;
+  RecAccNameCN: AnsiString;
+  PayAmt: AnsiString;
+  UseCN: AnsiString;
+  PostScript: AnsiString;
+  Summary: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('RecAccNo', TypeInfo(AnsiString), RecAccNo, []);
+    __Message.Read('RecAccNameCN', TypeInfo(AnsiString), RecAccNameCN, []);
+    __Message.Read('PayAmt', TypeInfo(AnsiString), PayAmt, []);
+    __Message.Read('UseCN', TypeInfo(AnsiString), UseCN, []);
+    __Message.Read('PostScript', TypeInfo(AnsiString), PostScript, []);
+    __Message.Read('Summary', TypeInfo(AnsiString), Summary, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).PayEnt_S(fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary, rtCode, rtMsg, rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'PayEnt_SResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_QueryPayEnt_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function QueryPayEnt_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; 
+                           var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  QryfSeqno: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('QryfSeqno', TypeInfo(AnsiString), QryfSeqno, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).QueryPayEnt_S(fSeqno, QryfSeqno, rtCode, rtMsg, rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryPayEnt_SResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_PerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function PerDis_S(const fSeqno: AnsiString; const PayAccNo: AnsiString; const PayAccNameCN: AnsiString; const Portno: AnsiString; 
+                      const ContractNo: AnsiString; const PayAmt: AnsiString; const UseCN: AnsiString; const PostScript: AnsiString; 
+                      const Summary: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  PayAccNo: AnsiString;
+  PayAccNameCN: AnsiString;
+  Portno: AnsiString;
+  ContractNo: AnsiString;
+  PayAmt: AnsiString;
+  UseCN: AnsiString;
+  PostScript: AnsiString;
+  Summary: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('PayAccNo', TypeInfo(AnsiString), PayAccNo, []);
+    __Message.Read('PayAccNameCN', TypeInfo(AnsiString), PayAccNameCN, []);
+    __Message.Read('Portno', TypeInfo(AnsiString), Portno, []);
+    __Message.Read('ContractNo', TypeInfo(AnsiString), ContractNo, []);
+    __Message.Read('PayAmt', TypeInfo(AnsiString), PayAmt, []);
+    __Message.Read('UseCN', TypeInfo(AnsiString), UseCN, []);
+    __Message.Read('PostScript', TypeInfo(AnsiString), PostScript, []);
+    __Message.Read('Summary', TypeInfo(AnsiString), Summary, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).PerDis_S(fSeqno, PayAccNo, PayAccNameCN, Portno, ContractNo, PayAmt, UseCN, PostScript, Summary, rtCode, rtMsg, 
+        rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'PerDis_SResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_QueryPerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function QueryPerDis_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; 
+                           var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  QryfSeqno: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('QryfSeqno', TypeInfo(AnsiString), QryfSeqno, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).QueryPerDis_S(fSeqno, QryfSeqno, rtCode, rtMsg, rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryPerDis_SResponse');
     __Message.Write('Result', TypeInfo(Boolean), lResult, []);
     __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);

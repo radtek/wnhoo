@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>{5d12a743-aa0d-4219-9b21-89612285287d}</ProjectGuid>
     <MainSource>BankSvr.dpr</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
     <DCC_DependencyCheckOutputName>..\bin\BankSvr.exe</DCC_DependencyCheckOutputName>
@@ -14,6 +14,11 @@
     <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
     <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
     <DCC_Define>RELEASE</DCC_Define>
+    <DCC_ExeOutput>..\bin\</DCC_ExeOutput>
+    <DCC_UnitSearchPath>..\ICBC\;..\</DCC_UnitSearchPath>
+    <DCC_ResourcePath>..\ICBC\;..\</DCC_ResourcePath>
+    <DCC_ObjPath>..\ICBC\;..\</DCC_ObjPath>
+    <DCC_IncludePath>..\ICBC\;..\</DCC_IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Version>7.0</Version>
@@ -39,7 +44,7 @@
     <DCCReference Include="BankSvrLib_Intf.pas" />
     <DCCReference Include="BankSvrLib_Invk.pas" />
     <DCCReference Include="Unit1.pas">
-      <Form>Service1</Form>
+      <Form>ICBCService</Form>
       <DesignClass>TService</DesignClass>
     </DCCReference>
   </ItemGroup>

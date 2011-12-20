@@ -24,6 +24,18 @@ type
     { IBankService methods }
     function GetSvrDt: DateTime;
     function QueryAccValue_S(const fSeqno: AnsiString; const AccNo0: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryCurDayDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString;
+      var rtStr: AnsiString): Boolean;
+    function PayEnt_S(const fSeqno: AnsiString; const RecAccNo: AnsiString; const RecAccNameCN: AnsiString; const PayAmt: AnsiString;
+      const UseCN: AnsiString; const PostScript: AnsiString; const Summary: AnsiString; var rtCode: AnsiString;
+      var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryPayEnt_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString;
+      var rtStr: AnsiString): Boolean;
+    function PerDis_S(const fSeqno: AnsiString; const PayAccNo: AnsiString; const PayAccNameCN: AnsiString; const Portno: AnsiString;
+      const ContractNo: AnsiString; const PayAmt: AnsiString; const UseCN: AnsiString; const PostScript: AnsiString;
+      const Summary: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryPerDis_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString;
+      var rtStr: AnsiString): Boolean;
   end;
 
 implementation
@@ -38,10 +50,43 @@ end;
 
 { BankService }
 
+function TBankService.PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt,
+  UseCN, PostScript, Summary: AnsiString; var rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.PayEnt_S(fSeqno, RecAccNo, RecAccNameCN, PayAmt,
+    UseCN, PostScript, Summary, rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno,
+  ContractNo, PayAmt, UseCN, PostScript, Summary: AnsiString; var rtCode, rtMsg,
+  rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.PerDis_S(fSeqno, PayAccNo, PayAccNameCN, Portno,
+    ContractNo, PayAmt, UseCN, PostScript, Summary, rtCode, rtMsg, rtStr);
+end;
+
 function TBankService.QueryAccValue_S(const fSeqno, AccNo0: AnsiString;
   var rtCode, rtMsg, rtStr: AnsiString): Boolean;
 begin
   Result := U_ICBCCtl.QueryAccValue_S(fSeqno, AccNo0, rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.QueryCurDayDetails_M(const fSeqno, AccNo: AnsiString;
+  var NextTag, rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.QueryCurDayDetails_M(fSeqno, AccNo, NextTag, rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.QueryPayEnt_S(const fSeqno, QryfSeqno: AnsiString;
+  var rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.QueryPayEnt_S(fSeqno, QryfSeqno, rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.QueryPerDis_S(const fSeqno, QryfSeqno: AnsiString;
+  var rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.QueryPayEnt_S(fSeqno, QryfSeqno, rtCode, rtMsg, rtStr);
 end;
 
 function TBankService.GetSvrDt: DateTime;
