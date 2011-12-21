@@ -48,7 +48,7 @@ type
                       const Summary: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
     function QueryPerDis_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; 
                            var rtStr: AnsiString): Boolean;
-    function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString;
+    function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString; 
                                    var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
