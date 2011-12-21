@@ -34,6 +34,9 @@ type
     //查询历史明细
     function QueryHistoryDetails_M(const fSeqno, AccNo, BeginDate,
       EndDate: string; var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
+    //缴费个人信息查询
+    function QueryPerInf_M(const fSeqno, RecAccNo, QueryTag, BeginDate,
+      EndDate: string; var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
   end;
 
 var
@@ -562,6 +565,52 @@ begin
         qpd.rd[i].iRetMsg + '|' +
         qpd.rd[i]._Reserved3 + '|' +
         qpd.rd[i]._Reserved4 + #13#10;
+    end;
+    Result := rtStr <> '';
+  except
+    on Ex: Exception do
+      rtMsg := Ex.Message;
+  end;
+end;
+
+
+function TICBCCtlAPI.QueryPerInf_M(const fSeqno, RecAccNo, QueryTag, BeginDate,
+  EndDate: string; var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
+var
+  qpi: TQueryPerInf;
+  I: Integer;
+  rtDataStr: string;
+begin
+  rtMsg := '';
+  rtStr := '';
+  Result := False;
+  try
+    FillChar(qpi, SizeOf(TQueryPerInf), 0);
+    qpi.BeginDate := BeginDate;
+    qpi.EndDate := EndDate;
+    qpi.RecAccNo := RecAccNo;
+    qpi.QueryTag := QueryTag;
+    qpi.NextTag := NextTag;
+
+    if not FICBC.QueryPerInf(fSeqno, qpi, rtDataStr) then
+    begin
+      rtMsg := rtDataStr;
+      Exit;
+    end;
+
+    NextTag := qpi.NextTag;
+
+    for I := Low(qpi.rd) to High(qpi.rd) do
+    begin
+      rtStr := rtStr +
+        qpi.rd[I].ContractNo + '|' +
+        qpi.rd[I].Portno + '|' +
+        qpi.rd[I].OpType + '|' +
+        qpi.rd[I].PayAccNo + '|' +
+        qpi.rd[I].PayAccNameCN + '|' +
+        qpi.rd[I].SignDate + '|' +
+        qpi.rd[i]._Reserved3 + '|' +
+        qpi.rd[i]._Reserved4 + #13#10;
     end;
     Result := rtStr <> '';
   except

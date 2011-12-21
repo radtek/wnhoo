@@ -27,6 +27,7 @@ type
     Button12: TButton;
     Button13: TButton;
     Button14: TButton;
+    Button15: TButton;
     procedure Button4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -37,6 +38,7 @@ type
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
   private
     procedure WriteCmdRtLog(const Str: string);
     procedure ShowMsg(const rtMsg: string);
@@ -52,13 +54,13 @@ var
 SvrIP   前置服务IP地址
 SvrPort 前置服务的服务端口
 }
-function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall;External 'BankClientLib.dll';
+function InitParams(const SvrIP: PChar; const SvrPort: Integer): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 获取服务器时间
 dtStr   返回前置服务当前日期时间
 }
-function GetSvrDt(var dtStr: PChar): Boolean;stdcall;External 'BankClientLib.dll';
+function GetSvrDt(var dtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 支付指令(单笔)
@@ -76,7 +78,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
                             多条数据依次类退。
 }
 function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt,
-  UseCN, PostScript, Summary: PChar; var rtCode, rtMsg, rtStr: PChar): Boolean;stdcall;External 'BankClientLib.dll';
+  UseCN, PostScript, Summary: PChar; var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 扣个人指令(单笔)
@@ -97,7 +99,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
 }
 function PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno,
   ContractNo, PayAmt, UseCN, PostScript, Summary: PChar; var rtCode, rtMsg,
-  rtStr: PChar): Boolean;stdcall;External 'BankClientLib.dll';
+  rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 查询集团帐户卡余(单笔)
@@ -110,7 +112,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
                             多条数据依次类退。
 }
 function QueryAccValue_S(const fSeqno, AccNo0: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean;stdcall;External 'BankClientLib.dll';
+  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 查询当日明细(多笔)
@@ -125,7 +127,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
                             多条数据依次类退。
 }
 function QueryCurDayDetails_M(const fSeqno, AccNo: PChar;
-  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean;stdcall;External 'BankClientLib.dll';
+  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 查询历史明细(多笔)
@@ -143,7 +145,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
 }
 
 function QueryHistoryDetails_M(const fSeqno, AccNo, BeginDate, EndDate: PChar;
-  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;External 'BankClientLib.dll';
+  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 查询支付指令(单笔)
@@ -156,7 +158,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
                             多条数据依次类退。
 }
 function QueryPayEnt_S(const fSeqno, QryfSeqno: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean;stdcall; External 'BankClientLib.dll';
+  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 {
 查询扣个人指令(单笔)
@@ -169,7 +171,7 @@ rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
                             多条数据依次类退。
 }
 function QueryPerDis_S(const fSeqno, QryfSeqno: PChar;
-  var rtCode, rtMsg, rtStr: PChar): Boolean;stdcall; External 'BankClientLib.dll';
+  var rtCode, rtMsg, rtStr: PChar): Boolean; stdcall; External 'BankClientLib.dll';
 
 implementation
 
@@ -194,9 +196,26 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  InitParams('127.0.0.1',10008);
+  InitParams('127.0.0.1', 10008);
   LoadCfg();
   U_ICBCCtl := TICBCCtlAPI.Create(self);
+end;
+
+procedure TForm1.Button15Click(Sender: TObject);
+var
+  rtMsg, rtCode, rtStr, NextTag: string;
+begin
+  //首次送空
+  NextTag := '';
+  while True do
+  begin
+    //0：签订协议  1：撤销协议
+    if U_ICBCCtl.QueryPerInf_M('Q00001', '1209230309049304635', '0', '20100101', '20111220', NextTag, rtCode, rtMsg, rtStr) then
+      WriteCmdRtLog(rtStr)
+    else
+      ShowMsg(rtMsg);
+    if NextTag = '' then Break;
+  end;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -207,7 +226,7 @@ begin
   NextTag := '';
   while True do
   begin
-    if U_ICBCCtl.QueryHistoryDetails_M('Q00001', '1209230309049304635','20111201','20111208 ', NextTag, rtCode, rtMsg, rtStr) then
+    if U_ICBCCtl.QueryHistoryDetails_M('Q00001', '1209230309049304635', '20111201', '20111208 ', NextTag, rtCode, rtMsg, rtStr) then
       WriteCmdRtLog(rtStr)
     else
       ShowMsg(rtMsg);
@@ -259,7 +278,7 @@ procedure TForm1.Button6Click(Sender: TObject);
 var
   rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.PerDis_S('PD00001', '6222031202799000087', '三套B', '111', 'BDP300080432', '300', '一卡通预存', 'PS01', '实时充值',
+  if U_ICBCCtl.PerDis_S('PD00012', '6222031202799000087', '三套B', '111', 'BDP300080432', '300', '一卡通预存', 'PS01', '实时充值',
     rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
@@ -284,18 +303,18 @@ end;
 
 procedure TForm1.Button8Click(Sender: TObject);
 var
-  rtCode, rtMsg, rtStr:PChar;
+  rtCode, rtMsg, rtStr: PChar;
 begin
-  GetMem(rtCode,100);
-  GetMem(rtMsg,512);
-  GetMem(rtStr,512);
+  GetMem(rtCode, 100);
+  GetMem(rtMsg, 512);
+  GetMem(rtStr, 512);
   if QueryAccValue_S('Q00001', '1209230309049304635', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
-  FreeMem(rtCode,100);
-  FreeMem(rtMsg,512);
-  FreeMem(rtStr,512);
+  FreeMem(rtCode, 100);
+  FreeMem(rtMsg, 512);
+  FreeMem(rtStr, 512);
 end;
 
 

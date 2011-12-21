@@ -156,6 +156,30 @@
 </Parameter>
 </Parameters>
 </Operation>
+<Operation Name="QueryPerInf_M" UID="{9AE57774-995C-4532-8663-B440870F945D}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="RecAccNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="QueryTag" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="BeginDate" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="EndDate" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="NextTag" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
 </Operations>
 </Interface>
 </Interfaces>

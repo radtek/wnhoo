@@ -38,6 +38,8 @@ type
       var rtStr: AnsiString): Boolean;
     function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString;
       var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryPerInf_M(const fSeqno: AnsiString; const RecAccNo: AnsiString; const QueryTag: AnsiString; const BeginDate: AnsiString;
+      const EndDate: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
 implementation
@@ -98,6 +100,13 @@ function TBankService.QueryPerDis_S(const fSeqno, QryfSeqno: AnsiString;
   var rtCode, rtMsg, rtStr: AnsiString): Boolean;
 begin
   Result := U_ICBCCtl.QueryPayEnt_S(fSeqno, QryfSeqno, rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.QueryPerInf_M(const fSeqno, RecAccNo, QueryTag, BeginDate,
+  EndDate: AnsiString; var NextTag, rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.QueryPerInf_M(fSeqno, RecAccNo, QueryTag, BeginDate,
+    EndDate, NextTag, rtCode, rtMsg, rtStr);
 end;
 
 function TBankService.GetSvrDt: DateTime;

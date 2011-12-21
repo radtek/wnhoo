@@ -38,6 +38,8 @@ type
     procedure setPerDisRec(const indata: TPerDisRec);
     //批量扣个人指令查询
     procedure setQueryPerDisRec(const indata: TQueryPerDisRec);
+    //缴费个人信息查询
+    procedure setQueryPerInf(const indata: TQueryPerInf);
   end;
 
   TICBCResponseAPI = class(TBASEXMLAPI)
@@ -63,6 +65,8 @@ type
     function getPerDis: TPerDisRec;
     //批量扣个人指令查询
     function getQueryPerDis: TQueryPerDisRec;
+    //缴费个人信息查询
+    function getQueryPerInf:TQueryPerInf;
 
     property Pub: TPubRec read FPubRec;
 
@@ -305,6 +309,25 @@ begin
   end;
 end;
 
+
+procedure TICBCRequestAPI.setQueryPerInf(const indata: TQueryPerInf);
+begin
+  _in.ChildNodes.Clear;
+  _in.AddChild('BeginDate').Text := indata.BeginDate;
+  _in.AddChild('EndDate').Text := indata.EndDate;
+  _in.AddChild('BeginTime').Text := indata.BeginTime;
+  _in.AddChild('EndTime').Text := indata.EndTime;
+
+  _in.AddChild('RecAccNo').Text := indata.RecAccNo;
+  
+  _in.AddChild('PayAccNo').Text := indata.PayAccNo;
+  _in.AddChild('Portno').Text := indata.Portno;
+
+  _in.AddChild('QueryTag').Text := indata.QueryTag;
+  _in.AddChild('NextTag').Text := indata.NextTag;
+  _in.AddChild('ReqReserved1').Text := indata._Reserved1;
+  _in.AddChild('ReqReserved2').Text := indata._Reserved2;
+end;
 
 { TICBCResponseAPI }
 
@@ -746,6 +769,43 @@ begin
     Result.rd[I].BankRetime := GetSingleNodeValue(RDC, 'BankRetime');
     Result.rd[I].iRetCode := GetSingleNodeValue(RDC, 'iRetCode');
     Result.rd[I].iRetMsg := GetSingleNodeValue(RDC, 'iRetMsg');
+    Result.rd[I]._Reserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
+    Result.rd[I]._Reserved4 := GetSingleNodeValue(RDC, 'RepReserved4');
+  end;
+end;
+
+
+function TICBCResponseAPI.getQueryPerInf: TQueryPerInf;
+var
+  I: integer;
+  RDC: IXMLDOMNode;
+  RDList: IXMLDOMNodeList;
+begin
+  FillChar(Result, SizeOf(TQueryPerDisRec), 0);
+  if not Assigned(_out) then Exit;
+  Result.BeginDate := GetSingleNodeValue(_out, 'BeginDate');
+  Result.EndDate := GetSingleNodeValue(_out, 'EndDate');
+  Result.BeginTime := GetSingleNodeValue(_out, 'BeginTime');
+  Result.EndTime := GetSingleNodeValue(_out, 'EndTime');
+  Result.PayAccNo := GetSingleNodeValue(_out, 'PayAccNo');
+  Result.Portno := GetSingleNodeValue(_out, 'Portno');
+  Result.RecAccNo := GetSingleNodeValue(_out, 'RecAccNo');
+  Result.QueryTag := GetSingleNodeValue(_out, 'QueryTag');
+  Result.NextTag := GetSingleNodeValue(_out, 'NextTag');
+  Result._Reserved1 := GetSingleNodeValue(_out, 'RepReserved1');
+  Result._Reserved2 := GetSingleNodeValue(_out, 'RepReserved2');
+  //RD
+  RDList := SelectNodes(_out, 'rd');
+  SetLength(Result.rd, RDList.length);
+  for I := 0 to RDList.length - 1 do
+  begin
+    RDC := RDList.item[I];
+    Result.rd[I].ContractNo := GetSingleNodeValue(RDC, 'ContractNo');
+    Result.rd[I].Portno := GetSingleNodeValue(RDC, 'Portno');
+    Result.rd[I].OpType := GetSingleNodeValue(RDC, 'OpType');
+    Result.rd[I].PayAccNo := GetSingleNodeValue(RDC, 'PayAccNo');
+    Result.rd[I].PayAccNameCN := GetSingleNodeValue(RDC, 'PayAccNameCN');
+    Result.rd[I].SignDate := GetSingleNodeValue(RDC, 'SignDate');
     Result.rd[I]._Reserved3 := GetSingleNodeValue(RDC, 'RepReserved3');
     Result.rd[I]._Reserved4 := GetSingleNodeValue(RDC, 'RepReserved4');
   end;
