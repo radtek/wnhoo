@@ -25,6 +25,31 @@ rtStr 按照指令不同,那么返回数据结构不一样,单条结构参照下面描述。
       _Reserved3: string[100]; //	响应备用字段3	否	字符	100	集团如果开通了“电子回单”的高级功能,则返回"地区号|网点号|柜员号|主机交易流水号"
       _Reserved4: string[100]; //	响应备用字段4	否	字符	100	备用，目前无意义
 
+  //查询历史明细
+      Drcrf: string[1]; //	借贷标志	否	数字	1	1:借 2:贷
+      VouhNo: string[9]; //	凭证号	否	字符	9
+      DebitAmount: string[18]; //	借方发生额	否	数字	18	以币种的最小单位为单位
+      CreditAmount: string[18]; //	贷方发生额	否	数字	18	以币种的最小单位为单位
+      Balance: string[18]; //	余额	否	数字	18	以币种的最小单位为单位
+      RecipBkNo: string[12]; //	对方行号	否	字符	12
+      RecipBkName: string[140]; //	对方行名	否	字符	140
+      RecipAccNo: string[34]; //	对方账号	否	字符	34
+      RecipName: string[140]; //	对方户名	否	字符	140
+      Summary: string[20]; //	摘要	否	字符	20
+      UseCN: string[20]; //	用途	否	字符	20
+
+      PostScript: string[100]; //	附言	否	字符	100
+      BusCode: string[5]; //	业务代码	否	字符	5
+      Date: string[8]; //	交易日期	否	字符	8	yyyyMMdd
+      Time: string[26]; //	时间戳	否	字符	26
+      Ref: string[20]; //	业务编号	否	字符	20
+      Oref: string[20]; //	相关业务编号	否	字符	20
+      EnSummary: string[40]; // 	英文备注	否	字符	40
+      BusType: string[3]; //	业务种类	否	字符	3
+      VouhType: string[3]; //	凭证种类	否	字符	3
+      AddInfo: string[210]; //	附加信息	否	字符	210
+      _Reserved3: string[100]; //	响应备用字段3	否	字符	100	集团如果开通了“电子回单”的高级功能,则返回"地区号|网点号|柜员号|主机交易流水号"
+      _Reserved4: string[100]; //	响应备用字段4	否	字符	100	备用，目前无意义
 
   
   //账户余额查询
