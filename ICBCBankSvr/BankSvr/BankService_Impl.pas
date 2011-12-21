@@ -36,6 +36,8 @@ type
       const Summary: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
     function QueryPerDis_S(const fSeqno: AnsiString; const QryfSeqno: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString;
       var rtStr: AnsiString): Boolean;
+    function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString;
+      var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
 implementation
@@ -68,13 +70,22 @@ end;
 function TBankService.QueryAccValue_S(const fSeqno, AccNo0: AnsiString;
   var rtCode, rtMsg, rtStr: AnsiString): Boolean;
 begin
-  Result := U_ICBCCtl.QueryAccValue_S(fSeqno, AccNo0, rtCode, rtMsg, rtStr);
+  Result := U_ICBCCtl.QueryAccValue_S(fSeqno, AccNo0,
+    rtCode, rtMsg, rtStr);
 end;
 
 function TBankService.QueryCurDayDetails_M(const fSeqno, AccNo: AnsiString;
   var NextTag, rtCode, rtMsg, rtStr: AnsiString): Boolean;
 begin
-  Result := U_ICBCCtl.QueryCurDayDetails_M(fSeqno, AccNo, NextTag, rtCode, rtMsg, rtStr);
+  Result := U_ICBCCtl.QueryCurDayDetails_M(fSeqno, AccNo, NextTag,
+    rtCode, rtMsg, rtStr);
+end;
+
+function TBankService.QueryHistoryDetails_M(const fSeqno, AccNo, BeginDate,
+  EndDate: AnsiString; var NextTag, rtCode, rtMsg, rtStr: AnsiString): Boolean;
+begin
+  Result := U_ICBCCtl.QueryHistoryDetails_M(fSeqno, AccNo, BeginDate, EndDate,
+    NextTag, rtCode, rtMsg, rtStr);
 end;
 
 function TBankService.QueryPayEnt_S(const fSeqno, QryfSeqno: AnsiString;

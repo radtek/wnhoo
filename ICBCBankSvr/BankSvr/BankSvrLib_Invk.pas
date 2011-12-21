@@ -31,6 +31,7 @@ type
     procedure Invoke_QueryPayEnt_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
     procedure Invoke_PerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
     procedure Invoke_QueryPerDis_S(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+    procedure Invoke_QueryHistoryDetails_M(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
   end;
 
 implementation
@@ -274,6 +275,45 @@ begin
 
     __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryPerDis_SResponse');
     __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+    __Message.UnsetAttributes(__Transport);
+
+  finally
+  end;
+end;
+
+procedure TBankService_Invoker.Invoke_QueryHistoryDetails_M(const __Instance:IInterface; const __Message:IROMessage; const __Transport:IROTransport; out __oResponseOptions:TROResponseOptions);
+{ function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString; 
+                                   var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean; }
+var
+  fSeqno: AnsiString;
+  AccNo: AnsiString;
+  BeginDate: AnsiString;
+  EndDate: AnsiString;
+  NextTag: AnsiString;
+  rtCode: AnsiString;
+  rtMsg: AnsiString;
+  rtStr: AnsiString;
+  lResult: Boolean;
+begin
+  try
+    __Message.Read('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Read('AccNo', TypeInfo(AnsiString), AccNo, []);
+    __Message.Read('BeginDate', TypeInfo(AnsiString), BeginDate, []);
+    __Message.Read('EndDate', TypeInfo(AnsiString), EndDate, []);
+    __Message.Read('NextTag', TypeInfo(AnsiString), NextTag, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+
+    lResult := (__Instance as IBankService).QueryHistoryDetails_M(fSeqno, AccNo, BeginDate, EndDate, NextTag, rtCode, rtMsg, rtStr);
+
+    __Message.InitializeResponseMessage(__Transport, 'BankSvrLib', 'BankService', 'QueryHistoryDetails_MResponse');
+    __Message.Write('Result', TypeInfo(Boolean), lResult, []);
+    __Message.Write('NextTag', TypeInfo(AnsiString), NextTag, []);
     __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
     __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
     __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
