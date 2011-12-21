@@ -13,30 +13,27 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    {
-    函数成功执行返回True,否则返回 False ,失败获取 rtMsg 可知错误描述
-    rtCode 错误码,保留
-    rtMsg  提示信息
-    rtStr  数据返回,采用"|"分割,每行最后都以 #13#10 作为行结束符,可以返回多条数据
-    }
     //查询帐户卡余(单)
     function QueryAccValue_S(const fSeqno, AccNo0: string;
       var rtCode, rtMsg, rtStr: string): Boolean;
     //查询当日交易记录(多)
     function QueryCurDayDetails_M(const fSeqno, AccNo: string;
       var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
-    //支付指令(单) 企业帐户->个人 ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
+    //支付指令(单)
     function PayEnt_S(const fSeqno, RecAccNo, RecAccNameCN, PayAmt, UseCN, PostScript, Summary: string;
       var rtCode, rtMsg, rtStr: string): Boolean;
-    //查询支付指令(单) 执行情况,只有交易通讯出现异常时候才查询的
+    //查询支付指令(单)
     function QueryPayEnt_S(const fSeqno, QryfSeqno: string;
       var rtCode, rtMsg, rtStr: string): Boolean;
-    //扣个人指令(单)  个人->企业帐户  ,成功后,还需要判断rtStr中的标志,才能决定最终是否成功
+    //扣个人指令(单)
     function PerDis_S(const fSeqno, PayAccNo, PayAccNameCN, Portno, ContractNo, PayAmt, UseCN, PostScript, Summary: string;
       var rtCode, rtMsg, rtStr: string): Boolean;
-    //查询扣个人指令(单)执行情况,只有交易通讯出现异常时候才查询的
+    //查询扣个人指令(单)
     function QueryPerDis_S(const fSeqno, QryfSeqno: string;
       var rtCode, rtMsg, rtStr: string): Boolean;
+    //查询历史明细
+    function QueryHistoryDetails_M(const fSeqno, AccNo, BeginDate,
+      EndDate: string; var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
   end;
 
 var
@@ -176,6 +173,66 @@ begin
   end;
 end;
 
+function TICBCCtlAPI.QueryHistoryDetails_M(const fSeqno, AccNo, BeginDate, EndDate: string;
+  var NextTag, rtCode, rtMsg, rtStr: string): Boolean;
+var
+  qhd: TQueryHistoryDetailsRec;
+  I: Integer;
+  rtDataStr: string;
+begin
+  rtMsg := '';
+  rtStr := '';
+  Result := False;
+  try
+    FillChar(qhd, SizeOf(TQueryHistoryDetailsRec), 0);
+    qhd.AccNo := AccNo;
+    qhd.BeginDate := BeginDate;
+    qhd.EndDate := EndDate;
+    qhd.MinAmt := '0';
+    qhd.MaxAmt := '100000000';
+    qhd.NextTag := NextTag;
+
+    if not FICBC.QueryHistoryDetails(fSeqno, qhd, rtDataStr) then
+    begin
+      rtMsg := rtDataStr;
+      Exit;
+    end;
+
+    NextTag := qhd.NextTag;
+
+    for I := Low(qhd.rd) to High(qhd.rd) do
+    begin
+      rtStr := rtStr +
+        qhd.rd[I].Drcrf + '|' +
+        qhd.rd[I].VouhNo + '|' +
+        qhd.rd[I].DebitAmount + '|' +
+        qhd.rd[I].CreditAmount + '|' +
+        qhd.rd[I].Balance + '|' +
+        qhd.rd[I].RecipBkNo + '|' +
+        qhd.rd[I].RecipBkName + '|' +
+        qhd.rd[I].RecipAccNo + '|' +
+        qhd.rd[I].RecipName + '|' +
+        qhd.rd[I].Summary + '|' +
+        qhd.rd[I].UseCN + '|' +
+        qhd.rd[I].PostScript + '|' +
+        qhd.rd[i].BusCode + '|' +
+        qhd.rd[i].Date + '|' +
+        qhd.rd[i].Time + '|' +
+        qhd.rd[i].Ref + '|' +
+        qhd.rd[i].Oref + '|' +
+        qhd.rd[i].EnSummary + '|' +
+        qhd.rd[i].BusType + '|' +
+        qhd.rd[i].VouhType + '|' +
+        qhd.rd[i].AddInfo + '|' +
+        qhd.rd[i]._Reserved3 + '|' +
+        qhd.rd[i]._Reserved4 + #13#10;
+    end;
+    Result := rtStr <> '';
+  except
+    on Ex: Exception do
+      rtMsg := Ex.Message;
+  end;
+end;
 
 constructor TICBCCtlAPI.Create(AOwner: TComponent);
 begin

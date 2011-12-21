@@ -134,6 +134,28 @@
 </Parameter>
 </Parameters>
 </Operation>
+<Operation Name="QueryHistoryDetails_M" UID="{24693C86-2B6D-438A-B5CB-27FD9BF93E9D}">
+<Parameters>
+<Parameter Name="Result" DataType="Boolean" Flag="Result">
+</Parameter>
+<Parameter Name="fSeqno" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="AccNo" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="BeginDate" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="EndDate" DataType="AnsiString" Flag="In" >
+</Parameter>
+<Parameter Name="NextTag" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtCode" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtMsg" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+<Parameter Name="rtStr" DataType="AnsiString" Flag="InOut" >
+</Parameter>
+</Parameters>
+</Operation>
 </Operations>
 </Interface>
 </Interfaces>
