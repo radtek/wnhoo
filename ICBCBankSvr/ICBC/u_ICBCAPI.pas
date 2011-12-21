@@ -39,7 +39,9 @@ type
       var rtDataStr: string): Boolean;
     function QueryPayEnt(const fSeqno: string; var qpe: TQueryPayEntRec;
       var rtDataStr: string): Boolean;
-            
+    function QueryPerInf(const fSeqno: string; var qpi: TQueryPerInf;
+      var rtDataStr: string): Boolean;
+      
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
@@ -402,6 +404,44 @@ begin
   qpe := FICBCRspon.getQueryPayEnt();
   Result := True;
 end;
+
+function TICBCAPI.QueryPerInf(const fSeqno: string; var qpi: TQueryPerInf;
+  var rtDataStr: string): Boolean;
+var
+  rtDataBase64Str: string;
+  pub: TPubRec;
+begin
+  Result := False;
+  rtDataStr := '';
+  rtDataBase64Str := '';
+  //请求XML部分
+  pub := getPubRec('QPERINF', fSeqno);
+  FICBCRsq.setPub(pub);
+  FICBCRsq.setQueryPerInf(qpi);
+  //GP BASE64编码 ,直接明文
+  if not NCSvrRequest(Pub, FICBCRsq.GetXML, False, rtDataBase64Str) then
+  begin
+    //errorCode
+    rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+    Exit;
+  end;
+  //解码
+  rtDataStr := FdeBase64.DecodeString(rtDataBase64Str);
+  WriteLog(FICBCRsq.GetXML, 'c:\缴费个人信息查询S.xml');
+  WriteLog(rtDataStr, 'c:\缴费个人信息查询R.xml');
+  //解析
+  FICBCRspon.SetXML(rtDataStr);
+  Pub := FICBCRspon.Pub;
+  if Pub.RetCode <> '0' then
+  begin
+    rtDataStr := '[' + Pub.RetCode + ']' + Pub.RetMsg;
+    Exit;
+  end;
+  //返回结果
+  qpi := FICBCRspon.getQueryPerInf();
+  Result := True;
+end;
+
 
 end.
 

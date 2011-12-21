@@ -50,6 +50,8 @@ type
                            var rtStr: AnsiString): Boolean;
     function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString; 
                                    var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryPerInf_M(const fSeqno: AnsiString; const RecAccNo: AnsiString; const QueryTag: AnsiString; const BeginDate: AnsiString; 
+                           const EndDate: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
   { CoBankService }
@@ -78,6 +80,8 @@ type
                            var rtStr: AnsiString): Boolean;
     function QueryHistoryDetails_M(const fSeqno: AnsiString; const AccNo: AnsiString; const BeginDate: AnsiString; const EndDate: AnsiString; 
                                    var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+    function QueryPerInf_M(const fSeqno: AnsiString; const RecAccNo: AnsiString; const QueryTag: AnsiString; const BeginDate: AnsiString; 
+                           const EndDate: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
   end;
 
 implementation
@@ -281,6 +285,35 @@ begin
     __Message.InitializeRequestMessage(__TransportChannel, 'BankSvrLib', __InterfaceName, 'QueryHistoryDetails_M');
     __Message.Write('fSeqno', TypeInfo(AnsiString), fSeqno, []);
     __Message.Write('AccNo', TypeInfo(AnsiString), AccNo, []);
+    __Message.Write('BeginDate', TypeInfo(AnsiString), BeginDate, []);
+    __Message.Write('EndDate', TypeInfo(AnsiString), EndDate, []);
+    __Message.Write('NextTag', TypeInfo(AnsiString), NextTag, []);
+    __Message.Write('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Write('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Write('rtStr', TypeInfo(AnsiString), rtStr, []);
+    __Message.Finalize;
+
+    __TransportChannel.Dispatch(__Message);
+
+    __Message.Read('Result', TypeInfo(Boolean), result, []);
+    __Message.Read('NextTag', TypeInfo(AnsiString), NextTag, []);
+    __Message.Read('rtCode', TypeInfo(AnsiString), rtCode, []);
+    __Message.Read('rtMsg', TypeInfo(AnsiString), rtMsg, []);
+    __Message.Read('rtStr', TypeInfo(AnsiString), rtStr, []);
+  finally
+    __Message.UnsetAttributes(__TransportChannel);
+    __Message.FreeStream;
+  end
+end;
+
+function TBankService_Proxy.QueryPerInf_M(const fSeqno: AnsiString; const RecAccNo: AnsiString; const QueryTag: AnsiString; const BeginDate: AnsiString; 
+                                          const EndDate: AnsiString; var NextTag: AnsiString; var rtCode: AnsiString; var rtMsg: AnsiString; var rtStr: AnsiString): Boolean;
+begin
+  try
+    __Message.InitializeRequestMessage(__TransportChannel, 'BankSvrLib', __InterfaceName, 'QueryPerInf_M');
+    __Message.Write('fSeqno', TypeInfo(AnsiString), fSeqno, []);
+    __Message.Write('RecAccNo', TypeInfo(AnsiString), RecAccNo, []);
+    __Message.Write('QueryTag', TypeInfo(AnsiString), QueryTag, []);
     __Message.Write('BeginDate', TypeInfo(AnsiString), BeginDate, []);
     __Message.Write('EndDate', TypeInfo(AnsiString), EndDate, []);
     __Message.Write('NextTag', TypeInfo(AnsiString), NextTag, []);

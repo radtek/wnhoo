@@ -85,6 +85,15 @@ object Form1: TForm1
       TabOrder = 6
       OnClick = Button3Click
     end
+    object Button15: TButton
+      Left = 689
+      Top = 10
+      Width = 120
+      Height = 25
+      Caption = #32564#36153#20010#20154#20449#24687#26597#35810
+      TabOrder = 7
+      OnClick = Button15Click
+    end
   end
   object PageControl1: TPageControl
     Left = 0
@@ -94,12 +103,9 @@ object Form1: TForm1
     ActivePage = TabSheet3
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 41
-    ExplicitHeight = 409
     object TabSheet3: TTabSheet
       Caption = #21453#39304
       ImageIndex = 2
-      ExplicitHeight = 381
       object mmo_cmdrt: TMemo
         Left = 0
         Top = 0
@@ -108,7 +114,6 @@ object Form1: TForm1
         Align = alClient
         ScrollBars = ssBoth
         TabOrder = 0
-        ExplicitHeight = 381
       end
     end
   end
@@ -119,7 +124,6 @@ object Form1: TForm1
     Height = 41
     Align = alTop
     TabOrder = 2
-    ExplicitTop = 8
     object Button8: TButton
       Left = 4
       Top = 10

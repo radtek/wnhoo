@@ -214,6 +214,35 @@ begin
   StrPCopy(rtStr, _rtStr);
 end;
 
+{
+缴费个人信息查询(多笔)
+fSeqno        指令序号,系统内唯一,自定义
+RecAccNo      收费企业账号
+QueryTag      查询协议类型	 0：签订协议  1：撤销协议
+BeginDate     开始日期，格式：YYYYMMDD
+EndDate       结束日期，格式：YYYYMMDD
+
+NextTag       下笔标志，首次送空字符，如果执行成功此标志不为空，可以继续查询
+                                      查询标志以上次返回为值，直至返回为空为止。
+rtCode        错误代码，保留
+rtMsg         错误描述，前置服务与NC及ICBC通讯及解析的任何异常描述
+rtStr         正常返回数据，以“|”分割，以#13#10(回车、换行)为结束符号
+                            多条数据依次类退。
+}
+
+function QueryPerInf_M(const fSeqno, RecAccNo, QueryTag, BeginDate, EndDate: PChar;
+  var NextTag, rtCode, rtMsg, rtStr: PChar): Boolean; stdcall;
+var
+  _NextTag, _rtCode, _rtMsg, _rtStr: string;
+begin
+  Result := BS.QueryPerInf_M(fSeqno, RecAccNo, QueryTag, BeginDate, EndDate,
+    _NextTag, _rtCode, _rtMsg, _rtStr);
+  StrPCopy(NextTag, _NextTag);
+  StrPCopy(rtCode, _rtCode);
+  StrPCopy(rtMsg, _rtMsg);
+  StrPCopy(rtStr, _rtStr);
+end;
+
 procedure DLLEntryPoint(dwReason: DWORD);
 begin
   case dwReason of
@@ -241,7 +270,8 @@ begin
 end;
 
 
-exports InitParams, GetSvrDt, QueryAccValue_S, QueryCurDayDetails_M, PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S;
+exports InitParams, GetSvrDt, QueryAccValue_S, QueryCurDayDetails_M, QueryHistoryDetails_M,
+  PayEnt_S, QueryPayEnt_S, PerDis_S, QueryPerDis_S, QueryPerInf_M;
 
 
 begin
