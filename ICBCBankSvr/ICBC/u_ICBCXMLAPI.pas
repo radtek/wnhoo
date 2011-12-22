@@ -341,7 +341,7 @@ begin
   _out := SelectSingleNode('/CMS/eb/out');
   if Assigned(_pub) then
   begin
-    StrPCopy(FPubRec.TransCode, GetSingleNodeValue(_pub, 'TransCode'));
+    FPubRec.TransCode:=GetSingleNodeValue(_pub, 'TransCode');
     FPubRec.CIS := GetSingleNodeValue(_pub, 'CIS');
     FPubRec.BankCode := GetSingleNodeValue(_pub, 'BankCode');
     FPubRec.ID := GetSingleNodeValue(_pub, 'ID');

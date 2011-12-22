@@ -6,7 +6,7 @@ type
 
   //公共头
   TPubRec = packed record
-    TransCode: array[0..10] of Char; //	交易代码	必输项	字符	10	PAYENT
+    TransCode: string[10]; //	交易代码	必输项	字符	10	PAYENT
     CIS: string[60]; //	集团CIS号	必输项	字符	60	客户注册时的归属编码
     BankCode: string[3]; //	归属银行编号	必输项	字符	3	客户注册时的归属单位
     ID: string[40]; //	证书ID	必输项	字符	40	无证书客户可上送空
