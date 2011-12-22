@@ -39,6 +39,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
   private
     procedure WriteCmdRtLog(const Str: string);
     procedure ShowMsg(const rtMsg: string);
@@ -199,6 +200,22 @@ begin
   InitParams('127.0.0.1', 10008);
   LoadCfg();
   U_ICBCCtl := TICBCCtlAPI.Create(self);
+end;
+
+procedure TForm1.Button14Click(Sender: TObject);
+var
+  rtCode, rtMsg, rtStr: PChar;
+begin
+  GetMem(rtCode, 100);
+  GetMem(rtMsg, 512);
+  GetMem(rtStr, 512);
+  if PayEnt_S('PE00010', '6222031202799000087', '三套B', '200', '一卡通退款', 'OneIC01', '一卡通相关业务', rtCode, rtMsg, rtStr) then
+    WriteCmdRtLog(rtStr)
+  else
+    ShowMsg(rtMsg);
+  FreeMem(rtCode, 100);
+  FreeMem(rtMsg, 512);
+  FreeMem(rtStr, 512);
 end;
 
 procedure TForm1.Button15Click(Sender: TObject);
