@@ -265,7 +265,7 @@ procedure TForm1.Button3Click(Sender: TObject);
 var
   rtCode, rtMsg, rtStr: string;
 begin
-  if U_ICBCCtl.PayEnt_S('PE00010', '6222031202799000087', '三套B', '200', '一卡通退款', 'OneIC01', '一卡通相关业务', rtCode, rtMsg, rtStr) then
+  if U_ICBCCtl.PayEnt_S('PE00011', '6222031202799000087', '三套B', '200', '一卡通退款', 'OneIC01', '一卡通相关业务', rtCode, rtMsg, rtStr) then
     WriteCmdRtLog(rtStr)
   else
     ShowMsg(rtMsg);
