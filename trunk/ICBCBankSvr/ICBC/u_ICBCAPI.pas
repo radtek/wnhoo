@@ -134,7 +134,7 @@ end;
 function TICBCAPI.getPubRec(const TransCode, fSeqno: string): TPubRec;
 begin
   FillChar(Result, SizeOf(TPubRec), 0);
-  StrPCopy(Result.TransCode, TransCode);
+  Result.TransCode := TransCode;
   Result.CIS := FCIS;
   Result.BankCode := FBankCode;
   Result.ID := FID;

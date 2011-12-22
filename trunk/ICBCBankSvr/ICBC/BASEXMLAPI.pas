@@ -119,19 +119,15 @@ begin
   xmlFileList := TStringList.Create;
   Stream := TMemoryStream.Create;
   try
-    try
-      xmlFileList.LoadFromFile(XmlFile);
-      xmlFileList.SaveToStream(Stream);
-      Stream.Position := 0;
-      FXD.Active := False;
-      FXD.LoadFromStream(Stream);
-      FXD.Active := True;
-      //子类实现解析方法
-      ParserXML();
-      Result := True;
-    except
-      ;
-    end;
+    xmlFileList.LoadFromFile(XmlFile);
+    xmlFileList.SaveToStream(Stream);
+    Stream.Position := 0;
+    FXD.Active := False;
+    FXD.LoadFromStream(Stream);
+    FXD.Active := True;
+    //子类实现解析方法
+    ParserXML();
+    Result := True;
   finally
     Stream.Free;
     xmlFileList.Free;
@@ -147,20 +143,15 @@ function TBASEXMLAPI.SetXML(const Xml: string): Boolean;
 var
   Stream: TStringStream;
 begin
-  Result := False;
   Stream := TStringStream.Create(Xml);
   try
-    try
-      Stream.Position := 0;
-      FXD.Active := False;
-      FXD.LoadFromStream(Stream);
-      FXD.Active := True;
-      //子类实现解析方法
-      ParserXML();
-      Result := True;
-    except
-      ;
-    end;
+    Stream.Position := 0;
+    FXD.Active := False;
+    FXD.LoadFromStream(Stream);
+    FXD.Active := True;
+    //子类实现解析方法
+    ParserXML();
+    Result := True;
   finally
     Stream.Free;
   end;
