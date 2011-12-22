@@ -1,7 +1,7 @@
 library BankClientLib;
 
 uses
-  SysUtils, Windows, Classes, uROClient, uROIndyTCPChannel, uROBinMessage, BankSvrLib_Intf, Dialogs;
+  SysUtils, Windows, Classes, uROClient, uROIndyTCPChannel, uROBinMessage, BankSvrLib_Intf;
 
 {$R *.res}
 

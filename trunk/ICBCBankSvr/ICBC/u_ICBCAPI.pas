@@ -41,7 +41,7 @@ type
       var rtDataStr: string): Boolean;
     function QueryPerInf(const fSeqno: string; var qpi: TQueryPerInf;
       var rtDataStr: string): Boolean;
-      
+
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
@@ -94,7 +94,7 @@ begin
       if not FSign.SetXML(rtxmlStr) then Exit;
       if FSign.SignRec.RtCode <> '0' then
       begin
-        raise Exception.Create(FSign.SignRec.RtStr);
+        raise Exception.Create('Ç©ÃûÒì³££¬' + FSign.SignRec.RtStr);
         Exit;
       end;
       //Sign ºó×Ö·û
