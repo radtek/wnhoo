@@ -9,7 +9,7 @@ uses
 
 type
 
-  TReaderCMD=(RC_None=0,RC_1D=1,RC_UL=2,RC_IC=3);
+  TReaderCMD=(RC_None=0,RC_1D_Car=1,RC_UL_Car=2,RC_IC_Driver=3,RC_1D_DriverTargetPlace=4);
 
   { TReaderThread }
 
@@ -19,11 +19,13 @@ type
       FSEvent:TSimpleEvent;
       procedure CheckSvrConn;
       procedure ClearDriver;
+      procedure ClearDriverTargetPlace;
       procedure QueryDriver;
       procedure ClearCar;
       procedure QueryCar;
       function ReaderBarcode1D(var B1DValue:String):Boolean;
       function ReaderRF(Const TagTypeFlag:TTagType;var RFValue:String):Boolean;
+      procedure SetDriverTargetPlace;
       procedure SleepEv(Const Timeout : Cardinal);
     public
       constructor Create(CreateSuspended: Boolean);
@@ -74,7 +76,7 @@ begin
     begin
        Value:='';
        case FReaderCMD of
-         RC_1D : begin
+         RC_1D_Car: begin
            if ReaderBarcode1D(Value) then
            begin
              U_Car.VIN:=Value;
@@ -85,7 +87,7 @@ begin
              Synchronize(@ClearCar);
            end;
          end;
-         RC_UL : begin
+         RC_UL_Car: begin
            if ReaderRF(ultra_light,Value) then
            begin
             U_Car.RFID:=Value;
@@ -96,7 +98,7 @@ begin
              Synchronize(@ClearCar);
            end;
          end;
-         RC_IC :begin
+         RC_IC_Driver :begin
            if ReaderRF(Mifare_One_S50,Value) then
            begin
              if GetFullCardNum(Value,FullCardNum) then
@@ -112,6 +114,17 @@ begin
            else
            begin
              Synchronize(@ClearDriver);
+           end;
+         end;
+         RC_1D_DriverTargetPlace:begin
+           if ReaderBarcode1D(Value) then
+           begin
+             U_Driver.TargetPlace:=Value;
+             Synchronize(@SetDriverTargetPlace);
+           end
+           else
+           begin
+             Synchronize(@ClearDriverTargetPlace);
            end;
          end;
        end;
@@ -228,6 +241,16 @@ end;
 procedure TReaderThread.QueryCar;
 begin
    _QueryCar();
+end;
+
+procedure TReaderThread.SetDriverTargetPlace();
+begin
+   _SetDriverTargetPlace();
+end;
+
+procedure TReaderThread.ClearDriverTargetPlace();
+begin
+   _ClearDriverTargetPlace();
 end;
 
 end.

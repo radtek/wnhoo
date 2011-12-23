@@ -14,18 +14,18 @@ type
   { TMainFrm }
 
   TMainFrm = class(TForm)
-    btn_cb: TButton;
-    btn_ic: TButton;
+    btn_F4: TButton;
+    btn_F2: TButton;
+    btn_F1: TButton;
     btn_OK: TButton;
     btn_Reset: TButton;
-    btn_ul: TButton;
+    btn_F3: TButton;
     edt_Msg: TEdit;
     edt_CarUL: TEdit;
     edt_CarVIN: TEdit;
     edt_DriverIC: TEdit;
     edt_DriverName: TEdit;
-    edt_EngineNum: TEdit;
-    edt_ProjectNum: TEdit;
+    edt_TargetPlace: TEdit;
     gb_Car: TGroupBox;
     gb_driver: TGroupBox;
     Label1: TLabel;
@@ -33,16 +33,16 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    Label6: TLabel;
     pnl_top: TPanel;
     pnl_Main: TPanel;
     rg_Direction: TRadioGroup;
     sb: TStatusBar;
-    procedure btn_cbClick(Sender: TObject);
+    procedure btn_F4Click(Sender: TObject);
+    procedure btn_F2Click(Sender: TObject);
     procedure btn_OKClick(Sender: TObject);
     procedure btn_ResetClick(Sender: TObject);
-    procedure btn_ulClick(Sender: TObject);
-    procedure btn_icClick(Sender: TObject);
+    procedure btn_F3Click(Sender: TObject);
+    procedure btn_F1Click(Sender: TObject);
     procedure edt_CarVINEnter(Sender: TObject);
     procedure edt_CarVINExit(Sender: TObject);
     procedure edt_CarVINKeyDown(Sender: TObject; var Key: Word;
@@ -75,6 +75,7 @@ begin
   try
      if U_Guard.UserID<=0 then Exit;
      if U_Driver.UserID<=0 then Exit;
+     if Trim(U_Driver.TargetPlace)='' then Exit;
      if not((Trim(U_Car.VIN)<>'') and (Trim(U_Car.EngineNum)<>'')) then Exit;
      if rg_Direction.ItemIndex<0 then Exit;
      IOR.PDANum:=PDANum;
@@ -126,31 +127,38 @@ begin
   end;
 end;
 
-procedure TMainFrm.btn_cbClick(Sender: TObject);
+procedure TMainFrm.btn_F4Click(Sender: TObject);
 begin
   if Rdt.ReaderCMD<>RC_None then exit;
   //初始化
   _ClearCar();
-  edt_CarVIN.Text := '请扫描条码...';
-  Rdt.ReaderCMD:=RC_1D;
+  edt_CarVIN.Text := '请扫车辆条码...';
+  Rdt.ReaderCMD:=RC_1D_Car;
 end;
 
-procedure TMainFrm.btn_ulClick(Sender: TObject);
+procedure TMainFrm.btn_F3Click(Sender: TObject);
 begin
   if Rdt.ReaderCMD<>RC_None then exit;
   //初始化
   _ClearCar();
-  edt_CarUL.Text := '请刷RFID...';
-  Rdt.ReaderCMD:=RC_UL;
+  edt_CarUL.Text := '请刷车辆RFID...';
+  Rdt.ReaderCMD:=RC_UL_Car;
 end;
 
-procedure TMainFrm.btn_icClick(Sender: TObject);
+procedure TMainFrm.btn_F1Click(Sender: TObject);
 begin
   if Rdt.ReaderCMD<>RC_None then exit;
   //初始化
   _ClearDriver();
-  edt_DriverIC.Text := '请刷IC...';
-  Rdt.ReaderCMD:=RC_IC;
+  edt_DriverIC.Text := '请刷员工卡...';
+  Rdt.ReaderCMD:=RC_IC_Driver;
+end;
+
+procedure TMainFrm.btn_F2Click(Sender: TObject);
+begin
+  if Rdt.ReaderCMD<>RC_None then exit;
+  edt_TargetPlace.Text := '请扫去向条码...';
+  Rdt.ReaderCMD:=RC_1D_DriverTargetPlace;
 end;
 
 procedure TMainFrm.edt_CarVINEnter(Sender: TObject);
@@ -170,8 +178,12 @@ begin
   edtCarVIN:=edt_CarVIN;
   edtDriverIC:=edt_DriverIC;
   edtDriverName:=edt_DriverName;
-  edtEngineNum:=edt_EngineNum;
-  edtProjectNum:=edt_ProjectNum;
+  edtTargetPlace:=edt_TargetPlace;
+
+  //edtEngineNum:=edt_TargetPlace;
+  //edtProjectNum:=edt_ProjectNum;
+
+
   edtMsg:=edt_msg;
 
   DoubleBuffered := True;
@@ -216,13 +228,14 @@ procedure TMainFrm.ShortcutEvent(var Msg: TLMKey; var Handled: Boolean);
 begin
   Handled := True;
   case Msg.CharCode of
-    VK_F4:begin
+    VK_BACK:begin
         //中止
         Rdt.ReaderCMD:=RC_None;
     end;
-    VK_F3:btn_cb.Click;
-    VK_F2:btn_ul.Click;
-    VK_F1:btn_ic.Click;
+    VK_F4:btn_F4.Click;
+    VK_F3:btn_F3.Click;
+    VK_F2:btn_F2.Click;
+    VK_F1:btn_F1.Click;
     VK_F5:btn_ok.Click;
   else
     Handled := False;

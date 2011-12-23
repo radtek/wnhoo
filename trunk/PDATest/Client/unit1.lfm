@@ -1,7 +1,7 @@
 object MainFrm: TMainFrm
-  Left = 427
+  Left = 495
   Height = 268
-  Top = 115
+  Top = 270
   Width = 234
   BorderStyle = bsDialog
   Caption = '整车出入厂门管理'
@@ -14,23 +14,25 @@ object MainFrm: TMainFrm
   LCLVersion = '0.9.31'
   object pnl_Main: TPanel
     Left = 0
-    Height = 248
+    Height = 246
     Top = 0
     Width = 234
     Align = alClient
     BevelOuter = bvNone
-    ClientHeight = 248
+    ClientHeight = 246
     ClientWidth = 234
     TabOrder = 0
     object gb_Car: TGroupBox
       Left = 0
-      Height = 109
-      Top = 91
+      Height = 62
+      Top = 111
       Width = 234
       Align = alTop
       Caption = '车辆'
-      ClientHeight = 91
+      ClientHeight = 44
       ClientWidth = 230
+      Font.Color = clWhite
+      ParentFont = False
       TabOrder = 0
       object edt_CarUL: TEdit
         Left = 40
@@ -44,13 +46,15 @@ object MainFrm: TMainFrm
         ReadOnly = True
         TabOrder = 2
       end
-      object btn_ul: TButton
+      object btn_F3: TButton
         Left = 193
         Height = 22
         Top = -5
         Width = 24
-        Caption = 'F2'
-        OnClick = btn_ulClick
+        Caption = 'F3'
+        Font.Color = clGreen
+        OnClick = btn_F3Click
+        ParentFont = False
         TabOrder = 0
       end
       object edt_CarVIN: TEdit
@@ -59,18 +63,22 @@ object MainFrm: TMainFrm
         Top = 20
         Width = 150
         AutoSize = False
+        Font.Color = clGreen
         OnEnter = edt_CarVINEnter
         OnExit = edt_CarVINExit
         OnKeyDown = edt_CarVINKeyDown
+        ParentFont = False
         TabOrder = 3
       end
-      object btn_cb: TButton
+      object btn_F4: TButton
         Left = 193
         Height = 22
-        Top = 19
+        Top = 18
         Width = 24
-        Caption = 'F3'
-        OnClick = btn_cbClick
+        Caption = 'F4'
+        Font.Color = clGreen
+        OnClick = btn_F4Click
+        ParentFont = False
         TabOrder = 1
       end
       object Label3: TLabel
@@ -85,64 +93,24 @@ object MainFrm: TMainFrm
       object Label4: TLabel
         Left = 9
         Height = 13
-        Top = 23
+        Top = 24
         Width = 39
         AutoSize = False
         Caption = '条码'
         ParentColor = False
       end
-      object Label5: TLabel
-        Left = 8
-        Height = 13
-        Top = 48
-        Width = 81
-        AutoSize = False
-        Caption = '发动机号'
-        ParentColor = False
-      end
-      object Label6: TLabel
-        Left = 8
-        Height = 13
-        Top = 71
-        Width = 78
-        AutoSize = False
-        Caption = '整车项目号'
-        ParentColor = False
-      end
-      object edt_EngineNum: TEdit
-        Left = 73
-        Height = 20
-        Top = 44
-        Width = 144
-        AutoSize = False
-        Color = clGreen
-        Font.Color = clWhite
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 4
-      end
-      object edt_ProjectNum: TEdit
-        Left = 73
-        Height = 20
-        Top = 67
-        Width = 144
-        AutoSize = False
-        Color = clGreen
-        Font.Color = clWhite
-        ParentFont = False
-        ReadOnly = True
-        TabOrder = 5
-      end
     end
     object gb_driver: TGroupBox
       Left = 0
-      Height = 62
+      Height = 82
       Top = 29
       Width = 234
       Align = alTop
       Caption = '驾驶员'
-      ClientHeight = 44
+      ClientHeight = 64
       ClientWidth = 230
+      Font.Color = clWhite
+      ParentFont = False
       TabOrder = 1
       object edt_DriverIC: TEdit
         Left = 40
@@ -156,19 +124,21 @@ object MainFrm: TMainFrm
         ReadOnly = True
         TabOrder = 0
       end
-      object btn_ic: TButton
+      object btn_F1: TButton
         Left = 193
         Height = 22
         Top = -1
         Width = 24
         Caption = 'F1'
-        OnClick = btn_icClick
+        Font.Color = clGreen
+        OnClick = btn_F1Click
+        ParentFont = False
         TabOrder = 2
       end
       object Label1: TLabel
         Left = 8
         Height = 13
-        Top = 22
+        Top = 24
         Width = 38
         AutoSize = False
         Caption = '姓名'
@@ -177,7 +147,7 @@ object MainFrm: TMainFrm
       object Label2: TLabel
         Left = 8
         Height = 13
-        Top = -1
+        Top = 3
         Width = 49
         AutoSize = False
         Caption = '卡号'
@@ -195,59 +165,66 @@ object MainFrm: TMainFrm
         ReadOnly = True
         TabOrder = 1
       end
+      object Label5: TLabel
+        Left = 8
+        Height = 13
+        Top = 45
+        Width = 81
+        AutoSize = False
+        Caption = '去向'
+        ParentColor = False
+      end
+      object edt_TargetPlace: TEdit
+        Left = 40
+        Height = 20
+        Top = 41
+        Width = 150
+        AutoSize = False
+        Color = clGreen
+        Font.Color = clWhite
+        ParentFont = False
+        ReadOnly = True
+        TabOrder = 3
+      end
+      object btn_F2: TButton
+        Left = 193
+        Height = 22
+        Top = 41
+        Width = 24
+        Caption = 'F2'
+        Font.Color = clGreen
+        OnClick = btn_F2Click
+        ParentFont = False
+        TabOrder = 4
+      end
     end
     object pnl_top: TPanel
       Left = 0
-      Height = 40
-      Top = 200
+      Height = 34
+      Top = 212
       Width = 234
-      Align = alTop
+      Align = alClient
       BevelOuter = bvNone
-      ClientHeight = 40
+      ClientHeight = 34
       ClientWidth = 234
       TabOrder = 2
-      object rg_Direction: TRadioGroup
-        Left = 4
-        Height = 36
-        Top = 1
-        Width = 91
-        AutoFill = True
-        Caption = '方向'
-        ChildSizing.LeftRightSpacing = 6
-        ChildSizing.TopBottomSpacing = 6
-        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-        ChildSizing.EnlargeVertical = crsHomogenousChildResize
-        ChildSizing.ShrinkHorizontal = crsScaleChilds
-        ChildSizing.ShrinkVertical = crsScaleChilds
-        ChildSizing.Layout = cclLeftToRightThenTopToBottom
-        ChildSizing.ControlsPerLine = 2
-        ClientHeight = 18
-        ClientWidth = 87
-        Columns = 2
-        ItemIndex = 0
-        Items.Strings = (
-          '出'
-          '入'
-        )
-        TabOrder = 0
-      end
       object btn_Reset: TButton
-        Left = 168
+        Left = 132
         Height = 25
-        Top = 9
+        Top = 4
         Width = 60
         Caption = '清除'
         OnClick = btn_ResetClick
-        TabOrder = 1
+        TabOrder = 0
       end
       object btn_OK: TButton
-        Left = 102
+        Left = 42
         Height = 25
-        Top = 9
+        Top = 4
         Width = 60
         Caption = '登记(F5)'
         OnClick = btn_OKClick
-        TabOrder = 2
+        TabOrder = 1
       end
     end
     object edt_Msg: TEdit
@@ -263,11 +240,39 @@ object MainFrm: TMainFrm
       ParentFont = False
       TabOrder = 3
     end
+    object rg_Direction: TRadioGroup
+      Left = 0
+      Height = 39
+      Top = 173
+      Width = 234
+      Align = alTop
+      AutoFill = True
+      Caption = '方向'
+      ChildSizing.LeftRightSpacing = 6
+      ChildSizing.TopBottomSpacing = 6
+      ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+      ChildSizing.EnlargeVertical = crsHomogenousChildResize
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.ShrinkVertical = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 2
+      ClientHeight = 21
+      ClientWidth = 230
+      Columns = 2
+      Font.Color = clWhite
+      ItemIndex = 0
+      Items.Strings = (
+        '出'
+        '入'
+      )
+      ParentFont = False
+      TabOrder = 4
+    end
   end
   object sb: TStatusBar
     Left = 0
-    Height = 20
-    Top = 248
+    Height = 22
+    Top = 246
     Width = 234
     Panels = <    
       item
