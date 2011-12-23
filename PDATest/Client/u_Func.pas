@@ -48,6 +48,10 @@ procedure ShowErrMsg(const IsShow:Boolean=false);
 procedure _ClearDriver();
 //查询驾驶员信息
 procedure _QueryDriver();
+//设置去向
+procedure _SetDriverTargetPlace();
+//清除去向信息
+procedure _ClearDriverTargetPlace();
 //清除车辆信息
 procedure _ClearCar();
 //查询车辆信息
@@ -67,8 +71,10 @@ var
   edtCarVIN: TEdit;
   edtDriverIC: TEdit;
   edtDriverName: TEdit;
-  edtEngineNum: TEdit;
-  edtProjectNum: TEdit;
+  //edtEngineNum: TEdit;
+  //edtProjectNum: TEdit;
+  edtTargetPlace: TEdit;
+
   edtMsg:TEdit;
 
   SvrIP:String;
@@ -178,6 +184,8 @@ begin
   FillChar(U_Driver,SizeOf(TUserInfo),0);
   edtDriverIC.Clear;
   edtDriverName.Clear;
+  //去向清除
+  edtTargetPlace.Clear;
 end;
 
 procedure _QueryDriver();
@@ -191,6 +199,20 @@ begin
   end;
   edtDriverIC.Text:=utf8EnCode(U_Driver.FullCardNum);
   edtDriverName.Text:=utf8EnCode(U_Driver.UserName);
+  //去掉去向信息
+  edtTargetPlace.Clear;
+  U_Driver.TargetPlace:='';
+end;
+
+procedure _SetDriverTargetPlace();
+begin
+  edtTargetPlace.Text:=U_Driver.TargetPlace;
+end;
+
+procedure _ClearDriverTargetPlace();
+begin
+  U_Driver.TargetPlace:='';
+  edtTargetPlace.Text:=U_Driver.TargetPlace;
 end;
 
 procedure _ClearCar();
@@ -199,8 +221,8 @@ begin
   Fillchar(U_Car,SizeOf(TCarInfo),0);
   edtCarUL.Clear;
   edtCarVIN.Clear;
-  edtEngineNum.Clear;
-  edtProjectNum.Clear;
+  //edtEngineNum.Clear;
+  //edtProjectNum.Clear;
 end;
 
 procedure _QueryCar();
@@ -214,8 +236,8 @@ begin
   end;
   edtCarUL.Text:=utf8EnCode(U_Car.RFID);
   edtCarVIN.Text:=utf8EnCode(U_Car.VIN);
-  edtEngineNum.Text:=utf8EnCode(U_Car.EngineNum);
-  edtProjectNum.Text:=utf8EnCode(U_Car.ProjectNum);
+  //edtEngineNum.Text:=utf8EnCode(U_Car.EngineNum);
+  //edtProjectNum.Text:=utf8EnCode(U_Car.ProjectNum);
 end;
 
 function GetFullCardNum(Const FullCardNumHex:String;out FullCardNum:Cardinal):Boolean;
