@@ -28,6 +28,7 @@ implementation
 constructor TServerThread.Create(CreateSuspended: Boolean; SERVER_PORT: Integer);
 begin
   inherited Create(CreateSuspended);
+  //这儿如果抛出异常,那么将无法显示,程序卡住。
   FServer := StartServerForTCP(SERVER_PORT);
   if FServer > 0 then
     SetSocket_SR_Param(FServer, Send_TO, Recv_TO);
