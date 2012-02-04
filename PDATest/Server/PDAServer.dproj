@@ -3,10 +3,10 @@
   <PropertyGroup>
     <ProjectGuid>{8ca82093-7530-49f1-b812-e122c1dd430c}</ProjectGuid>
     <MainSource>PDAServer.dpr</MainSource>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-    <DCC_DependencyCheckOutputName>bin\PDAServer.exe</DCC_DependencyCheckOutputName>
+    <DCC_DependencyCheckOutputName>..\bin\PDAServer.exe</DCC_DependencyCheckOutputName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Version>7.0</Version>
@@ -33,7 +33,13 @@
     <Borland.Personality>Delphi.Personality</Borland.Personality>
     <Borland.ProjectType>VCLApplication</Borland.ProjectType>
     <BorlandProject>
-<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">True</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">140</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2052</VersionInfo><VersionInfo Name="CodePage">936</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName"></VersionInfoKeys><VersionInfoKeys Name="FileDescription">出入控制服务软件</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.140</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName">出入控制服务软件</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">PDAServer.dpr</Source></Source><Excluded_Packages>
+<BorlandProject><Delphi.Personality><Parameters><Parameters Name="UseLauncher">False</Parameters><Parameters Name="LoadAllSymbols">True</Parameters><Parameters Name="LoadUnspecifiedSymbols">False</Parameters></Parameters><VersionInfo><VersionInfo Name="IncludeVerInfo">True</VersionInfo><VersionInfo Name="AutoIncBuild">True</VersionInfo><VersionInfo Name="MajorVer">1</VersionInfo><VersionInfo Name="MinorVer">0</VersionInfo><VersionInfo Name="Release">0</VersionInfo><VersionInfo Name="Build">144</VersionInfo><VersionInfo Name="Debug">False</VersionInfo><VersionInfo Name="PreRelease">False</VersionInfo><VersionInfo Name="Special">False</VersionInfo><VersionInfo Name="Private">False</VersionInfo><VersionInfo Name="DLL">False</VersionInfo><VersionInfo Name="Locale">2052</VersionInfo><VersionInfo Name="CodePage">936</VersionInfo></VersionInfo><VersionInfoKeys><VersionInfoKeys Name="CompanyName"></VersionInfoKeys><VersionInfoKeys Name="FileDescription">出入控制服务软件</VersionInfoKeys><VersionInfoKeys Name="FileVersion">1.0.0.144</VersionInfoKeys><VersionInfoKeys Name="InternalName"></VersionInfoKeys><VersionInfoKeys Name="LegalCopyright"></VersionInfoKeys><VersionInfoKeys Name="LegalTrademarks"></VersionInfoKeys><VersionInfoKeys Name="OriginalFilename"></VersionInfoKeys><VersionInfoKeys Name="ProductName">出入控制服务软件</VersionInfoKeys><VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys><VersionInfoKeys Name="Comments"></VersionInfoKeys></VersionInfoKeys><Source><Source Name="MainSource">PDAServer.dpr</Source></Source><Excluded_Packages>
+      
+      
+      
+      
+      
+      
       
       
       

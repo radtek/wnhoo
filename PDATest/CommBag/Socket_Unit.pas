@@ -3,7 +3,7 @@ unit Socket_Unit;
 interface
 
 uses
-  Windows;
+  Windows,Sockets,WinSock,SysUtils;
 
 const
   SVRDLL = 'SVR.DLL';
@@ -32,6 +32,7 @@ procedure acceptClientForTCP(const SVRHandle: Integer; BusinessFunc: TBusinessFu
 procedure acceptClientForUDP(const SVRHandle: Integer; BusinessFunc: TBusinessFunc); stdcall; External SVRDLL;
 function GetLocalIP(const SVRHandle: Integer; var IP: PChar; var Port: Word): Boolean; stdcall; External SVRDLL;
 function GetRemoteIP(const CHandle: Integer; var IP: PChar; var Port: Word): Boolean; stdcall; External SVRDLL;
+
 implementation
 
 initialization
