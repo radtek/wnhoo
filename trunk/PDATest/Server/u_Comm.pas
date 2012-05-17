@@ -35,6 +35,7 @@ var
   _DataList: TListView;
   _CS: TCriticalSection;
   //≈‰÷√Œƒº˛
+  _SvrName:string;
   _SvrPort: Word;
   _ActiveTimeOut: Word;
   _CheckDBTimeOut: Word;
@@ -58,6 +59,7 @@ begin
   if not FileExists(inifile) then exit;
   inif := TIniFile.Create(inifile);
   try
+    _SvrName:= inif.ReadString('PDAServer', 'SvrName', '');
     _SvrPort := inif.ReadInteger('PDAServer', 'SvrPort', 10008);
     _ActiveTimeOut := inif.ReadInteger('PDAServer', 'ActiveTimeOut', 200);
     if _ActiveTimeOut < 200 then _ActiveTimeOut := 200;

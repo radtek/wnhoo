@@ -19,7 +19,7 @@ type
     SBar: TStatusBar;
     PDAList: TListView;
     DataList: TListView;
-    Label1: TLabel;
+    lbl_SvrName: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Img_ExitClick(Sender: TObject);
@@ -45,6 +45,9 @@ begin
     Application.Terminate;
     Exit;
   end;
+  //标题
+  lbl_SvrName.Caption:=_SvrName;
+  //
   _SBar:=SBar;
   _PDAList := PDAList;
   _DataList := DataList;
@@ -79,7 +82,7 @@ begin
   SBar.Panels[5].Text := '连接';
   SBar.Panels[7].Text := '连接';
   }
-  SBar.Panels[9].Text := '1.1.0 Build 20110927';
+  SBar.Panels[9].Text := '1.1.1 Build 20120517';
 end;
 
 procedure TPDASvrFrm.FormClose(Sender: TObject; var Action: TCloseAction);
