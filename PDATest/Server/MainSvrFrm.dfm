@@ -1013,18 +1013,18 @@ object PDASvrFrm: TPDASvrFrm
       FF004F7FF66D8ABBD7FF00972FFA7BFF00B36C55FFD9}
     OnClick = Img_ExitClick
   end
-  object Label1: TLabel
+  object lbl_SvrName: TLabel
     Left = 32
     Top = 18
-    Width = 329
+    Width = 649
     Height = 29
     AutoSize = False
     Caption = #25972#36710#20986#20837#21378#38376#31649#29702#26381#21153#22120
     Font.Charset = GB2312_CHARSET
     Font.Color = clWhite
     Font.Height = -21
-    Font.Name = #26999#20307'_GB2312'
-    Font.Style = []
+    Font.Name = #26999#20307
+    Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
@@ -1070,7 +1070,6 @@ object PDASvrFrm: TPDASvrFrm
         RowSelect = True
         TabOrder = 0
         ViewStyle = vsReport
-        ExplicitTop = -2
       end
     end
     object TabSheet2: TTabSheet
