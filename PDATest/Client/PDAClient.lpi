@@ -19,6 +19,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="7"/>
+      <BuildNr Value="1"/>
       <Language Value="0804"/>
       <StringTable FileDescription="整车出入厂门管理" InternalName="整车出入厂门管理" ProductName="整车出入厂门管理" ProductVersion="1.7"/>
     </VersionInfo>
