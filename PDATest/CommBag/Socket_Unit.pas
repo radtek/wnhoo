@@ -3,7 +3,7 @@ unit Socket_Unit;
 interface
 
 uses
-  Windows,Sockets,WinSock,SysUtils;
+  Sockets,SysUtils;
 
 const
   SVRDLL = 'SVR.DLL';

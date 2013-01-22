@@ -81,6 +81,8 @@ var
   SvrPort:Word;
   HBI:DWord;
   PDANum:Word;
+  DefTargetPlace:String;
+  DefDirection:Integer;
 
   U_Guard,U_Driver:TUserInfo;
   U_Car:TCarInfo;
@@ -129,11 +131,15 @@ begin
     PDANum:= inif.ReadInteger('PDAClient','PDANum',1);
     if (PDANum<1) then  PDANum:=1;
     if (PDANum>60000) then  PDANum:=60000;
+    DefTargetPlace:=inif.ReadString('PDAClient','DefTargetPlace','');
+    DefDirection:= inif.ReadInteger('PDAClient','DefDirection',0);
+    if not (DefDirection in [0,1]) then DefDirection:=0;
     SvrIP:=inif.ReadString('PDAServer','IP','127.0.0.1');
     SvrPort:=inif.ReadInteger('PDAServer','Port',10008);
     HBI :=inif.ReadInteger('PDAServer','HBI',5000);
     if HBI<5 then  HBI:=5;
     if HBI>180 then  HBI:=180;
+
     Result:=True;
   finally
     inif.Free;

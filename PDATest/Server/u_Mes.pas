@@ -47,6 +47,7 @@ begin
   else
     Result := 'Î´Öª´íÎó´úÂë£º' + InttoStr(rt);
   end;
+  //Result:=Result+'->'+LastErrInfo;
 end;
 
 function TMESDBCtl.SaveInOutRec(const IOR: TInOutRec; const PDAName: string; const DataFlag: Integer): Integer;
