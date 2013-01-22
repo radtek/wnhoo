@@ -75,6 +75,9 @@ begin
   try
      if U_Guard.UserID<=0 then Exit;
      if U_Driver.UserID<=0 then Exit;
+     //2013-01-19 增加默认去向
+     if Trim(U_Driver.TargetPlace)='' then
+        U_Driver.TargetPlace:=DefTargetPlace;
      if Trim(U_Driver.TargetPlace)='' then Exit;
      if not((Trim(U_Car.VIN)<>'') and (Trim(U_Car.EngineNum)<>'')) then Exit;
      if rg_Direction.ItemIndex<0 then Exit;
@@ -202,6 +205,8 @@ begin
   StatusBar.Panels[3].Text:=InttoStr(PDANum);
 
   edt_msg.Text:='操作信息提示区';
+
+  rg_Direction.ItemIndex:=DefDirection;
   //记录登陆日志
   SaveLoginLog(1);
   Rdt:=TReaderThread.Create(false);
