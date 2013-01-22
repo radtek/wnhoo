@@ -18,10 +18,9 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
-      <MinorVersionNr Value="6"/>
-      <BuildNr Value="9"/>
+      <MinorVersionNr Value="7"/>
       <Language Value="0804"/>
-      <StringTable FileDescription="整车出入厂门管理" InternalName="整车出入厂门管理" ProductName="整车出入厂门管理" ProductVersion="1.6"/>
+      <StringTable FileDescription="整车出入厂门管理" InternalName="整车出入厂门管理" ProductName="整车出入厂门管理" ProductVersion="1.7"/>
     </VersionInfo>
     <MacroValues Count="1">
       <Macro1 Name="LCLWidgetType" Value="wince"/>
@@ -347,7 +346,7 @@
         <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="117"/>
-        <CursorPos X="11" Y="121"/>
+        <CursorPos X="45" Y="124"/>
         <UsageCount Value="196"/>
         <Loaded Value="True"/>
       </Unit37>
