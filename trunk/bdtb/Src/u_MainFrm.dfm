@@ -133,7 +133,7 @@ object MainFRM: TMainFRM
       Width = 323
       Height = 21
       TabOrder = 6
-      Text = 'http://tieba.baidu.com/f?kw=%B7%C7%B3%CF%CE%F0%C8%C5'
+      Text = 'http://bisai.tiankong520.com/poem/works/316099'
     end
     object edt_y1: TEdit
       Left = 40
